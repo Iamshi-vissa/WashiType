@@ -5,6 +5,8 @@ import { drawSheet, SHEET_W, SHEET_H } from './drawSheet.js';
 import { loadFamily, cssSnippet, sourceUrl, SOURCES } from '../fontLoader.js';
 import { CATEGORY_NAME, SCRIPT_LABEL } from '../data.js';
 import Hanko, { SaveMark } from './Hanko.jsx';
+import { restoreFocus } from '../focus.js';
+import useMedia from '../useMedia.js';
 
 const WEIGHT_NAME = {
   100: 'Thin', 200: 'Extra light', 300: 'Light', 400: 'Regular', 500: 'Medium',
@@ -28,7 +30,9 @@ export default function SpecimenSheet({ font, text, saved, onToggleSave, onNotif
   const [resetKey, setResetKey] = useState(0);
   const [paperState, setPaperState] = useState('flat');
   const closeRef = useRef(null);
-  const sceneHeight = typeof window !== 'undefined' && window.innerWidth < 600 ? 460 : 540;
+  // Follows rotation and resizing while the sheet is open.
+  const narrow = useMedia('(max-width: 599px)');
+  const sceneHeight = narrow ? 460 : 540;
   const codeRef = useRef(null);
 
   // Draw the paper once the family (and the note lettering) has loaded.
@@ -61,7 +65,7 @@ export default function SpecimenSheet({ font, text, saved, onToggleSave, onNotif
       window.removeEventListener('keydown', onKey);
       document.body.classList.remove('no-scroll');
       if (app) app.inert = false;
-      previous?.focus?.();
+      restoreFocus(previous);
     };
   }, [onClose]);
 
@@ -89,7 +93,6 @@ export default function SpecimenSheet({ font, text, saved, onToggleSave, onNotif
   };
   // Size the ticket to the code so long weight lists still fit.
   // On phones the ticket stands upright with the stub at the bottom, so the code stays readable.
-  const narrow = typeof window !== 'undefined' && window.innerWidth < 600;
   const perLine = narrow ? 38 : 50;
   const codeLines = snippet.split('\n').reduce((n, line) => n + Math.max(1, Math.ceil(line.length / perLine)), 0);
   const codeHeight = Math.max(narrow ? 150 : 176, 44 + codeLines * 19);
@@ -100,7 +103,7 @@ export default function SpecimenSheet({ font, text, saved, onToggleSave, onNotif
   const known = LICENSE[font.l];
   const license = {
     name: known?.name ?? `Open-source license (see ${SOURCES[font.src].name})`,
-    url: font.lu || known?.url || sourceUrl(font)
+    url: (/^https?:\/\//i.test(font.lu || '') && font.lu) || known?.url || sourceUrl(font)
   };
 
   return (

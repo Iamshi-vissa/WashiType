@@ -3,7 +3,6 @@ import { lazy, Suspense, useCallback, useDeferredValue, useEffect, useMemo, useR
 import FoldText from './components/reactbits/FoldText.jsx';
 import SwipeToast from './components/reactbits/SwipeToast.jsx';
 import SquishSwitch from './components/reactbits/SquishSwitch.jsx';
-import StampDrawer from './components/StampDrawer.jsx';
 import RotatingText from './components/reactbits/RotatingText.jsx';
 import ClickSpark from './components/reactbits/ClickSpark.jsx';
 import CountUp from './components/reactbits/CountUp.jsx';
@@ -13,7 +12,11 @@ import HeroScroll from './components/HeroScroll.jsx';
 import Hanko, { SaveMark } from './components/Hanko.jsx';
 // The specimen sheet pulls in three.js, so it loads only when a sheet is opened.
 const SpecimenSheet = lazy(() => import('./components/SpecimenSheet.jsx'));
-import { CATEGORIES, SCRIPTS, SORTS, FEATURED, SIZES, sampleFor } from './data.js';
+// The drawer (with the Shredder) only loads when it's opened.
+const StampDrawer = lazy(() => import('./components/StampDrawer.jsx'));
+import ErrorScreen from './components/ErrorScreen.jsx';
+import ErrorBoundary from './components/ErrorBoundary.jsx';
+import { CATEGORIES, SCRIPTS, SORTS, FEATURED, SIZES, sampleFor, previewText } from './data.js';
 
 const PAGE = 48;
 const SCRIPT_OPTIONS = [{ value: 'all', label: 'Any script' }, ...SCRIPTS.map(s => ({ value: s.id, label: s.label }))];
@@ -41,7 +44,10 @@ const store = {
 
 export default function App() {
   const [fonts, setFonts] = useState([]);
-  const [loadError, setLoadError] = useState(false);
+  // 'loading' | 'ready' | 'offline' | 'unreachable'
+  const [catalog, setCatalog] = useState('loading');
+  const [online, setOnline] = useState(() => navigator.onLine !== false);
+  const [missing, setMissing] = useState(null); // a #link to a font that doesn't exist
   const [query, setQuery] = useState('');
   const [text, setText] = useState(() => store.get('washitype:text', store.get('typesheet:text', '')));
   const [size, setSize] = useState(() => store.get('washitype:size', store.get('typesheet:size', 36)));
@@ -57,12 +63,49 @@ export default function App() {
   const heroRef = useRef(null);
   const moreRef = useRef(null);
 
-  useEffect(() => {
-    fetch('./fonts.json')
-      .then(r => (r.ok ? r.json() : Promise.reject(new Error(r.statusText))))
-      .then(setFonts)
-      .catch(() => setLoadError(true));
+  // Load the catalog, retrying twice with a short pause before showing the error TV.
+  const loadCatalog = useCallback(async () => {
+    setCatalog('loading');
+    for (let attempt = 0; attempt < 3; attempt += 1) {
+      try {
+        const res = await fetch('/fonts.json', { cache: attempt ? 'reload' : 'default' });
+        if (!res.ok) throw new Error(`fonts.json answered ${res.status}`);
+        const data = await res.json();
+        if (!Array.isArray(data) || !data.length) throw new Error('fonts.json is empty');
+        setFonts(data);
+        setCatalog('ready');
+        return;
+      } catch {
+        if (navigator.onLine === false || attempt === 2) break;
+        await new Promise(resolve => setTimeout(resolve, 600 * (attempt + 1)));
+      }
+    }
+    setCatalog(navigator.onLine === false ? 'offline' : 'unreachable');
   }, []);
+
+  useEffect(() => {
+    loadCatalog();
+  }, [loadCatalog]);
+
+  // Track the connection. Only the moment it comes back triggers a retry of a failed
+  // catalog (retrying on every failure would loop forever against a server that's down).
+  const catalogRef = useRef(catalog);
+  useEffect(() => {
+    catalogRef.current = catalog;
+  }, [catalog]);
+  useEffect(() => {
+    const up = () => {
+      setOnline(true);
+      if (catalogRef.current === 'offline' || catalogRef.current === 'unreachable') loadCatalog();
+    };
+    const down = () => setOnline(false);
+    window.addEventListener('online', up);
+    window.addEventListener('offline', down);
+    return () => {
+      window.removeEventListener('online', up);
+      window.removeEventListener('offline', down);
+    };
+  }, [loadCatalog]);
 
   useEffect(() => store.set('washitype:text', text), [text]);
   useEffect(() => store.set('washitype:size', size), [size]);
@@ -72,8 +115,17 @@ export default function App() {
   useEffect(() => {
     if (!fonts.length) return;
     const sync = () => {
-      const id = decodeURIComponent(location.hash.slice(1));
-      setOpen(fonts.find(f => f.id === id) ?? null);
+      const raw = location.hash.slice(1);
+      let id = raw;
+      let garbled = false;
+      try {
+        id = decodeURIComponent(raw);
+      } catch {
+        garbled = true; // e.g. #%E0%A4: treat it as a font that isn't found
+      }
+      const font = id && !garbled ? fonts.find(f => f.id === id) : null;
+      setOpen(font ?? null);
+      setMissing(id && !font ? (garbled ? { term: '' } : { term: id }) : null);
     };
     sync();
     window.addEventListener('hashchange', sync);
@@ -85,6 +137,7 @@ export default function App() {
   }, []);
   const closeFont = useCallback(() => {
     setOpen(null);
+    setMissing(null);
     try {
       history.replaceState(null, '', location.pathname + location.search);
     } catch {
@@ -97,6 +150,15 @@ export default function App() {
   const notify = useCallback((title, extra = {}) => setToast({ id: `${Date.now()}-${Math.random()}`, title, ...extra }), []);
 
   const fontById = useMemo(() => new Map(fonts.map(f => [f.id, f])), [fonts]);
+
+  // Forget stamps for fonts that have left the catalog, so the count is honest.
+  useEffect(() => {
+    if (catalog !== 'ready') return;
+    setSaved(prev => {
+      const kept = [...prev].filter(id => fontById.has(id));
+      return kept.length === prev.size ? prev : new Set(kept);
+    });
+  }, [catalog, fontById]);
   const savedRef = useRef(saved);
   useEffect(() => {
     savedRef.current = saved;
@@ -178,8 +240,10 @@ export default function App() {
     return () => io.disconnect();
   }, [results.length, limit]);
 
-  const preview = text.trim() || sampleFor(script === 'all' ? 'latin' : script);
+  // Typing re-renders every sheet; deferring keeps the input responsive while they catch up.
+  const userText = useDeferredValue(text.trim());
   const shown = results.slice(0, limit);
+  const catalogFailed = catalog === 'offline' || catalog === 'unreachable';
   const filtered = source !== 'all' || category !== 'all' || script !== 'all' || variableOnly || savedOnly || q;
 
   const clearFilters = () => {
@@ -207,14 +271,38 @@ export default function App() {
           <Hanko text="WT" size={34} />
           <span>Washi Type</span>
         </a>
-        <button type="button" className={`ghost small${savedOnly ? ' is-on' : ''}`} aria-haspopup="dialog" onClick={() => setDrawer(true)}>
+        <button
+          type="button"
+          className={`ghost small${savedOnly ? ' is-on' : ''}`}
+          data-focus-home
+          aria-haspopup="dialog"
+          disabled={catalog !== 'ready'}
+          onClick={() => setDrawer(true)}
+        >
           <Hanko on={saved.size > 0} size={22}>
             <SaveMark />
           </Hanko>
           Stamped · {saved.size}
         </button>
       </header>
+      {!online && catalog === 'ready' && (
+        <div className="offline-bar" role="status">
+          <strong>NO SIGNAL</strong> You’re offline. Fonts that haven’t loaded yet show a stand-in until you reconnect.
+        </div>
+      )}
 
+      {catalogFailed ? (
+        // The catalog couldn't be reached: the TV takes the whole page, not a corner below the fold.
+        <main className="band">
+          <ErrorScreen
+            page
+            headingLevel={1}
+            kind={catalog}
+            actions={[{ label: 'Try again', primary: true, onClick: loadCatalog }]}
+          />
+        </main>
+      ) : (
+        <>
       <section className="hero band" ref={heroRef}>
         <div className="hero-grid">
           <div className="hero-copy">
@@ -325,7 +413,11 @@ export default function App() {
 
       <main className="band desk">
         <p className="count" aria-live="polite">
-          {fonts.length ? `${results.length.toLocaleString()} ${results.length === 1 ? 'font' : 'fonts'}` : 'Laying out the sheets…'}
+          {fonts.length
+            ? `${results.length.toLocaleString()} ${results.length === 1 ? 'font' : 'fonts'}`
+            : catalog === 'loading'
+              ? 'Laying out the sheets…'
+              : ''}
           {filtered && fonts.length > 0 && (
             <button type="button" className="link" onClick={clearFilters}>
               Clear filters
@@ -333,7 +425,6 @@ export default function App() {
           )}
         </p>
 
-        {loadError && <p className="empty">The font list didn’t load. Refresh the page to try again.</p>}
 
         {fonts.length > 0 && results.length === 0 && (
           <div className="empty">
@@ -351,7 +442,7 @@ export default function App() {
             <FontCard
               key={font.id}
               font={font}
-              text={preview}
+              text={previewText(font, userText, script)}
               size={size}
               saved={saved.has(font.id)}
               onToggleSave={toggleSave}
@@ -368,6 +459,9 @@ export default function App() {
         )}
       </main>
 
+        </>
+      )}
+
       <footer className="foot band">
         <p>
           <Hanko text="WT" size={26} /> Fonts from <a href="https://fonts.google.com">Google Fonts</a>,{' '}
@@ -380,21 +474,46 @@ export default function App() {
       {/* The sheet renders outside the app root so the page behind it can be made inert. */}
       {open &&
         createPortal(
-        <Suspense fallback={<div className="overlay" />}>
-        <SpecimenSheet
-          key={open.id}
-          font={open}
-          text={text.trim() || sampleFor(open.s.includes(script) ? script : open.s.includes('latin') ? 'latin' : open.s[0])}
-          saved={saved.has(open.id)}
-          onToggleSave={toggleSave}
-          onNotify={notify}
-          onClose={closeFont}
-        />
-        </Suspense>,
+          <ErrorBoundary
+            key={open.id}
+            fallback={() => (
+              <div className="overlay" role="dialog" aria-modal="true" aria-label="This font couldn’t open" onClick={closeFont}>
+                <div className="spec spec--error" onClick={e => e.stopPropagation()}>
+                  <ErrorScreen
+                    kind={online ? 'crash' : 'offline'}
+                    title={`${open.f} couldn’t open`}
+                    message={online ? 'Part of this sheet failed to load. Reloading usually fixes it.' : 'You’re offline, and this sheet needs a connection the first time it opens.'}
+                    actions={[
+                      { label: 'Reload the page', primary: true, onClick: () => location.reload() },
+                      { label: 'Back to all fonts', onClick: closeFont }
+                    ]}
+                  />
+                </div>
+              </div>
+            )}
+          >
+            <Suspense fallback={<div className="overlay" />}>
+              <SpecimenSheet
+                font={open}
+                text={previewText(open, text.trim(), script)}
+                saved={saved.has(open.id)}
+                onToggleSave={toggleSave}
+                onNotify={notify}
+                onClose={closeFont}
+              />
+            </Suspense>
+          </ErrorBoundary>,
+          document.body
+        )}
+      {missing &&
+        createPortal(
+          <MissingFont id={missing.term} onSearch={term => { closeFont(); setQuery(term); }} onClose={closeFont} />,
           document.body
         )}
       {drawer &&
         createPortal(
+          <ErrorBoundary fallback={() => null}>
+          <Suspense fallback={null}>
           <StampDrawer
             fonts={[...saved].map(id => fontById.get(id)).filter(Boolean)}
             savedOnly={savedOnly}
@@ -405,7 +524,9 @@ export default function App() {
               openFont(font);
             }}
             onClose={closeDrawer}
-          />,
+          />
+          </Suspense>
+          </ErrorBoundary>,
           document.body
         )}
 
@@ -429,5 +550,36 @@ export default function App() {
           document.body
         )}
     </ClickSpark>
+  );
+}
+
+// Shown for a #link to a font that isn't in the catalog (or a garbled link).
+function MissingFont({ id, onSearch, onClose }) {
+  const closeRef = useRef(null);
+  useEffect(() => {
+    const app = document.getElementById('root');
+    if (app) app.inert = true;
+    closeRef.current?.querySelector('button')?.focus();
+    const onKey = e => e.key === 'Escape' && onClose();
+    window.addEventListener('keydown', onKey);
+    return () => {
+      window.removeEventListener('keydown', onKey);
+      if (app) app.inert = false;
+    };
+  }, [onClose]);
+  const term = id.replace(/[-_]+/g, ' ').replace(/[^\p{L}\p{N} ]/gu, '').trim().slice(0, 40);
+  return (
+    <div className="overlay" role="dialog" aria-modal="true" aria-label="Font not found" onClick={onClose}>
+      <div className="spec spec--error" ref={closeRef} onClick={e => e.stopPropagation()}>
+        <ErrorScreen
+          kind="noFont"
+          title={term ? `No font called “${term}”` : undefined}
+          actions={[
+            ...(term ? [{ label: `Search for “${term}”`, primary: true, onClick: () => onSearch(term) }] : []),
+            { label: 'Back to all fonts', primary: !term, onClick: onClose }
+          ]}
+        />
+      </div>
+    </div>
   );
 }

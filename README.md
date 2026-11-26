@@ -1,48 +1,111 @@
 # Washi Type
 
-A font finder dressed as a calligrapher's desk, with every free font from Google Fonts, Fontshare and independent open-source foundries in one place. Every font is brushed onto its own sheet of washi (handmade Japanese paper) in your own words. Stamp the fonts you like with a red seal (hanko), open a sheet to see every weight and copy the embed code, or press and hold the sheet to crumple it.
+A font finder dressed as a calligrapher's desk. More than 2,000 free fonts from Google Fonts, Fontshare and independent open-source foundries, each written out on its own sheet of washi (handmade Japanese paper) in your own words. Stamp the fonts you like with a red seal, open a sheet to see every weight, tear off the ticket to copy the embed code, or press and hold the sheet to crumple it.
+
+**Live:** https://washi-type.vercel.app
 
 ## Run it
 
 ```bash
 npm install
-npm run dev      # http://localhost:5173
-npm run build    # static site in dist/
+npm run dev        # http://localhost:5173
+npm run build      # refreshes the font catalog, then builds dist/
+npm run preview    # serves the production build on http://localhost:4173
+npm run lint       # ESLint
+npm test           # browser tests against the production build (run npm run build first)
 ```
 
-## Theme
+`npm test` uses Playwright. The first time, install its browser with `npx playwright install chromium`, or point it at a Chrome you already have: `PW_CHROME=/path/to/chrome npm test`.
 
-- **Language:** the look is Japanese, but every word in the interface is English.
-- **Colours:** washi off-white paper, sumi black ink, and one vermilion red (shu) from calligraphy seals. Dark mode is the same desk at night.
-- **Lettering:** Shippori Mincho for headings, Yuji Boku for the brushed name in the hero, Yuji Syuku for handwritten notes, Zen Antique inside the seals. All come from Google Fonts.
-- **Textures:** washi fibres, the dry-brush stroke, the torn paper edge and the uneven seal ink are SVGs inlined by `scripts/build-css.py`. Edit `styles.template.css`, then run `python3 scripts/build-css.py` to regenerate `src/styles.css`.
+## Features
 
-## What's inside
+- **Write something:** every sheet shows your text in its font. With no text, each font shows a sample in a script it actually has, so a Khmer-only font isn't previewed in English.
+- **Filters:** source, category, script (27 scripts, including Devanagari, Tamil, Bengali, Japanese and Arabic), variable fonts only, and four sort orders.
+- **Font sheets:** every weight (with an italic toggle), licence, source, designer, a crumplable specimen, and the embed code on a ticket you tear to copy. Each sheet has its own link, such as `/#inter`.
+- **Stamped fonts:** press the seal on any sheet to keep it. The Stamped drawer lists them as paper slips; drag one into the shredder (or press Delete) to remove it, with Undo. Stamps stay in this browser.
+- **Errors you can read:** a retro TV shows what went wrong instead of a blank page (see below).
+- **Works offline after the first visit:** a service worker keeps a copy of the site.
 
-- `public/fonts.json`: the merged catalog, built by `scripts/build-catalog.mjs` from three sources. Every font is free for personal and commercial use:
-  - **Google Fonts** (1,907 families) from the `google-font-metadata` package.
-  - **Fontshare** by the Indian Type Foundry (65 families not already on Google Fonts), under the ITF Free Font License. Fonts load from Fontshare's CSS API; downloads link to fontshare.com, because the licence doesn't allow redistributing the files.
-  - **Independent open-source foundries** collected by Fontsource (119 families: Velvetyne, The League of Moveable Type, GNOME and more), loaded from jsDelivr.
-  - `npm run build` refreshes Fontshare and Fontsource from their live APIs and falls back to the snapshots in `data/` if they can't be reached. `npm run catalog` rebuilds from the snapshots only.
-- `src/App.jsx`: search, preview text, size, category and script filters, sorting, stamped fonts (kept in localStorage), and `#font-id` links that open a sheet directly.
-- `src/components/HeroScroll.jsx`: the hanging sheet where "Washi Type" is brushed stroke by stroke, then stamped.
-- `src/components/Hanko.jsx`: the red seal used for saving fonts and in the logo.
-- `src/components/FontCard.jsx`: one washi sheet in the grid. Fonts load only as their sheet scrolls into view, batched into one Google Fonts request.
-- `src/components/SpecimenSheet.jsx` and `drawSheet.js`: the detail view. `drawSheet` paints the specimen on washi with a torn edge and a seal, and `PaperCrumple` turns it into paper you can crumple. three.js loads only when a sheet is opened.
-- `src/components/reactbits/`: ReactBits components:
-  - **FoldText**: the title folds in like paper.
-  - **StrokeText**: brushes the hero lettering.
-  - **TearTicket**: the embed code is a ticket; tear off the stub to copy it.
-  - **Shredder**: the Stamped drawer; drag a font slip into the shredder to remove its stamp.
-  - **SwipeToast**: notes for stamping, copying and shredding (with Undo).
-  - **SquishSwitch**: the "Variable only" switch.
-  - **WarmTooltip**: tooltips on the stamp buttons.
-  - **RotatingText**, **CountUp** and **ClickSpark** (ink splatter on click).
-- `src/components/StampDrawer.jsx`: the Stamped drawer built around Shredder.
-- `src/components/Select.jsx`: the Script and Sort dropdowns, which always open downwards.
+## Where the fonts come from
 
-## Next steps
+`scripts/build-catalog.mjs` builds `public/fonts.json` from three sources. Every font in it is free for personal and commercial use.
 
-- More sources (Fontshare, Font Squirrel) with their own license filter.
-- Font pairing suggestions on each sheet.
-- Identify a font from a screenshot.
+| Source | Fonts | Licence | Loaded from |
+|---|---|---|---|
+| Google Fonts | 1,907 | Mostly SIL Open Font License | fonts.googleapis.com |
+| Fontshare (Indian Type Foundry) | 65 not already on Google Fonts | ITF Free Font License | api.fontshare.com |
+| Independent foundries via Fontsource | 119 | OFL, Apache, MIT, CC0, Unlicense | cdn.jsdelivr.net (pinned to `@fontsource/*@5`) |
+
+- `npm run build` refreshes Fontshare and Fontsource from their live APIs and falls back to the snapshots in `data/` if they can't be reached. `npm run catalog` rebuilds from the snapshots only.
+- The build checks the catalog (unique ids, valid weights and categories, enough Google fonts) and fails rather than ship a broken one. A single malformed entry from a live API is skipped, not fatal.
+- Fontshare's licence doesn't allow redistributing the files, so Washi Type only displays them through Fontshare's servers and links to fontshare.com for downloads.
+
+## Error screens
+
+| What happened | What you see |
+|---|---|
+| An address that doesn't exist (e.g. `/fonts/inter`) | Vercel serves `404.html` with a real 404 status: the TV shows **NOT FOUND 404** |
+| A link to a font that isn't in the catalog, or a garbled link | The TV in a dialog, with a button to search for the name |
+| The font list can't be loaded | Retries twice, then the TV shows **NO SIGNAL 503** with Try again |
+| You're offline | **NO SIGNAL OFF**; it retries by itself when the connection returns. If the site was visited before, it opens from the offline copy with a "you're offline" bar |
+| A code file from an older deploy is gone, or anything crashes | Reloads once to pick up the new deploy; if that doesn't fix it, the TV shows **ERROR ERR** with Reload. A crash inside a font sheet only replaces that sheet |
+
+The TV is `src/components/TvError/`, adapted from [Uiverse.io by Praashoo7](https://uiverse.io/Praashoo7/fat-horse-65) (MIT License, Copyright (c) Praashoo7 (Prashant)). Its classes are prefixed `tv404-` so they can't collide with the site's styles. `src/components/ErrorScreen.jsx` puts the words and buttons around it.
+
+## Project structure
+
+```
+index.html, 404.html          two entry pages (the app and the 404 page)
+public/
+  fonts.json                  the merged catalog (generated)
+  sw.js                       service worker: network first, offline copy as fallback
+  favicon.svg, og.jpg         tab icon and link preview image
+data/                         snapshots of the Fontshare and Fontsource catalogs
+scripts/
+  build-catalog.mjs           builds and checks public/fonts.json
+  build-css.py                writes src/styles.css from styles.template.css
+src/
+  App.jsx                     page, filters, catalog loading, links, dialogs
+  main.jsx, notfound.jsx      entry points (error boundary, service worker)
+  data.js                     categories, scripts and samples, sorts, featured fonts
+  fontLoader.js               loads each font from its own source; embed code; source links
+  focus.js, useMedia.js       focus return after dialogs; media-query hook
+  components/
+    FontCard.jsx              one sheet in the grid (font loads when it scrolls into view)
+    SpecimenSheet.jsx         the font sheet (lazy-loaded with three.js)
+    drawSheet.js              paints the specimen on washi for the crumple
+    StampDrawer.jsx           Stamped drawer with the shredder (lazy-loaded)
+    Select.jsx                dropdowns that always open downwards
+    HeroScroll.jsx, Hanko.jsx hero sheet and the red seal
+    ErrorBoundary.jsx, ErrorScreen.jsx, TvError/   error handling and the TV
+    PaperCrumple/             crumplable paper; the fold simulation runs in a Web Worker
+    reactbits/                ReactBits components (see below)
+tests/app.spec.js             Playwright tests for the main flows and every error path
+vercel.json                   security headers (CSP and others) and caching
+.github/workflows/ci.yml      lint, build and tests on every push
+```
+
+## Styles
+
+`styles.template.css` is the stylesheet you edit. The washi fibres, dry-brush stroke, torn paper edge and seal ink are SVG textures inlined by `scripts/build-css.py`, which writes `src/styles.css`. After changing the template, run `npm run css`. Don't edit `src/styles.css` directly.
+
+Colours: washi off-white, sumi black and one vermilion red (shu). Dark mode is the same desk at night. Lettering: Shippori Mincho for headings, Yuji Boku and Yuji Syuku for brush lettering, Zen Antique in the seals, Instrument Sans for the interface.
+
+## ReactBits components
+
+Copied into `src/components/reactbits/` from [ReactBits](https://reactbits.dev): FoldText, StrokeText, RotatingText, CountUp, ClickSpark, TearTicket, Shredder, SwipeToast, SquishSwitch and WarmTooltip.
+
+Local changes to keep when updating them:
+
+- **TearTicket:** `onTear` fires the moment the stub is let go (inside the pointer-up handler), not after it finishes falling. Browsers such as Safari only allow copying to the clipboard during a user gesture.
+- **PaperCrumple:** the fold simulation was moved to `paperPath.js` and runs in `paperPath.worker.js`, cached by its settings. Opening a sheet no longer freezes the page.
+
+## Security and performance
+
+- `vercel.json` sets a Content-Security-Policy that only allows the site itself plus the three font services, along with `X-Content-Type-Options`, `Referrer-Policy`, `Permissions-Policy` and `Cross-Origin-Opener-Policy`. Built code files are cached for a year; `sw.js` is never cached.
+- Licence links from third-party data are kept only if they're plain `http(s)` links.
+- The three.js font sheet and the Stamped drawer load only when opened. Sheets far off screen skip layout and paint (`content-visibility`), and typing updates the sheets in the background, so the input stays responsive with hundreds of sheets on the page.
+
+## Deploying
+
+Vercel builds every push to `main` with `npm run build` and serves `dist/`. Unknown addresses get `404.html` automatically.

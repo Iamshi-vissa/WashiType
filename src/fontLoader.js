@@ -1,7 +1,7 @@
 // Loads font stylesheets on demand from whichever service hosts the font:
 //   g  Google Fonts   fonts.googleapis.com (batched: one request per screen of cards)
 //   fs Fontshare      api.fontshare.com    (one request per family)
-//   o  Fontsource     cdn.jsdelivr.net/npm/@fontsource/<id>/<weight>.css
+//   o  Fontsource     cdn.jsdelivr.net/npm/@fontsource/<id>@5/<weight>.css (pinned to the major version)
 const requested = new Set();
 const queues = { g: [] };
 let timer = 0;
@@ -36,7 +36,7 @@ function flush() {
 }
 
 const fontsourceCss = (font, weight, italic) =>
-  `https://cdn.jsdelivr.net/npm/@fontsource/${font.pk}@latest/${weight}${italic ? '-italic' : ''}.css`;
+  `https://cdn.jsdelivr.net/npm/@fontsource/${font.pk}@5/${weight}${italic ? '-italic' : ''}.css`;
 
 function request(font, weights, italic) {
   if (font.src === 'o') {

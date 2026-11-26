@@ -36,11 +36,28 @@ export const SCRIPTS = [
   { id: 'chinese-traditional', label: 'Chinese (Traditional)', sample: '你好，祝你今天愉快' },
   { id: 'ethiopic', label: 'Ethiopic', sample: 'ሰላም ወዳጄ' },
   { id: 'armenian', label: 'Armenian', sample: 'Բարև ընկեր' },
-  { id: 'georgian', label: 'Georgian', sample: 'გამარჯობა მეგობარო' }
+  { id: 'georgian', label: 'Georgian', sample: 'გამარჯობა მეგობარო' },
+  { id: 'myanmar', label: 'Myanmar (Burmese)', sample: 'မင်္ဂလာပါ သူငယ်ချင်း' }
 ];
 
 export const SCRIPT_LABEL = Object.fromEntries(SCRIPTS.map(s => [s.id, s.label.replace(/ \(.*\)/, '')]));
 export const sampleFor = script => SCRIPTS.find(s => s.id === script)?.sample ?? SCRIPTS[0].sample;
+
+// Samples for fonts that cover no filterable script at all.
+const EXTRA_SAMPLES = { emoji: '😀 🎨 ✍️ 🌸 🍵 📜', lycian: '𐊀𐊁𐊂𐊃𐊄𐊅𐊆𐊇𐊈𐊉' };
+
+/**
+ * What a font's sheet shows: the person's own words if they typed any; otherwise a sample
+ * in the chosen script, or, with "Any script", in a script the font actually has, so a
+ * Khmer-only font isn't previewed in English (which would only show a stand-in font).
+ */
+export function previewText(font, userText, script) {
+  if (userText) return userText;
+  if (script !== 'all' && font.s.includes(script)) return sampleFor(script);
+  if (font.s.includes('latin')) return sampleFor('latin');
+  if (font.s.length) return sampleFor(font.s[0]);
+  return EXTRA_SAMPLES[font.x] ?? sampleFor('latin');
+}
 
 export const SORTS = [
   { id: 'featured', label: 'Featured first' },

@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from 'react';
 import Shredder from './reactbits/Shredder.jsx';
 import Hanko from './Hanko.jsx';
 import { CATEGORY_NAME } from '../data.js';
+import { restoreFocus } from '../focus.js';
 
 const SLIP = 58; // height of one paper slip
 const GAP = 10;
@@ -27,7 +28,7 @@ export default function StampDrawer({ fonts, savedOnly, onShowOnDesk, onShred, o
       window.removeEventListener('keydown', onKey);
       document.body.classList.remove('no-scroll');
       if (app) app.inert = false;
-      previous?.focus?.();
+      restoreFocus(previous);
     };
   }, [onClose]);
 

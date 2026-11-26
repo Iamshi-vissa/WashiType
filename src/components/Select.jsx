@@ -51,11 +51,11 @@ export default function Select({ label, value, options, onChange }) {
     listRef.current?.querySelector(`[data-index="${active}"]`)?.scrollIntoView({ block: 'nearest' });
   }, [open, active]);
 
-  // Close on a click outside.
+  // Close on a click outside (without moving focus back to the button).
   useEffect(() => {
     if (!open) return;
     const onDown = e => {
-      if (!rootRef.current?.contains(e.target)) close(false);
+      if (!rootRef.current?.contains(e.target)) setOpen(false);
     };
     document.addEventListener('pointerdown', onDown);
     return () => document.removeEventListener('pointerdown', onDown);

@@ -21,6 +21,8 @@ async function fetchJSON(url) {
 }
 
 const familyKey = name => name.toLowerCase().replace(/[^a-z0-9]/g, '');
+// Licence links come from third-party data: only keep plain web links.
+const safeUrl = url => (typeof url === 'string' && /^https?:\/\//i.test(url) ? url : undefined);
 
 // ---------- Google Fonts ----------
 const gfData = 'node_modules/google-font-metadata/data/';
@@ -44,8 +46,10 @@ const G_CATEGORY = { 'sans-serif': 's', serif: 'r', display: 'd', handwriting: '
 const SCRIPTS = new Set([
   'latin', 'cyrillic', 'greek', 'vietnamese', 'arabic', 'hebrew', 'devanagari', 'bengali', 'tamil',
   'telugu', 'kannada', 'malayalam', 'gujarati', 'gurmukhi', 'oriya', 'sinhala', 'thai', 'khmer', 'lao',
-  'japanese', 'korean', 'chinese-simplified', 'chinese-traditional', 'ethiopic', 'armenian', 'georgian'
+  'japanese', 'korean', 'chinese-simplified', 'chinese-traditional', 'ethiopic', 'armenian', 'georgian', 'myanmar'
 ]);
+// Fonts with none of the scripts above still need something to preview in.
+const SAMPLE_ONLY = new Set(['emoji', 'lycian']);
 
 const google = Object.values(gFonts)
   // Icon fonts are not text faces, so leave them out.
@@ -61,6 +65,7 @@ const google = Object.values(gFonts)
       w: font.weights,
       i: font.styles.includes('italic') ? 1 : 0,
       s: font.subsets.filter(s => SCRIPTS.has(s)),
+      x: font.subsets.some(s => SCRIPTS.has(s)) ? undefined : font.subsets.find(s => SAMPLE_ONLY.has(s)),
       u: font.lastModified,
       // null when Google Fonts has no license record for the family; the app links to Google instead.
       l: lic ? LICENSE[lic.type] ?? lic.type : null,
@@ -141,6 +146,8 @@ const uniqueId = (id, prefix) => (ids.has(id) ? `${prefix}-${id}` : id);
 
 const others = [];
 for (const f of await openSourceFonts()) {
+  // One malformed entry from a live API must not fail the deploy: skip it.
+  if (!f?.family || !f.id || !Array.isArray(f.weights) || !f.weights.length) continue;
   if (seen.has(familyKey(f.family))) continue; // already in Google Fonts
   seen.add(familyKey(f.family));
   const id = uniqueId(f.id, 'os');
@@ -152,11 +159,11 @@ for (const f of await openSourceFonts()) {
     pk: f.id, // npm: @fontsource/<pk>
     c: O_CATEGORY[f.category] ?? 'd',
     w: f.weights,
-    i: f.styles.includes('italic') ? 1 : 0,
-    s: f.subsets.filter(s => SCRIPTS.has(s)),
+    i: (f.styles || []).includes('italic') ? 1 : 0,
+    s: (f.subsets || ['latin']).filter(s => SCRIPTS.has(s)),
     u: f.lastModified ?? '',
     l: LICENSE[f.license?.type] ?? f.license?.type ?? null,
-    lu: f.license?.url,
+    lu: safeUrl(f.license?.url),
     by: f.license?.attribution,
     a: []
   });
@@ -164,6 +171,7 @@ for (const f of await openSourceFonts()) {
 
 const fontshare = [];
 for (const f of await fontshareFonts()) {
+  if (!f?.name || !f.slug || !Array.isArray(f.weights) || !f.weights.length) continue;
   // Fontshare also hosts some Google fonts (Poppins, Lora ...); keep the Google copy.
   if (seen.has(familyKey(f.name))) continue;
   seen.add(familyKey(f.name));
@@ -186,6 +194,22 @@ for (const f of await fontshareFonts()) {
 }
 
 const rows = [...google, ...others, ...fontshare].sort((a, b) => a.f.localeCompare(b.f));
+
+// Fail the build rather than ship a broken catalog.
+const problems = [];
+const allIds = new Set();
+for (const r of rows) {
+  if (allIds.has(r.id)) problems.push(`duplicate id ${r.id}`);
+  allIds.add(r.id);
+  if (!r.f || !r.id || !['g', 'fs', 'o'].includes(r.src)) problems.push(`bad row ${JSON.stringify(r).slice(0, 80)}`);
+  if (!r.w.every(w => Number.isInteger(w) && w >= 1 && w <= 1000)) problems.push(`bad weights for ${r.f}`);
+  if (!'srdhm'.includes(r.c) || r.c.length !== 1) problems.push(`bad category for ${r.f}`);
+}
+if (google.length < 1500) problems.push(`only ${google.length} Google fonts`);
+if (problems.length) {
+  console.error('Catalog check failed:\n  ' + problems.slice(0, 20).join('\n  '));
+  process.exit(1);
+}
 writeFileSync(new URL('public/fonts.json', root), '[\n' + rows.map(r => JSON.stringify(r)).join(',\n') + '\n]\n');
 console.log(
   `Wrote ${rows.length} fonts: ${google.length} Google Fonts, ${fontshare.length} Fontshare, ${others.length} open-source foundries`
