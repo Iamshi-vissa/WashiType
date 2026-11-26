@@ -5,6 +5,7 @@ import RotatingText from './components/reactbits/RotatingText.jsx';
 import ClickSpark from './components/reactbits/ClickSpark.jsx';
 import CountUp from './components/reactbits/CountUp.jsx';
 import FontCard from './components/FontCard.jsx';
+import Select from './components/Select.jsx';
 import HeroScroll from './components/HeroScroll.jsx';
 import Hanko, { SaveMark } from './components/Hanko.jsx';
 // The specimen sheet pulls in three.js, so it loads only when a sheet is opened.
@@ -12,6 +13,8 @@ const SpecimenSheet = lazy(() => import('./components/SpecimenSheet.jsx'));
 import { CATEGORIES, SCRIPTS, SORTS, FEATURED, SIZES, sampleFor } from './data.js';
 
 const PAGE = 48;
+const SCRIPT_OPTIONS = [{ value: 'all', label: 'Any script' }, ...SCRIPTS.map(s => ({ value: s.id, label: s.label }))];
+const SORT_OPTIONS = SORTS.map(s => ({ value: s.id, label: s.label }));
 const FEATURED_RANK = new Map(FEATURED.map((name, i) => [name, i]));
 
 const store = {
@@ -251,27 +254,8 @@ export default function App() {
           ))}
         </div>
         <div className="selects">
-          <label>
-            <span>Script</span>
-            <select value={script} onChange={e => setScript(e.target.value)}>
-              <option value="all">Any script</option>
-              {SCRIPTS.map(s => (
-                <option key={s.id} value={s.id}>
-                  {s.label}
-                </option>
-              ))}
-            </select>
-          </label>
-          <label>
-            <span>Sort</span>
-            <select value={sort} onChange={e => setSort(e.target.value)}>
-              {SORTS.map(s => (
-                <option key={s.id} value={s.id}>
-                  {s.label}
-                </option>
-              ))}
-            </select>
-          </label>
+          <Select label="Script" value={script} options={SCRIPT_OPTIONS} onChange={setScript} />
+          <Select label="Sort" value={sort} options={SORT_OPTIONS} onChange={setSort} />
           <label className="toggle">
             <input type="checkbox" checked={variableOnly} onChange={e => setVariableOnly(e.target.checked)} />
             <span>Variable only</span>
