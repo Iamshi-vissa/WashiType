@@ -1,6 +1,6 @@
 # Washi Type
 
-A font finder dressed as a calligrapher's desk. Every font is brushed onto its own sheet of washi (handmade Japanese paper) in your own words. Stamp the fonts you like with a red seal (hanko), open a sheet to see every weight and copy the embed code, or press and hold the sheet to crumple it.
+A font finder dressed as a calligrapher's desk, with every free font from Google Fonts, Fontshare and independent open-source foundries in one place. Every font is brushed onto its own sheet of washi (handmade Japanese paper) in your own words. Stamp the fonts you like with a red seal (hanko), open a sheet to see every weight and copy the embed code, or press and hold the sheet to crumple it.
 
 ## Run it
 
@@ -19,7 +19,11 @@ npm run build    # static site in dist/
 
 ## What's inside
 
-- `public/fonts.json`: 1,907 Google Fonts families with category, weights, italics, scripts, variable axes and license. Refresh it with `npm update google-font-metadata && npm run catalog`.
+- `public/fonts.json`: the merged catalog, built by `scripts/build-catalog.mjs` from three sources. Every font is free for personal and commercial use:
+  - **Google Fonts** (1,907 families) from the `google-font-metadata` package.
+  - **Fontshare** by the Indian Type Foundry (65 families not already on Google Fonts), under the ITF Free Font License. Fonts load from Fontshare's CSS API; downloads link to fontshare.com, because the licence doesn't allow redistributing the files.
+  - **Independent open-source foundries** collected by Fontsource (119 families: Velvetyne, The League of Moveable Type, GNOME and more), loaded from jsDelivr.
+  - `npm run build` refreshes Fontshare and Fontsource from their live APIs and falls back to the snapshots in `data/` if they can't be reached. `npm run catalog` rebuilds from the snapshots only.
 - `src/App.jsx`: search, preview text, size, category and script filters, sorting, stamped fonts (kept in localStorage), and `#font-id` links that open a sheet directly.
 - `src/components/HeroScroll.jsx`: the hanging sheet where "Washi Type" is brushed stroke by stroke, then stamped.
 - `src/components/Hanko.jsx`: the red seal used for saving fonts and in the logo.

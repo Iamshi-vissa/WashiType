@@ -3,6 +3,8 @@
 // edge are transparent, so the crumpled sheet keeps its ragged outline.
 import { CATEGORY_NAME } from '../data.js';
 
+const SOURCE_NAME = { g: 'Google Fonts', fs: 'Fontshare', o: 'Fontsource' };
+
 export const SHEET_W = 360;
 export const SHEET_H = 460;
 const S = 2; // draw at 2x for a crisp texture
@@ -125,7 +127,8 @@ export function drawSheet(font, text) {
   ctx.fillStyle = 'rgba(26,24,22,0.6)';
   ctx.font = '500 26px "Shippori Mincho", serif';
   ctx.textAlign = 'right';
-  ctx.fillText(`${CATEGORY_NAME[font.c]} · ${font.w.length} ${font.w.length === 1 ? 'weight' : 'weights'}`, right, 74);
+  ctx.fillText(`${CATEGORY_NAME[font.c]} · ${font.w.length} ${font.w.length === 1 ? 'weight' : 'weights'}`, right, 58);
+  ctx.fillText(SOURCE_NAME[font.src] ?? '', right, 90);
   ctx.textAlign = 'left';
 
   // Family name

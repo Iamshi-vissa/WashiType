@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from 'react';
 import PaperCrumple from './PaperCrumple/PaperCrumple.jsx';
 import TearTicket from './reactbits/TearTicket.jsx';
 import { drawSheet, SHEET_W, SHEET_H } from './drawSheet.js';
-import { loadFamily, cssSnippet, googleUrl } from '../fontLoader.js';
+import { loadFamily, cssSnippet, sourceUrl, SOURCES } from '../fontLoader.js';
 import { CATEGORY_NAME, SCRIPT_LABEL } from '../data.js';
 import Hanko, { SaveMark } from './Hanko.jsx';
 
@@ -13,7 +13,12 @@ const WEIGHT_NAME = {
 const LICENSE = {
   OFL: { name: 'SIL Open Font License 1.1', url: 'https://openfontlicense.org' },
   Apache: { name: 'Apache License 2.0', url: 'https://www.apache.org/licenses/LICENSE-2.0' },
-  UFL: { name: 'Ubuntu Font Licence 1.0', url: 'https://ubuntu.com/legal/font-licence' }
+  UFL: { name: 'Ubuntu Font Licence 1.0', url: 'https://ubuntu.com/legal/font-licence' },
+  CC0: { name: 'CC0 1.0 (public domain)', url: 'https://creativecommons.org/publicdomain/zero/1.0/' },
+  Unlicense: { name: 'The Unlicense (public domain)', url: 'https://unlicense.org' },
+  MIT: { name: 'MIT License', url: 'https://opensource.org/license/mit' },
+  // Fontshare's own licence; the font's Fontshare page links the full text.
+  ITF: { name: 'ITF Free Font License', url: null }
 };
 
 export default function SpecimenSheet({ font, text, saved, onToggleSave, onNotify, onClose }) {
@@ -91,7 +96,12 @@ export default function SpecimenSheet({ font, text, saved, onToggleSave, onNotif
   const stubSize = narrow ? 84 : 112;
 
   // A few fonts have no license record in the catalog; point to Google Fonts instead of guessing.
-  const license = LICENSE[font.l] ?? { name: 'Open-source license (see Google Fonts)', url: googleUrl(font) };
+  // A few fonts have no license record in the catalog; point to their source instead of guessing.
+  const known = LICENSE[font.l];
+  const license = {
+    name: known?.name ?? `Open-source license (see ${SOURCES[font.src].name})`,
+    url: font.lu || known?.url || sourceUrl(font)
+  };
 
   return (
     <div className="overlay" role="dialog" aria-modal="true" aria-labelledby="spec-title" onClick={onClose}>
@@ -151,8 +161,8 @@ export default function SpecimenSheet({ font, text, saved, onToggleSave, onNotif
           </h2>
 
           <div className="actions">
-            <a className="btn" href={googleUrl(font)} target="_blank" rel="noreferrer">
-              Get it on Google Fonts
+            <a className="btn" href={sourceUrl(font)} target="_blank" rel="noreferrer">
+              Get it on {SOURCES[font.src].name}
             </a>
             <button type="button" className="ghost seal-label" aria-pressed={saved} onClick={() => onToggleSave(font.id)}>
               <Hanko key={saved ? 'on' : 'off'} on={saved} stamp={saved} size={26}>
@@ -170,6 +180,14 @@ export default function SpecimenSheet({ font, text, saved, onToggleSave, onNotif
                   {license.name}
                 </a>
                 <span className="ok">Free for personal and commercial use</span>
+                {font.src === 'fs' && <span className="fine">Download it from Fontshare; the licence doesn’t allow sharing the files.</span>}
+              </dd>
+            </div>
+            <div>
+              <dt>From</dt>
+              <dd>
+                {SOURCES[font.src].name}
+                {font.by && <span className="fine">{font.by}</span>}
               </dd>
             </div>
             <div>
@@ -189,10 +207,12 @@ export default function SpecimenSheet({ font, text, saved, onToggleSave, onNotif
                 <dd>{font.a.join(', ')}</dd>
               </div>
             )}
-            <div>
-              <dt>Last updated</dt>
-              <dd>{new Date(font.u).toLocaleDateString(undefined, { year: 'numeric', month: 'short', day: 'numeric' })}</dd>
-            </div>
+            {font.u && (
+              <div>
+                <dt>{font.src === 'fs' ? 'Added' : 'Last updated'}</dt>
+                <dd>{new Date(font.u).toLocaleDateString(undefined, { year: 'numeric', month: 'short', day: 'numeric' })}</dd>
+              </div>
+            )}
           </dl>
 
           <div className="waterfall-head">

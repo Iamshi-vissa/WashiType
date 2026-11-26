@@ -1,27 +1,56 @@
-// Loads Google Fonts stylesheets on demand. Requests made in the same tick are
-// batched into one css2 URL so a screen of cards costs one request, not forty.
+// Loads font stylesheets on demand from whichever service hosts the font:
+//   g  Google Fonts   fonts.googleapis.com (batched: one request per screen of cards)
+//   fs Fontshare      api.fontshare.com    (one request per family)
+//   o  Fontsource     cdn.jsdelivr.net/npm/@fontsource/<id>/<weight>.css
 const requested = new Set();
-let queue = [];
+const queues = { g: [] };
 let timer = 0;
 
-const familyParam = (family, weights, italic = false) => {
-  const name = `family=${encodeURIComponent(family).replace(/%20/g, '+')}`;
+const plus = name => encodeURIComponent(name).replace(/%20/g, '+');
+
+const googleParam = (family, weights, italic = false) => {
+  const name = `family=${plus(family)}`;
   if (!weights) return name;
   if (!italic) return `${name}:wght@${weights.join(';')}`;
   const tuples = [...weights.map(w => `0,${w}`), ...weights.map(w => `1,${w}`)];
   return `${name}:ital,wght@${tuples.join(';')}`;
 };
 
+// Fontshare numbers italics as weight + 1 (400 regular, 401 italic).
+const fontshareParam = (slug, weights, italic = false) =>
+  `f[]=${encodeURIComponent(slug)}@${[...weights, ...(italic ? weights.map(w => w + 1) : [])].join(',')}`;
+
+const addStylesheet = href => {
+  const link = document.createElement('link');
+  link.rel = 'stylesheet';
+  link.href = href;
+  document.head.appendChild(link);
+};
+
 function flush() {
   timer = 0;
-  const batch = queue.splice(0, queue.length);
   // Keep URLs well under browser limits.
-  for (let i = 0; i < batch.length; i += 20) {
-    const link = document.createElement('link');
-    link.rel = 'stylesheet';
-    link.href = `https://fonts.googleapis.com/css2?${batch.slice(i, i + 20).join('&')}&display=swap`;
-    document.head.appendChild(link);
+  const g = queues.g.splice(0);
+  for (let i = 0; i < g.length; i += 20)
+    addStylesheet(`https://fonts.googleapis.com/css2?${g.slice(i, i + 20).join('&')}&display=swap`);
+}
+
+const fontsourceCss = (font, weight, italic) =>
+  `https://cdn.jsdelivr.net/npm/@fontsource/${font.pk}@latest/${weight}${italic ? '-italic' : ''}.css`;
+
+function request(font, weights, italic) {
+  if (font.src === 'o') {
+    for (const w of weights) {
+      addStylesheet(fontsourceCss(font, w, false));
+      if (italic) addStylesheet(fontsourceCss(font, w, true));
+    }
+    return;
   }
+  if (font.src === 'fs') {
+    addStylesheet(`https://api.fontshare.com/v2/css?${fontshareParam(font.slug, weights, italic)}&display=swap`);
+    return;
+  }
+  queues.g.push(googleParam(font.f, weights, italic));
 }
 
 export function defaultWeight(font) {
@@ -30,19 +59,19 @@ export function defaultWeight(font) {
 
 /** Load one weight of a family (the one cards preview in). */
 export function loadPreview(font) {
-  const key = `${font.f}@preview`;
+  const key = `${font.id}@preview`;
   if (requested.has(key)) return;
   requested.add(key);
-  queue.push(familyParam(font.f, [defaultWeight(font)]));
+  request(font, [defaultWeight(font)], false);
   if (!timer) timer = setTimeout(flush, 60);
 }
 
 /** Load every weight of a family, for the specimen sheet. Resolves when the fonts are usable. */
 export async function loadFamily(font) {
-  const key = `${font.f}@all`;
+  const key = `${font.id}@all`;
   if (!requested.has(key)) {
     requested.add(key);
-    queue.push(familyParam(font.f, font.w, !!font.i));
+    request(font, font.w, !!font.i);
     flush();
   }
   try {
@@ -55,10 +84,29 @@ export async function loadFamily(font) {
   }
 }
 
+const FALLBACK = { s: 'sans-serif', r: 'serif', d: 'sans-serif', h: 'cursive', m: 'monospace' };
+
 export const cssSnippet = font => {
-  const href = `https://fonts.googleapis.com/css2?${familyParam(font.f, font.w, !!font.i)}&display=swap`;
-  const fallback = { s: 'sans-serif', r: 'serif', d: 'sans-serif', h: 'cursive', m: 'monospace' }[font.c];
-  return `<link rel="stylesheet" href="${href}">\n\n/* CSS */\nfont-family: "${font.f}", ${fallback};`;
+  const family = `font-family: "${font.f}", ${FALLBACK[font.c]};`;
+  if (font.src === 'o') {
+    return `/* Install */\nnpm install @fontsource/${font.pk}\n\n/* JavaScript */\nimport '@fontsource/${font.pk}';\n\n/* CSS */\n${family}`;
+  }
+  const href =
+    font.src === 'fs'
+      ? `https://api.fontshare.com/v2/css?${fontshareParam(font.slug, font.w, !!font.i)}&display=swap`
+      : `https://fonts.googleapis.com/css2?${googleParam(font.f, font.w, !!font.i)}&display=swap`;
+  return `<link rel="stylesheet" href="${href}">\n\n/* CSS */\n${family}`;
 };
 
-export const googleUrl = font => `https://fonts.google.com/specimen/${encodeURIComponent(font.f).replace(/%20/g, '+')}`;
+export const SOURCES = {
+  g: { name: 'Google Fonts', short: 'Google Fonts' },
+  fs: { name: 'Fontshare', short: 'Fontshare' },
+  o: { name: 'Fontsource', short: 'Open source' }
+};
+
+/** The font's page on the service it comes from, where it can be downloaded. */
+export const sourceUrl = font => {
+  if (font.src === 'fs') return `https://www.fontshare.com/fonts/${encodeURIComponent(font.slug)}`;
+  if (font.src === 'o') return `https://fontsource.org/fonts/${encodeURIComponent(font.pk)}`;
+  return `https://fonts.google.com/specimen/${plus(font.f)}`;
+};

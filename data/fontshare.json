@@ -1,0 +1,1315 @@
+{
+ "source": "Fontshare (api.fontshare.com) snapshot, 2026-11-26",
+ "fonts": [
+  {
+   "name": "Aktura",
+   "slug": "aktura",
+   "category": "Serif, Blackletter, Display",
+   "weights": [
+    400
+   ],
+   "italic": false
+  },
+  {
+   "name": "Alpino",
+   "slug": "alpino",
+   "category": "Sans",
+   "weights": [
+    100,
+    300,
+    400,
+    500,
+    700,
+    900
+   ],
+   "italic": false
+  },
+  {
+   "name": "Amulya",
+   "slug": "amulya",
+   "category": "Sans",
+   "weights": [
+    300,
+    400,
+    500,
+    700
+   ],
+   "italic": true
+  },
+  {
+   "name": "Anton",
+   "slug": "anton",
+   "category": "Sans, Display",
+   "weights": [
+    400
+   ],
+   "italic": false
+  },
+  {
+   "name": "Archivo",
+   "slug": "archivo",
+   "category": "Sans",
+   "weights": [
+    100,
+    200,
+    300,
+    400,
+    500,
+    600,
+    700,
+    800,
+    900
+   ],
+   "italic": true
+  },
+  {
+   "name": "Array",
+   "slug": "array",
+   "category": "Display",
+   "weights": [
+    400,
+    600,
+    700
+   ],
+   "italic": false
+  },
+  {
+   "name": "Asap",
+   "slug": "asap",
+   "category": "Sans",
+   "weights": [
+    400,
+    500,
+    600,
+    700
+   ],
+   "italic": true
+  },
+  {
+   "name": "Author",
+   "slug": "author",
+   "category": "Sans",
+   "weights": [
+    200,
+    300,
+    400,
+    500,
+    600,
+    700
+   ],
+   "italic": true
+  },
+  {
+   "name": "Azeret Mono",
+   "slug": "azeret-mono",
+   "category": "Sans",
+   "weights": [
+    100,
+    200,
+    300,
+    400,
+    500,
+    600,
+    700,
+    800,
+    900
+   ],
+   "italic": true
+  },
+  {
+   "name": "Be Vietnam Pro",
+   "slug": "beVietnam-pro",
+   "category": "Sans",
+   "weights": [
+    100,
+    200,
+    300,
+    400,
+    500,
+    600,
+    700,
+    800,
+    900
+   ],
+   "italic": true
+  },
+  {
+   "name": "Bebas Neue",
+   "slug": "bebas-neue",
+   "category": "Sans",
+   "weights": [
+    400
+   ],
+   "italic": false
+  },
+  {
+   "name": "Bespoke Sans",
+   "slug": "bespoke-sans",
+   "category": "Sans",
+   "weights": [
+    300,
+    400,
+    500,
+    700,
+    800
+   ],
+   "italic": true
+  },
+  {
+   "name": "Bespoke Serif",
+   "slug": "bespoke-serif",
+   "category": "Serif",
+   "weights": [
+    300,
+    400,
+    500,
+    700,
+    800
+   ],
+   "italic": true
+  },
+  {
+   "name": "Bespoke Slab",
+   "slug": "bespoke-slab",
+   "category": "Slab",
+   "weights": [
+    300,
+    400,
+    500,
+    700,
+    800
+   ],
+   "italic": true
+  },
+  {
+   "name": "Bespoke Stencil",
+   "slug": "bespoke-stencil",
+   "category": "Sans",
+   "weights": [
+    300,
+    400,
+    500,
+    700,
+    800
+   ],
+   "italic": true
+  },
+  {
+   "name": "Bevellier",
+   "slug": "bevellier",
+   "category": "Display",
+   "weights": [
+    100,
+    200,
+    300,
+    400,
+    500,
+    600,
+    700,
+    900
+   ],
+   "italic": true
+  },
+  {
+   "name": "Bonny",
+   "slug": "bonny",
+   "category": "Serif",
+   "weights": [
+    100,
+    300,
+    400,
+    500,
+    700
+   ],
+   "italic": false
+  },
+  {
+   "name": "Boska",
+   "slug": "boska",
+   "category": "Serif, Display",
+   "weights": [
+    200,
+    300,
+    400,
+    500,
+    700,
+    900
+   ],
+   "italic": true
+  },
+  {
+   "name": "Boxing",
+   "slug": "boxing",
+   "category": "Display",
+   "weights": [
+    400
+   ],
+   "italic": false
+  },
+  {
+   "name": "Britney",
+   "slug": "britney",
+   "category": "Script",
+   "weights": [
+    300,
+    400,
+    700,
+    1000
+   ],
+   "italic": false
+  },
+  {
+   "name": "Cabinet Grotesk",
+   "slug": "cabinet-grotesk",
+   "category": "Sans",
+   "weights": [
+    100,
+    200,
+    300,
+    400,
+    500,
+    700,
+    800,
+    900
+   ],
+   "italic": false
+  },
+  {
+   "name": "Chillax",
+   "slug": "chillax",
+   "category": "Sans",
+   "weights": [
+    200,
+    300,
+    400,
+    500,
+    600,
+    700
+   ],
+   "italic": false
+  },
+  {
+   "name": "Chubbo",
+   "slug": "chubbo",
+   "category": "Display",
+   "weights": [
+    200,
+    300,
+    400,
+    500,
+    700
+   ],
+   "italic": true
+  },
+  {
+   "name": "Clash Display",
+   "slug": "clash-display",
+   "category": "Sans",
+   "weights": [
+    200,
+    300,
+    400,
+    500,
+    600,
+    700
+   ],
+   "italic": false
+  },
+  {
+   "name": "Clash Grotesk",
+   "slug": "clash-grotesk",
+   "category": "Sans",
+   "weights": [
+    200,
+    300,
+    400,
+    500,
+    600,
+    700
+   ],
+   "italic": false
+  },
+  {
+   "name": "Comico",
+   "slug": "comico",
+   "category": "Handwritten",
+   "weights": [
+    400
+   ],
+   "italic": false
+  },
+  {
+   "name": "Crimson Pro",
+   "slug": "crimson-pro",
+   "category": "Serif",
+   "weights": [
+    200,
+    300,
+    400,
+    500,
+    600,
+    700,
+    800,
+    900
+   ],
+   "italic": true
+  },
+  {
+   "name": "Dancing Script",
+   "slug": "dancing-script",
+   "category": "Script",
+   "weights": [
+    400,
+    700
+   ],
+   "italic": false
+  },
+  {
+   "name": "Epilogue",
+   "slug": "epilogue",
+   "category": "Sans",
+   "weights": [
+    100,
+    200,
+    300,
+    400,
+    500,
+    600,
+    700,
+    800,
+    900
+   ],
+   "italic": true
+  },
+  {
+   "name": "Erode",
+   "slug": "erode",
+   "category": "Serif",
+   "weights": [
+    300,
+    400,
+    500,
+    600,
+    700
+   ],
+   "italic": true
+  },
+  {
+   "name": "Excon",
+   "slug": "excon",
+   "category": "Sans",
+   "weights": [
+    100,
+    300,
+    400,
+    500,
+    700,
+    900
+   ],
+   "italic": false
+  },
+  {
+   "name": "Expose",
+   "slug": "expose",
+   "category": "Sans",
+   "weights": [
+    400,
+    500,
+    700,
+    900
+   ],
+   "italic": false
+  },
+  {
+   "name": "Familjen Grotesk",
+   "slug": "familjen-grotesk",
+   "category": "Sans",
+   "weights": [
+    400,
+    500,
+    600,
+    700
+   ],
+   "italic": true
+  },
+  {
+   "name": "Fira Sans",
+   "slug": "fira-sans",
+   "category": "Sans",
+   "weights": [
+    100,
+    200,
+    300,
+    400,
+    500,
+    600,
+    700,
+    800,
+    900
+   ],
+   "italic": true
+  },
+  {
+   "name": "Gambarino",
+   "slug": "gambarino",
+   "category": "Serif",
+   "weights": [
+    400
+   ],
+   "italic": false
+  },
+  {
+   "name": "Gambetta",
+   "slug": "gambetta",
+   "category": "Serif",
+   "weights": [
+    300,
+    400,
+    500,
+    600,
+    700
+   ],
+   "italic": true
+  },
+  {
+   "name": "General Sans",
+   "slug": "general-sans",
+   "category": "Sans",
+   "weights": [
+    200,
+    300,
+    400,
+    500,
+    600,
+    700
+   ],
+   "italic": true
+  },
+  {
+   "name": "Hind",
+   "slug": "hind",
+   "category": "Sans",
+   "weights": [
+    300,
+    400,
+    500,
+    600,
+    700
+   ],
+   "italic": false
+  },
+  {
+   "name": "Hoover",
+   "slug": "hoover",
+   "category": "Slab",
+   "weights": [
+    100,
+    300,
+    400,
+    500,
+    700
+   ],
+   "italic": false
+  },
+  {
+   "name": "JetBrains Mono",
+   "slug": "jet-brains-mono",
+   "category": "Sans",
+   "weights": [
+    100,
+    200,
+    300,
+    400,
+    500,
+    600,
+    700,
+    800
+   ],
+   "italic": true
+  },
+  {
+   "name": "Kalam",
+   "slug": "kalam",
+   "category": "Handwritten",
+   "weights": [
+    300,
+    400,
+    700
+   ],
+   "italic": false
+  },
+  {
+   "name": "Karma",
+   "slug": "karma",
+   "category": "Serif",
+   "weights": [
+    300,
+    400,
+    500,
+    600,
+    700
+   ],
+   "italic": false
+  },
+  {
+   "name": "Khand",
+   "slug": "khand",
+   "category": "Sans",
+   "weights": [
+    300,
+    400,
+    500,
+    600,
+    700
+   ],
+   "italic": false
+  },
+  {
+   "name": "Kihim",
+   "slug": "kihim",
+   "category": "Display",
+   "weights": [
+    400
+   ],
+   "italic": false
+  },
+  {
+   "name": "Kohinoor Zerone",
+   "slug": "kohinoor-zerone",
+   "category": "Display",
+   "weights": [
+    100,
+    200
+   ],
+   "italic": false
+  },
+  {
+   "name": "Kola",
+   "slug": "kola",
+   "category": "Display",
+   "weights": [
+    400
+   ],
+   "italic": false
+  },
+  {
+   "name": "Literata",
+   "slug": "literata",
+   "category": "Serif",
+   "weights": [
+    200,
+    300,
+    400,
+    500,
+    600,
+    700,
+    800,
+    900
+   ],
+   "italic": true
+  },
+  {
+   "name": "Lora",
+   "slug": "lora",
+   "category": "Serif",
+   "weights": [
+    400,
+    500,
+    600,
+    700
+   ],
+   "italic": true
+  },
+  {
+   "name": "Manrope",
+   "slug": "manrope",
+   "category": "Sans",
+   "weights": [
+    200,
+    300,
+    400,
+    500,
+    600,
+    700,
+    800
+   ],
+   "italic": false
+  },
+  {
+   "name": "Melodrama",
+   "slug": "melodrama",
+   "category": "Sans, Display",
+   "weights": [
+    300,
+    400,
+    500,
+    600,
+    700
+   ],
+   "italic": false
+  },
+  {
+   "name": "Merriweather Sans",
+   "slug": "merriweather-sans",
+   "category": "Sans",
+   "weights": [
+    300,
+    400,
+    500,
+    600,
+    700,
+    800
+   ],
+   "italic": true
+  },
+  {
+   "name": "Montserrat",
+   "slug": "montserrat",
+   "category": "Sans",
+   "weights": [
+    100,
+    200,
+    300,
+    400,
+    500,
+    600,
+    700,
+    800,
+    900
+   ],
+   "italic": true
+  },
+  {
+   "name": "Neco",
+   "slug": "neco",
+   "category": "Serif",
+   "weights": [
+    400,
+    500,
+    700,
+    900
+   ],
+   "italic": true
+  },
+  {
+   "name": "New Title",
+   "slug": "new-title",
+   "category": "Sans, Display",
+   "weights": [
+    200,
+    300,
+    400,
+    500,
+    700
+   ],
+   "italic": false
+  },
+  {
+   "name": "Nippo",
+   "slug": "nippo",
+   "category": "Display",
+   "weights": [
+    200,
+    300,
+    400,
+    500,
+    700
+   ],
+   "italic": false
+  },
+  {
+   "name": "Nunito",
+   "slug": "nunito",
+   "category": "Sans",
+   "weights": [
+    200,
+    300,
+    400,
+    500,
+    600,
+    700,
+    800,
+    900
+   ],
+   "italic": true
+  },
+  {
+   "name": "Oswald",
+   "slug": "oswald",
+   "category": "Sans, Display",
+   "weights": [
+    200,
+    300,
+    400,
+    500,
+    600,
+    700
+   ],
+   "italic": false
+  },
+  {
+   "name": "Outfit",
+   "slug": "outfit",
+   "category": "Sans",
+   "weights": [
+    100,
+    200,
+    300,
+    400,
+    500,
+    600,
+    700,
+    800,
+    900
+   ],
+   "italic": false
+  },
+  {
+   "name": "Pally",
+   "slug": "pally",
+   "category": "Sans",
+   "weights": [
+    400,
+    500,
+    700
+   ],
+   "italic": false
+  },
+  {
+   "name": "Panchang",
+   "slug": "panchang",
+   "category": "Sans",
+   "weights": [
+    200,
+    300,
+    400,
+    500,
+    600,
+    700,
+    800
+   ],
+   "italic": false
+  },
+  {
+   "name": "Paquito",
+   "slug": "paquito",
+   "category": "Serif, Slab",
+   "weights": [
+    400,
+    500,
+    700
+   ],
+   "italic": false
+  },
+  {
+   "name": "Pencerio",
+   "slug": "pencerio",
+   "category": "Script",
+   "weights": [
+    50
+   ],
+   "italic": false
+  },
+  {
+   "name": "Pilcrow Rounded",
+   "slug": "pilcrow-rounded",
+   "category": "Sans",
+   "weights": [
+    400,
+    500,
+    600,
+    700,
+    900
+   ],
+   "italic": false
+  },
+  {
+   "name": "Plein",
+   "slug": "plein",
+   "category": "Sans",
+   "weights": [
+    300,
+    400,
+    500,
+    700,
+    900
+   ],
+   "italic": true
+  },
+  {
+   "name": "Plus Jakarta Sans",
+   "slug": "plus-jakarta-sans",
+   "category": "Sans",
+   "weights": [
+    200,
+    300,
+    400,
+    500,
+    600,
+    700,
+    800
+   ],
+   "italic": true
+  },
+  {
+   "name": "Poppins",
+   "slug": "poppins",
+   "category": "Sans",
+   "weights": [
+    100,
+    200,
+    300,
+    400,
+    500,
+    600,
+    700,
+    800,
+    900
+   ],
+   "italic": true
+  },
+  {
+   "name": "Pramukh Rounded",
+   "slug": "pramukh-rounded",
+   "category": "Sans",
+   "weights": [
+    200,
+    300,
+    350,
+    400,
+    600,
+    700,
+    800,
+    900
+   ],
+   "italic": true
+  },
+  {
+   "name": "Public Sans",
+   "slug": "public-sans",
+   "category": "Sans",
+   "weights": [
+    100,
+    200,
+    300,
+    400,
+    500,
+    600,
+    700,
+    800,
+    900
+   ],
+   "italic": true
+  },
+  {
+   "name": "Quicksand",
+   "slug": "quicksand",
+   "category": "Sans",
+   "weights": [
+    300,
+    400,
+    500,
+    600,
+    700
+   ],
+   "italic": false
+  },
+  {
+   "name": "Quilon",
+   "slug": "quilon",
+   "category": "Sans",
+   "weights": [
+    400,
+    500,
+    600,
+    700
+   ],
+   "italic": false
+  },
+  {
+   "name": "RX100",
+   "slug": "rx-100",
+   "category": "Sans",
+   "weights": [
+    400
+   ],
+   "italic": false
+  },
+  {
+   "name": "Rajdhani",
+   "slug": "rajdhani",
+   "category": "Sans",
+   "weights": [
+    300,
+    400,
+    500,
+    600,
+    700
+   ],
+   "italic": false
+  },
+  {
+   "name": "Ranade",
+   "slug": "ranade",
+   "category": "Sans",
+   "weights": [
+    100,
+    300,
+    400,
+    500,
+    700
+   ],
+   "italic": true
+  },
+  {
+   "name": "Recia",
+   "slug": "recia",
+   "category": "Serif",
+   "weights": [
+    300,
+    400,
+    500,
+    600,
+    700
+   ],
+   "italic": true
+  },
+  {
+   "name": "Red Hat Display",
+   "slug": "red-hat-display",
+   "category": "Sans",
+   "weights": [
+    300,
+    400,
+    500,
+    600,
+    700,
+    800,
+    900
+   ],
+   "italic": true
+  },
+  {
+   "name": "Rosaline",
+   "slug": "rosaline",
+   "category": "Script",
+   "weights": [
+    400
+   ],
+   "italic": false
+  },
+  {
+   "name": "Roundo",
+   "slug": "roundo",
+   "category": "Sans",
+   "weights": [
+    200,
+    300,
+    400,
+    500,
+    600,
+    700
+   ],
+   "italic": false
+  },
+  {
+   "name": "Rowan",
+   "slug": "rowan",
+   "category": "Serif",
+   "weights": [
+    300,
+    400,
+    500,
+    600,
+    700
+   ],
+   "italic": true
+  },
+  {
+   "name": "Satoshi",
+   "slug": "satoshi",
+   "category": "Sans",
+   "weights": [
+    300,
+    400,
+    500,
+    700,
+    900
+   ],
+   "italic": true
+  },
+  {
+   "name": "Segment",
+   "slug": "segment",
+   "category": "Display",
+   "weights": [
+    400
+   ],
+   "italic": false
+  },
+  {
+   "name": "Sentient",
+   "slug": "sentient",
+   "category": "Serif",
+   "weights": [
+    200,
+    300,
+    400,
+    500,
+    700
+   ],
+   "italic": true
+  },
+  {
+   "name": "Sharpie",
+   "slug": "sharpie",
+   "category": "Display",
+   "weights": [
+    300,
+    400,
+    700,
+    800,
+    900
+   ],
+   "italic": false
+  },
+  {
+   "name": "Sora",
+   "slug": "sora",
+   "category": "Sans",
+   "weights": [
+    100,
+    200,
+    300,
+    400,
+    500,
+    600,
+    700,
+    800
+   ],
+   "italic": true
+  },
+  {
+   "name": "Space Grotesk",
+   "slug": "space-grotesk",
+   "category": "Sans",
+   "weights": [
+    300,
+    400,
+    500,
+    600,
+    700
+   ],
+   "italic": false
+  },
+  {
+   "name": "Spline Sans",
+   "slug": "spline-sans",
+   "category": "Sans",
+   "weights": [
+    300,
+    400,
+    500,
+    600,
+    700
+   ],
+   "italic": false
+  },
+  {
+   "name": "Stardom",
+   "slug": "stardom",
+   "category": "Display",
+   "weights": [
+    400
+   ],
+   "italic": false
+  },
+  {
+   "name": "Striper",
+   "slug": "striper",
+   "category": "Display",
+   "weights": [
+    400
+   ],
+   "italic": false
+  },
+  {
+   "name": "Styro",
+   "slug": "styro",
+   "category": "Display",
+   "weights": [
+    200,
+    300,
+    400,
+    500,
+    600,
+    700,
+    800,
+    900
+   ],
+   "italic": false
+  },
+  {
+   "name": "Supreme",
+   "slug": "supreme",
+   "category": "Sans",
+   "weights": [
+    100,
+    200,
+    300,
+    400,
+    500,
+    700,
+    800
+   ],
+   "italic": true
+  },
+  {
+   "name": "Switzer",
+   "slug": "switzer",
+   "category": "Sans",
+   "weights": [
+    100,
+    200,
+    300,
+    400,
+    500,
+    600,
+    700,
+    800,
+    900
+   ],
+   "italic": true
+  },
+  {
+   "name": "Synonym",
+   "slug": "synonym",
+   "category": "Sans",
+   "weights": [
+    200,
+    300,
+    400,
+    500,
+    600,
+    700
+   ],
+   "italic": false
+  },
+  {
+   "name": "Tabular",
+   "slug": "tabular",
+   "category": "Sans",
+   "weights": [
+    300,
+    400,
+    500,
+    600,
+    700
+   ],
+   "italic": true
+  },
+  {
+   "name": "Tanker",
+   "slug": "tanker",
+   "category": "Sans",
+   "weights": [
+    400
+   ],
+   "italic": false
+  },
+  {
+   "name": "Technor",
+   "slug": "technor",
+   "category": "Sans",
+   "weights": [
+    200,
+    300,
+    400,
+    500,
+    600,
+    700,
+    900
+   ],
+   "italic": false
+  },
+  {
+   "name": "Teko",
+   "slug": "teko",
+   "category": "Sans",
+   "weights": [
+    300,
+    400,
+    500,
+    600,
+    700
+   ],
+   "italic": false
+  },
+  {
+   "name": "Telma",
+   "slug": "telma",
+   "category": "Script",
+   "weights": [
+    300,
+    400,
+    500,
+    700,
+    900
+   ],
+   "italic": false
+  },
+  {
+   "name": "Trench Slab",
+   "slug": "trench-slab",
+   "category": "Slab",
+   "weights": [
+    300,
+    400,
+    500,
+    600,
+    700
+   ],
+   "italic": false
+  },
+  {
+   "name": "Work Sans",
+   "slug": "work-sans",
+   "category": "Sans",
+   "weights": [
+    100,
+    200,
+    300,
+    400,
+    500,
+    600,
+    700,
+    800,
+    900
+   ],
+   "italic": true
+  },
+  {
+   "name": "Zina",
+   "slug": "zina",
+   "category": "Display",
+   "weights": [
+    400
+   ],
+   "italic": false
+  },
+  {
+   "name": "Zodiak",
+   "slug": "zodiak",
+   "category": "Serif",
+   "weights": [
+    100,
+    300,
+    400,
+    700,
+    800,
+    900
+   ],
+   "italic": true
+  }
+ ]
+}

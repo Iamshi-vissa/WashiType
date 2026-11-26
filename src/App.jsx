@@ -18,6 +18,7 @@ import { CATEGORIES, SCRIPTS, SORTS, FEATURED, SIZES, sampleFor } from './data.j
 const PAGE = 48;
 const SCRIPT_OPTIONS = [{ value: 'all', label: 'Any script' }, ...SCRIPTS.map(s => ({ value: s.id, label: s.label }))];
 const SORT_OPTIONS = SORTS.map(s => ({ value: s.id, label: s.label }));
+const SOURCE_LABELS = { all: 'All sources', g: 'Google Fonts', fs: 'Fontshare (Indian Type Foundry)', o: 'Open-source foundries' };
 const FEATURED_RANK = new Map(FEATURED.map((name, i) => [name, i]));
 
 const store = {
@@ -47,6 +48,7 @@ export default function App() {
   const [category, setCategory] = useState('all');
   const [script, setScript] = useState('all');
   const [sort, setSort] = useState('featured');
+  const [source, setSource] = useState('all');
   const [variableOnly, setVariableOnly] = useState(false);
   const [savedOnly, setSavedOnly] = useState(false);
   const [saved, setSaved] = useState(() => new Set(store.get('washitype:saved', store.get('typesheet:saved', []))));
@@ -138,6 +140,7 @@ export default function App() {
   const results = useMemo(() => {
     const list = fonts.filter(
       f =>
+        (source === 'all' || f.src === source) &&
         (category === 'all' || f.c === category) &&
         (script === 'all' || f.s.includes(script)) &&
         (!variableOnly || f.a.length > 0) &&
@@ -152,9 +155,19 @@ export default function App() {
       featured: (a, b) => (FEATURED_RANK.get(a.f) ?? 1e4) - (FEATURED_RANK.get(b.f) ?? 1e4) || byName(a, b)
     };
     return list.sort(sorters[sort]);
-  }, [fonts, category, script, variableOnly, savedOnly, saved, q, sort]);
+  }, [fonts, source, category, script, variableOnly, savedOnly, saved, q, sort]);
 
-  useEffect(() => setLimit(PAGE), [category, script, variableOnly, savedOnly, q, sort]);
+  useEffect(() => setLimit(PAGE), [source, category, script, variableOnly, savedOnly, q, sort]);
+
+  // Source options show how many fonts each source brings.
+  const sourceOptions = useMemo(() => {
+    const counts = { all: fonts.length, g: 0, fs: 0, o: 0 };
+    for (const f of fonts) counts[f.src] += 1;
+    return Object.entries(SOURCE_LABELS).map(([value, label]) => ({
+      value,
+      label: fonts.length ? `${label} (${counts[value].toLocaleString()})` : label
+    }));
+  }, [fonts]);
 
   // Keep adding sheets as the reader reaches the bottom of the pile.
   useEffect(() => {
@@ -167,10 +180,11 @@ export default function App() {
 
   const preview = text.trim() || sampleFor(script === 'all' ? 'latin' : script);
   const shown = results.slice(0, limit);
-  const filtered = category !== 'all' || script !== 'all' || variableOnly || savedOnly || q;
+  const filtered = source !== 'all' || category !== 'all' || script !== 'all' || variableOnly || savedOnly || q;
 
   const clearFilters = () => {
     setQuery('');
+    setSource('all');
     setCategory('all');
     setScript('all');
     setVariableOnly(false);
@@ -230,8 +244,8 @@ export default function App() {
                 </span>
             </p>
             <p className="lede">
-              {fonts.length ? <CountUp to={fonts.length} separator="," duration={1.6} /> : <span>1,900+</span>} free fonts, each written out on a
-              sheet of washi in your own words. Every one is free to use in personal and commercial work.
+              {fonts.length ? <CountUp to={fonts.length} separator="," duration={1.6} /> : <span>2,000+</span>} free fonts from Google Fonts, Fontshare and independent open-source foundries, each written out
+              on a sheet of washi in your own words. Every one is free to use in personal and commercial work.
             </p>
           </div>
           <HeroScroll />
@@ -291,6 +305,7 @@ export default function App() {
           ))}
         </div>
         <div className="selects">
+          <Select label="Source" value={source} options={sourceOptions} onChange={setSource} />
           <Select label="Script" value={script} options={SCRIPT_OPTIONS} onChange={setScript} />
           <Select label="Sort" value={sort} options={SORT_OPTIONS} onChange={setSort} />
           <SquishSwitch
@@ -355,8 +370,10 @@ export default function App() {
 
       <footer className="foot band">
         <p>
-          <Hanko text="WT" size={26} /> Fonts and metadata from <a href="https://fonts.google.com">Google Fonts</a>,
-          served under open licences. Stamped fonts stay in this browser.
+          <Hanko text="WT" size={26} /> Fonts from <a href="https://fonts.google.com">Google Fonts</a>,{' '}
+          <a href="https://www.fontshare.com">Fontshare</a> by the Indian Type Foundry, and the open-source foundries
+          collected by <a href="https://fontsource.org">Fontsource</a>. Each font keeps its own licence; all are free for
+          commercial use. Stamped fonts stay in this browser.
         </p>
       </footer>
 

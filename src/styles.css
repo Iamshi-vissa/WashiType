@@ -322,6 +322,7 @@ button, input, select { font: inherit; color: inherit; }
 .facts dt { color: var(--muted); font-size: 14px; }
 .facts dd { margin: 0; font-size: 15px; display: grid; gap: 2px; }
 .ok { color: light-dark(#2f6b3a, #8fd19e); font-size: 14px; }
+.fine { color: var(--muted); font-size: 13px; }
 .waterfall-head { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-top: 8px; }
 .waterfall-head h3 { margin: 0; font: 700 19px/1.3 'Shippori Mincho', serif; }
 .waterfall { list-style: none; margin: 8px 0 22px; padding: 0; }

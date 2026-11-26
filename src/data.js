@@ -51,7 +51,8 @@ export const SORTS = [
 
 // A hand-picked shortlist shown first under "Featured first". Everything else follows A to Z.
 export const FEATURED = [
-  'Yuji Boku', 'Shippori Mincho', 'Yuji Syuku', 'Zen Antique', 'Inter', 'Playfair Display', 'Caveat', 'Space Grotesk', 'Fraunces', 'Bebas Neue', 'Poppins', 'Lora',
+  'Yuji Boku', 'Satoshi', 'Shippori Mincho', 'Clash Display', 'Bagnard', 'Yuji Syuku', 'General Sans', 'Zen Antique',
+  'Zodiak', 'Cabinet Grotesk', 'Bluu Next', 'Gambetta', 'Switzer', 'Chillax', 'Sentient', 'Boska', 'Inter', 'Playfair Display', 'Caveat', 'Space Grotesk', 'Fraunces', 'Bebas Neue', 'Poppins', 'Lora',
   'Instrument Serif', 'Permanent Marker', 'JetBrains Mono', 'Montserrat', 'Tiro Devanagari Hindi', 'Rozha One',
   'DM Serif Display', 'Syne', 'Pacifico', 'EB Garamond', 'Unbounded', 'Mukta', 'Abril Fatface', 'Manrope',
   'Kalam', 'Cormorant Garamond', 'Archivo Black', 'Roboto', 'Dancing Script', 'IBM Plex Mono', 'Outfit',

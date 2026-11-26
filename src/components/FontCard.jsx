@@ -1,5 +1,5 @@
 import { memo, useEffect, useRef } from 'react';
-import { loadPreview, defaultWeight } from '../fontLoader.js';
+import { loadPreview, defaultWeight, SOURCES } from '../fontLoader.js';
 import { CATEGORY_NAME } from '../data.js';
 import Hanko, { SaveMark } from './Hanko.jsx';
 import WarmTooltip from './reactbits/WarmTooltip.jsx';
@@ -56,7 +56,7 @@ function FontCard({ font, text, size, saved, onToggleSave, onOpen }) {
           <strong>{font.f}</strong>
           <span>
             {CATEGORY_NAME[font.c]} · {font.w.length} {font.w.length === 1 ? 'weight' : 'weights'}
-            {font.a.length ? ' · variable' : ''}
+            {font.a.length ? ' · variable' : ''} · {SOURCES[font.src].short}
           </span>
         </div>
         <WarmTooltip

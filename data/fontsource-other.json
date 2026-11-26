@@ -1,0 +1,2982 @@
+{
+ "source": "Fontsource font-files repository (type: other) snapshot, 2026-11-26",
+ "fonts": [
+  {
+   "id": "adwaita-mono",
+   "family": "Adwaita Mono",
+   "subsets": [
+    "latin"
+   ],
+   "weights": [
+    400,
+    700
+   ],
+   "styles": [
+    "normal",
+    "italic"
+   ],
+   "variable": false,
+   "lastModified": "2025-12-21",
+   "category": "monospace",
+   "license": {
+    "type": "OFL-1.1",
+    "url": "https://gitlab.gnome.org/GNOME/adwaita-fonts/-/raw/main/LICENSE?ref_type=heads",
+    "attribution": "The GNOME Project (based on Iosevka by Belleve Invis)"
+   },
+   "source": "https://gitlab.gnome.org/GNOME/adwaita-fonts"
+  },
+  {
+   "id": "adwaita-sans",
+   "family": "Adwaita Sans",
+   "subsets": [
+    "latin"
+   ],
+   "weights": [
+    100,
+    200,
+    300,
+    400,
+    500,
+    600,
+    700,
+    800,
+    900
+   ],
+   "styles": [
+    "normal",
+    "italic"
+   ],
+   "variable": false,
+   "lastModified": "2025-12-21",
+   "category": "sans-serif",
+   "license": {
+    "type": "OFL-1.1",
+    "url": "https://gitlab.gnome.org/GNOME/adwaita-fonts/-/raw/main/LICENSE?ref_type=heads",
+    "attribution": "The GNOME Project (based on Inter by Rasmus Andersson)"
+   },
+   "source": "https://gitlab.gnome.org/GNOME/adwaita-fonts"
+  },
+  {
+   "id": "aileron",
+   "family": "Aileron",
+   "subsets": [
+    "latin"
+   ],
+   "weights": [
+    100,
+    300,
+    400,
+    600,
+    700,
+    800
+   ],
+   "styles": [
+    "normal",
+    "italic"
+   ],
+   "variable": false,
+   "lastModified": "2023-05-15",
+   "category": "sans-serif",
+   "license": {
+    "type": "CC0-1.0",
+    "url": "https://creativecommons.org/publicdomain/zero/1.0/deed.en",
+    "attribution": "Sora Sagano"
+   },
+   "source": "http://dotcolon.net/font/aileron/"
+  },
+  {
+   "id": "apfel-grotezk",
+   "family": "Apfel Grotezk",
+   "subsets": [
+    "latin"
+   ],
+   "weights": [
+    400,
+    700
+   ],
+   "styles": [
+    "normal"
+   ],
+   "variable": false,
+   "lastModified": "2023-05-15",
+   "category": "sans-serif",
+   "license": {
+    "type": "OFL-1.1",
+    "url": "https://www.collletttivo.it/",
+    "attribution": "Luigi Gorlero"
+   },
+   "source": "https://www.collletttivo.it/"
+  },
+  {
+   "id": "argentum-sans",
+   "family": "Argentum Sans",
+   "subsets": [
+    "latin"
+   ],
+   "weights": [
+    100,
+    200,
+    300,
+    400,
+    500,
+    600,
+    700,
+    800,
+    900
+   ],
+   "styles": [
+    "normal",
+    "italic"
+   ],
+   "variable": false,
+   "lastModified": "2023-05-15",
+   "category": "sans-serif",
+   "license": {
+    "type": "OFL-1.1",
+    "url": "https://github.com/cssobral2013/Argentum-Sans/blob/master/OFL.txt",
+    "attribution": "The Argentum Sans Project Authors (cssobral2013@gmail.com - https://github.com/cssobral2013/Argentum-Sans)"
+   },
+   "source": "https://github.com/cssobral2013/Argentum-Sans"
+  },
+  {
+   "id": "bagnard-sans",
+   "family": "Bagnard Sans",
+   "subsets": [
+    "latin"
+   ],
+   "weights": [
+    400
+   ],
+   "styles": [
+    "normal"
+   ],
+   "variable": false,
+   "lastModified": "2023-05-15",
+   "category": "sans-serif",
+   "license": {
+    "type": "OFL-1.1",
+    "url": "https://github.com/dconstruct/Bagnard/blob/master/OFL.txt",
+    "attribution": "Sebastien Sanfilippo (www.love-letters.be)"
+   },
+   "source": "https://github.com/dconstruct/Bagnard"
+  },
+  {
+   "id": "bagnard",
+   "family": "Bagnard",
+   "subsets": [
+    "latin"
+   ],
+   "weights": [
+    400
+   ],
+   "styles": [
+    "normal"
+   ],
+   "variable": false,
+   "lastModified": "2023-05-15",
+   "category": "serif",
+   "license": {
+    "type": "OFL-1.1",
+    "url": "https://github.com/sebsan/Bagnard/blob/master/OFL.txt",
+    "attribution": "Sebastien Sanfilippo (www.love-letters.be)"
+   },
+   "source": "https://github.com/dconstruct/Bagnard"
+  },
+  {
+   "id": "blackout-midnight",
+   "family": "Blackout Midnight",
+   "subsets": [
+    "latin"
+   ],
+   "weights": [
+    400
+   ],
+   "styles": [
+    "normal"
+   ],
+   "variable": false,
+   "lastModified": "2023-05-15",
+   "category": "display",
+   "license": {
+    "type": "OFL-1.1",
+    "url": "https://github.com/theleagueof/blackout/blob/master/Open%20Font%20License.markdown",
+    "attribution": "Tyler Finck <hello@sursly.com>"
+   },
+   "source": "https://github.com/theleagueof/blackout"
+  },
+  {
+   "id": "blackout-sunrise",
+   "family": "Blackout Sunrise",
+   "subsets": [
+    "latin"
+   ],
+   "weights": [
+    400
+   ],
+   "styles": [
+    "normal"
+   ],
+   "variable": false,
+   "lastModified": "2023-05-15",
+   "category": "display",
+   "license": {
+    "type": "OFL-1.1",
+    "url": "https://github.com/theleagueof/blackout/blob/master/Open%20Font%20License.markdown",
+    "attribution": "Tyler Finck <hello@sursly.com>"
+   },
+   "source": "https://github.com/theleagueof/blackout"
+  },
+  {
+   "id": "blackout-two-am",
+   "family": "Blackout Two AM",
+   "subsets": [
+    "latin"
+   ],
+   "weights": [
+    400
+   ],
+   "styles": [
+    "normal"
+   ],
+   "variable": false,
+   "lastModified": "2023-05-15",
+   "category": "display",
+   "license": {
+    "type": "OFL-1.1",
+    "url": "https://github.com/theleagueof/blackout/blob/master/Open%20Font%20License.markdown",
+    "attribution": "Tyler Finck <hello@sursly.com>"
+   },
+   "source": "https://github.com/theleagueof/blackout"
+  },
+  {
+   "id": "bluu-next",
+   "family": "Bluu Next",
+   "subsets": [
+    "latin"
+   ],
+   "weights": [
+    700
+   ],
+   "styles": [
+    "normal",
+    "italic"
+   ],
+   "variable": false,
+   "lastModified": "2023-05-15",
+   "category": "sans-serif",
+   "license": {
+    "type": "OFL-1.1",
+    "url": "https://github.com/jbmorizot/BluuNext/blob/master/OFL_BluuNext.txt",
+    "attribution": "Jean-Baptiste Morizot, (http://cargocollective.com/jbmrz)"
+   },
+   "source": "https://github.com/jbmorizot/BluuNext"
+  },
+  {
+   "id": "bravura-text",
+   "family": "Bravura Text",
+   "subsets": [
+    "latin"
+   ],
+   "weights": [
+    400
+   ],
+   "styles": [
+    "normal"
+   ],
+   "variable": false,
+   "lastModified": "2023-05-15",
+   "category": "sans-serif",
+   "license": {
+    "type": "OFL-1.1",
+    "url": "https://github.com/steinbergmedia/bravura/blob/bravura-1.380/LICENSE.txt",
+    "attribution": "Steinberg Media Technologies GmbH (http://www.steinberg.net/)"
+   },
+   "source": "https://github.com/steinbergmedia/bravura"
+  },
+  {
+   "id": "bravura",
+   "family": "Bravura",
+   "subsets": [
+    "latin"
+   ],
+   "weights": [
+    400
+   ],
+   "styles": [
+    "normal"
+   ],
+   "variable": false,
+   "lastModified": "2023-05-15",
+   "category": "sans-serif",
+   "license": {
+    "type": "OFL-1.1",
+    "url": "https://github.com/steinbergmedia/bravura/blob/bravura-1.380/LICENSE.txt",
+    "attribution": "Steinberg Media Technologies GmbH (http://www.steinberg.net/)"
+   },
+   "source": "https://github.com/steinbergmedia/bravura"
+  },
+  {
+   "id": "chunk-five",
+   "family": "Chunk Five",
+   "subsets": [
+    "latin"
+   ],
+   "weights": [
+    800
+   ],
+   "styles": [
+    "normal"
+   ],
+   "variable": false,
+   "lastModified": "2023-05-15",
+   "category": "serif",
+   "license": {
+    "type": "OFL-1.1",
+    "url": "https://github.com/theleagueof/chunk/blob/master/Open%20Font%20License.markdown",
+    "attribution": "Meredith Mandel <meredith@meredithmandel.com>"
+   },
+   "source": "https://github.com/theleagueof/chunk"
+  },
+  {
+   "id": "clear-sans",
+   "family": "Clear Sans",
+   "subsets": [
+    "latin"
+   ],
+   "weights": [
+    100,
+    300,
+    400,
+    500,
+    700
+   ],
+   "styles": [
+    "normal",
+    "italic"
+   ],
+   "variable": false,
+   "lastModified": "2023-05-15",
+   "category": "sans-serif",
+   "license": {
+    "type": "Apache-2.0",
+    "url": "http://www.apache.org/licenses/LICENSE-2.0",
+    "attribution": "Intel"
+   },
+   "source": "https://github.com/intel/clear-sans"
+  },
+  {
+   "id": "comic-mono",
+   "family": "Comic Mono",
+   "subsets": [
+    "latin"
+   ],
+   "weights": [
+    400,
+    700
+   ],
+   "styles": [
+    "normal"
+   ],
+   "variable": false,
+   "lastModified": "2023-05-15",
+   "category": "monospace",
+   "license": {
+    "type": "mit",
+    "url": "https://github.com/dtinth/comic-mono-font/blob/master/LICENSE",
+    "attribution": "Shannon Miwa, dtinth"
+   },
+   "source": "https://github.com/dtinth/comic-mono-font"
+  },
+  {
+   "id": "commit-mono",
+   "family": "Commit Mono",
+   "subsets": [
+    "latin"
+   ],
+   "weights": [
+    200,
+    300,
+    400,
+    500,
+    600,
+    700
+   ],
+   "styles": [
+    "normal",
+    "italic"
+   ],
+   "variable": false,
+   "lastModified": "2024-07-15",
+   "category": "monospace",
+   "license": {
+    "type": "OFL-1.1",
+    "url": "https://github.com/eigilnikolajsen/commit-mono/blob/v1.143/src/txt/license.txt",
+    "attribution": "Eigil Nikolajsen"
+   },
+   "source": "https://github.com/eigilnikolajsen/commit-mono"
+  },
+  {
+   "id": "cooper-hewitt",
+   "family": "Cooper Hewitt",
+   "subsets": [
+    "latin"
+   ],
+   "weights": [
+    100,
+    200,
+    300,
+    400,
+    500,
+    600,
+    700,
+    800
+   ],
+   "styles": [
+    "normal",
+    "italic"
+   ],
+   "variable": false,
+   "lastModified": "2023-05-15",
+   "category": "sans-serif",
+   "license": {
+    "type": "OFL-1.1",
+    "url": "https://github.com/cooperhewitt/cooperhewitt-typeface/blob/master/files/-CooperHewitt-OFL-201406.txt",
+    "attribution": "Cooper Hewitt Smithsonian Design Museum (cooperhewitt.org)"
+   },
+   "source": "https://github.com/cooperhewitt/cooperhewitt-typeface"
+  },
+  {
+   "id": "dejavu-math",
+   "family": "DejaVu Math",
+   "subsets": [
+    "latin"
+   ],
+   "weights": [
+    400
+   ],
+   "styles": [
+    "normal"
+   ],
+   "variable": false,
+   "lastModified": "2023-05-15",
+   "category": "display",
+   "license": {
+    "type": "OFL-1.1",
+    "url": "https://github.com/dejavu-fonts/dejavu-fonts/blob/master/LICENSE",
+    "attribution": "Bitstream, Inc."
+   },
+   "source": "https://github.com/dejavu-fonts/dejavu-fonts"
+  },
+  {
+   "id": "dejavu-mono",
+   "family": "DejaVu Mono",
+   "subsets": [
+    "latin"
+   ],
+   "weights": [
+    400,
+    700
+   ],
+   "styles": [
+    "normal",
+    "italic"
+   ],
+   "variable": false,
+   "lastModified": "2023-05-15",
+   "category": "monospace",
+   "license": {
+    "type": "OFL-1.1",
+    "url": "https://github.com/dejavu-fonts/dejavu-fonts/blob/master/LICENSE",
+    "attribution": "Bitstream, Inc."
+   },
+   "source": "https://github.com/dejavu-fonts/dejavu-fonts"
+  },
+  {
+   "id": "dejavu-sans",
+   "family": "DejaVu Sans",
+   "subsets": [
+    "latin"
+   ],
+   "weights": [
+    400,
+    700
+   ],
+   "styles": [
+    "normal",
+    "italic"
+   ],
+   "variable": false,
+   "lastModified": "2023-05-15",
+   "category": "sans-serif",
+   "license": {
+    "type": "OFL-1.1",
+    "url": "https://github.com/dejavu-fonts/dejavu-fonts/blob/master/LICENSE",
+    "attribution": "Bitstream, Inc."
+   },
+   "source": "https://github.com/dejavu-fonts/dejavu-fonts"
+  },
+  {
+   "id": "dejavu-serif",
+   "family": "DejaVu Serif",
+   "subsets": [
+    "latin"
+   ],
+   "weights": [
+    400,
+    700
+   ],
+   "styles": [
+    "normal",
+    "italic"
+   ],
+   "variable": false,
+   "lastModified": "2023-05-15",
+   "category": "serif",
+   "license": {
+    "type": "OFL-1.1",
+    "url": "https://github.com/dejavu-fonts/dejavu-fonts/blob/master/LICENSE",
+    "attribution": "Bitstream, Inc."
+   },
+   "source": "https://github.com/dejavu-fonts/dejavu-fonts"
+  },
+  {
+   "id": "dseg-weather",
+   "family": "DSEG Weather",
+   "subsets": [
+    "latin"
+   ],
+   "weights": [
+    400
+   ],
+   "styles": [
+    "normal"
+   ],
+   "variable": false,
+   "lastModified": "2023-05-15",
+   "category": "other",
+   "license": {
+    "type": "OFL-1.1",
+    "url": "https://github.com/keshikan/DSEG/blob/master/DSEG-LICENSE.txt",
+    "attribution": "keshikan (https://www.keshikan.net)"
+   },
+   "source": "https://github.com/keshikan/DSEG"
+  },
+  {
+   "id": "dseg14-classic-mini",
+   "family": "DSEG14 Classic Mini",
+   "subsets": [
+    "latin"
+   ],
+   "weights": [
+    300,
+    400,
+    700
+   ],
+   "styles": [
+    "normal",
+    "italic"
+   ],
+   "variable": false,
+   "lastModified": "2023-05-15",
+   "category": "other",
+   "license": {
+    "type": "OFL-1.1",
+    "url": "https://github.com/keshikan/DSEG/blob/master/DSEG-LICENSE.txt",
+    "attribution": "keshikan (https://www.keshikan.net)"
+   },
+   "source": "https://github.com/keshikan/DSEG"
+  },
+  {
+   "id": "dseg14-classic",
+   "family": "DSEG14 Classic",
+   "subsets": [
+    "latin"
+   ],
+   "weights": [
+    300,
+    400,
+    700
+   ],
+   "styles": [
+    "normal",
+    "italic"
+   ],
+   "variable": false,
+   "lastModified": "2023-05-15",
+   "category": "other",
+   "license": {
+    "type": "OFL-1.1",
+    "url": "https://github.com/keshikan/DSEG/blob/master/DSEG-LICENSE.txt",
+    "attribution": "keshikan (https://www.keshikan.net)"
+   },
+   "source": "https://github.com/keshikan/DSEG"
+  },
+  {
+   "id": "dseg14-modern-mini",
+   "family": "DSEG14 Modern Mini",
+   "subsets": [
+    "latin"
+   ],
+   "weights": [
+    300,
+    400,
+    700
+   ],
+   "styles": [
+    "normal",
+    "italic"
+   ],
+   "variable": false,
+   "lastModified": "2023-05-15",
+   "category": "other",
+   "license": {
+    "type": "OFL-1.1",
+    "url": "https://github.com/keshikan/DSEG/blob/master/DSEG-LICENSE.txt",
+    "attribution": "keshikan (https://www.keshikan.net)"
+   },
+   "source": "https://github.com/keshikan/DSEG"
+  },
+  {
+   "id": "dseg14-modern",
+   "family": "DSEG14 Modern",
+   "subsets": [
+    "latin"
+   ],
+   "weights": [
+    300,
+    400,
+    700
+   ],
+   "styles": [
+    "normal",
+    "italic"
+   ],
+   "variable": false,
+   "lastModified": "2023-05-15",
+   "category": "other",
+   "license": {
+    "type": "OFL-1.1",
+    "url": "https://github.com/keshikan/DSEG/blob/master/DSEG-LICENSE.txt",
+    "attribution": "keshikan (https://www.keshikan.net)"
+   },
+   "source": "https://github.com/keshikan/DSEG"
+  },
+  {
+   "id": "dseg7-classic-mini",
+   "family": "DSEG7 Classic Mini",
+   "subsets": [
+    "latin"
+   ],
+   "weights": [
+    300,
+    400,
+    700
+   ],
+   "styles": [
+    "normal",
+    "italic"
+   ],
+   "variable": false,
+   "lastModified": "2023-05-15",
+   "category": "other",
+   "license": {
+    "type": "OFL-1.1",
+    "url": "https://github.com/keshikan/DSEG/blob/master/DSEG-LICENSE.txt",
+    "attribution": "keshikan (https://www.keshikan.net)"
+   },
+   "source": "https://github.com/keshikan/DSEG"
+  },
+  {
+   "id": "dseg7-classic",
+   "family": "DSEG7 Classic",
+   "subsets": [
+    "latin"
+   ],
+   "weights": [
+    300,
+    400,
+    700
+   ],
+   "styles": [
+    "normal",
+    "italic"
+   ],
+   "variable": false,
+   "lastModified": "2023-05-15",
+   "category": "other",
+   "license": {
+    "type": "OFL-1.1",
+    "url": "https://github.com/keshikan/DSEG/blob/master/DSEG-LICENSE.txt",
+    "attribution": "keshikan (https://www.keshikan.net)"
+   },
+   "source": "https://github.com/keshikan/DSEG"
+  },
+  {
+   "id": "dseg7-modern-mini",
+   "family": "DSEG7 Modern Mini",
+   "subsets": [
+    "latin"
+   ],
+   "weights": [
+    300,
+    400,
+    700
+   ],
+   "styles": [
+    "normal",
+    "italic"
+   ],
+   "variable": false,
+   "lastModified": "2023-05-15",
+   "category": "other",
+   "license": {
+    "type": "OFL-1.1",
+    "url": "https://github.com/keshikan/DSEG/blob/master/DSEG-LICENSE.txt",
+    "attribution": "keshikan (https://www.keshikan.net)"
+   },
+   "source": "https://github.com/keshikan/DSEG"
+  },
+  {
+   "id": "dseg7-modern",
+   "family": "DSEG7 Modern",
+   "subsets": [
+    "latin"
+   ],
+   "weights": [
+    300,
+    400,
+    700
+   ],
+   "styles": [
+    "normal",
+    "italic"
+   ],
+   "variable": false,
+   "lastModified": "2023-05-15",
+   "category": "other",
+   "license": {
+    "type": "OFL-1.1",
+    "url": "https://github.com/keshikan/DSEG/blob/master/DSEG-LICENSE.txt",
+    "attribution": "keshikan (https://www.keshikan.net)"
+   },
+   "source": "https://github.com/keshikan/DSEG"
+  },
+  {
+   "id": "dseg7-segg-chan-mini",
+   "family": "DSEG7 SEGG CHAN Mini",
+   "subsets": [
+    "latin"
+   ],
+   "weights": [
+    400
+   ],
+   "styles": [
+    "normal"
+   ],
+   "variable": false,
+   "lastModified": "2023-05-15",
+   "category": "other",
+   "license": {
+    "type": "OFL-1.1",
+    "url": "https://github.com/keshikan/DSEG/blob/master/DSEG-LICENSE.txt",
+    "attribution": "keshikan (https://www.keshikan.net)"
+   },
+   "source": "https://github.com/keshikan/DSEG"
+  },
+  {
+   "id": "dseg7-segg-chan",
+   "family": "DSEG7 SEGG CHAN",
+   "subsets": [
+    "latin"
+   ],
+   "weights": [
+    400
+   ],
+   "styles": [
+    "normal"
+   ],
+   "variable": false,
+   "lastModified": "2023-05-15",
+   "category": "other",
+   "license": {
+    "type": "OFL-1.1",
+    "url": "https://github.com/keshikan/DSEG/blob/master/DSEG-LICENSE.txt",
+    "attribution": "keshikan (https://www.keshikan.net)"
+   },
+   "source": "https://github.com/keshikan/DSEG"
+  },
+  {
+   "id": "firago",
+   "family": "FiraGO",
+   "subsets": [
+    "latin"
+   ],
+   "weights": [
+    100,
+    200,
+    300,
+    400,
+    500,
+    600,
+    700,
+    800,
+    900
+   ],
+   "styles": [
+    "normal",
+    "italic"
+   ],
+   "variable": false,
+   "lastModified": "2023-05-15",
+   "category": "sans-serif",
+   "license": {
+    "type": "OFL-1.1",
+    "url": "https://github.com/bBoxType/FiraGO/blob/master/OFL.txt",
+    "attribution": "Carrois Corporate GbR and HERE Europe B.V."
+   },
+   "source": "https://github.com/bBoxType/FiraGO"
+  },
+  {
+   "id": "fusion-kai-g",
+   "family": "Fusion Kai G",
+   "subsets": [
+    "latin"
+   ],
+   "weights": [
+    400
+   ],
+   "styles": [
+    "normal"
+   ],
+   "variable": false,
+   "lastModified": "2023-08-14",
+   "category": "handwriting",
+   "license": {
+    "type": "OFL-1.1",
+    "url": "https://github.com/lxgw/FusionKai/blob/main/OFL.txt",
+    "attribution": "lxgw"
+   },
+   "source": "https://github.com/lxgw/FusionKai"
+  },
+  {
+   "id": "fusion-kai-j",
+   "family": "Fusion Kai J",
+   "subsets": [
+    "latin"
+   ],
+   "weights": [
+    400
+   ],
+   "styles": [
+    "normal"
+   ],
+   "variable": false,
+   "lastModified": "2023-08-15",
+   "category": "handwriting",
+   "license": {
+    "type": "OFL-1.1",
+    "url": "https://github.com/lxgw/FusionKai/blob/main/OFL.txt",
+    "attribution": "lxgw"
+   },
+   "source": "https://github.com/lxgw/FusionKai"
+  },
+  {
+   "id": "fusion-kai-t",
+   "family": "Fusion Kai T",
+   "subsets": [
+    "latin"
+   ],
+   "weights": [
+    400
+   ],
+   "styles": [
+    "normal"
+   ],
+   "variable": false,
+   "lastModified": "2023-08-15",
+   "category": "handwriting",
+   "license": {
+    "type": "OFL-1.1",
+    "url": "https://github.com/lxgw/FusionKai/blob/main/OFL.txt",
+    "attribution": "lxgw"
+   },
+   "source": "https://github.com/lxgw/FusionKai"
+  },
+  {
+   "id": "fusion-pixel-10px-monospaced-jp",
+   "family": "Fusion Pixel 10px Monospaced JP",
+   "subsets": [
+    "latin"
+   ],
+   "weights": [
+    400
+   ],
+   "styles": [
+    "normal"
+   ],
+   "variable": false,
+   "lastModified": "2024-07-15",
+   "category": "sans-serif",
+   "license": {
+    "type": "OFL-1.1",
+    "url": "https://raw.githubusercontent.com/TakWolf/fusion-pixel-font/master/LICENSE-OFL",
+    "attribution": "TakWolf (https://takwolf.com)"
+   },
+   "source": "https://github.com/TakWolf/fusion-pixel-font"
+  },
+  {
+   "id": "fusion-pixel-10px-monospaced-kr",
+   "family": "Fusion Pixel 10px Monospaced KR",
+   "subsets": [
+    "latin"
+   ],
+   "weights": [
+    400
+   ],
+   "styles": [
+    "normal"
+   ],
+   "variable": false,
+   "lastModified": "2024-07-15",
+   "category": "sans-serif",
+   "license": {
+    "type": "OFL-1.1",
+    "url": "https://raw.githubusercontent.com/TakWolf/fusion-pixel-font/master/LICENSE-OFL",
+    "attribution": "TakWolf (https://takwolf.com)"
+   },
+   "source": "https://github.com/TakWolf/fusion-pixel-font"
+  },
+  {
+   "id": "fusion-pixel-10px-monospaced-sc",
+   "family": "Fusion Pixel 10px Monospaced SC",
+   "subsets": [
+    "latin"
+   ],
+   "weights": [
+    400
+   ],
+   "styles": [
+    "normal"
+   ],
+   "variable": false,
+   "lastModified": "2024-07-15",
+   "category": "sans-serif",
+   "license": {
+    "type": "OFL-1.1",
+    "url": "https://raw.githubusercontent.com/TakWolf/fusion-pixel-font/master/LICENSE-OFL",
+    "attribution": "TakWolf (https://takwolf.com)"
+   },
+   "source": "https://github.com/TakWolf/fusion-pixel-font"
+  },
+  {
+   "id": "fusion-pixel-10px-monospaced-tc",
+   "family": "Fusion Pixel 10px Monospaced TC",
+   "subsets": [
+    "latin"
+   ],
+   "weights": [
+    400
+   ],
+   "styles": [
+    "normal"
+   ],
+   "variable": false,
+   "lastModified": "2024-07-15",
+   "category": "sans-serif",
+   "license": {
+    "type": "OFL-1.1",
+    "url": "https://raw.githubusercontent.com/TakWolf/fusion-pixel-font/master/LICENSE-OFL",
+    "attribution": "TakWolf (https://takwolf.com)"
+   },
+   "source": "https://github.com/TakWolf/fusion-pixel-font"
+  },
+  {
+   "id": "fusion-pixel-10px-proportional-jp",
+   "family": "Fusion Pixel 10px Proportional JP",
+   "subsets": [
+    "latin"
+   ],
+   "weights": [
+    400
+   ],
+   "styles": [
+    "normal"
+   ],
+   "variable": false,
+   "lastModified": "2024-07-15",
+   "category": "sans-serif",
+   "license": {
+    "type": "OFL-1.1",
+    "url": "https://raw.githubusercontent.com/TakWolf/fusion-pixel-font/master/LICENSE-OFL",
+    "attribution": "TakWolf (https://takwolf.com)"
+   },
+   "source": "https://github.com/TakWolf/fusion-pixel-font"
+  },
+  {
+   "id": "fusion-pixel-10px-proportional-kr",
+   "family": "Fusion Pixel 10px Proportional KR",
+   "subsets": [
+    "latin"
+   ],
+   "weights": [
+    400
+   ],
+   "styles": [
+    "normal"
+   ],
+   "variable": false,
+   "lastModified": "2024-07-15",
+   "category": "sans-serif",
+   "license": {
+    "type": "OFL-1.1",
+    "url": "https://raw.githubusercontent.com/TakWolf/fusion-pixel-font/master/LICENSE-OFL",
+    "attribution": "TakWolf (https://takwolf.com)"
+   },
+   "source": "https://github.com/TakWolf/fusion-pixel-font"
+  },
+  {
+   "id": "fusion-pixel-10px-proportional-sc",
+   "family": "Fusion Pixel 10px Proportional SC",
+   "subsets": [
+    "latin"
+   ],
+   "weights": [
+    400
+   ],
+   "styles": [
+    "normal"
+   ],
+   "variable": false,
+   "lastModified": "2024-07-15",
+   "category": "sans-serif",
+   "license": {
+    "type": "OFL-1.1",
+    "url": "https://raw.githubusercontent.com/TakWolf/fusion-pixel-font/master/LICENSE-OFL",
+    "attribution": "TakWolf (https://takwolf.com)"
+   },
+   "source": "https://github.com/TakWolf/fusion-pixel-font"
+  },
+  {
+   "id": "fusion-pixel-10px-proportional-tc",
+   "family": "Fusion Pixel 10px Proportional TC",
+   "subsets": [
+    "latin"
+   ],
+   "weights": [
+    400
+   ],
+   "styles": [
+    "normal"
+   ],
+   "variable": false,
+   "lastModified": "2024-07-15",
+   "category": "sans-serif",
+   "license": {
+    "type": "OFL-1.1",
+    "url": "https://raw.githubusercontent.com/TakWolf/fusion-pixel-font/master/LICENSE-OFL",
+    "attribution": "TakWolf (https://takwolf.com)"
+   },
+   "source": "https://github.com/TakWolf/fusion-pixel-font"
+  },
+  {
+   "id": "fusion-pixel-12px-monospaced-jp",
+   "family": "Fusion Pixel 12px Monospaced JP",
+   "subsets": [
+    "latin"
+   ],
+   "weights": [
+    400
+   ],
+   "styles": [
+    "normal"
+   ],
+   "variable": false,
+   "lastModified": "2024-07-15",
+   "category": "sans-serif",
+   "license": {
+    "type": "OFL-1.1",
+    "url": "https://raw.githubusercontent.com/TakWolf/fusion-pixel-font/master/LICENSE-OFL",
+    "attribution": "TakWolf (https://takwolf.com)"
+   },
+   "source": "https://github.com/TakWolf/fusion-pixel-font"
+  },
+  {
+   "id": "fusion-pixel-12px-monospaced-kr",
+   "family": "Fusion Pixel 12px Monospaced KR",
+   "subsets": [
+    "latin"
+   ],
+   "weights": [
+    400
+   ],
+   "styles": [
+    "normal"
+   ],
+   "variable": false,
+   "lastModified": "2024-07-15",
+   "category": "sans-serif",
+   "license": {
+    "type": "OFL-1.1",
+    "url": "https://raw.githubusercontent.com/TakWolf/fusion-pixel-font/master/LICENSE-OFL",
+    "attribution": "TakWolf (https://takwolf.com)"
+   },
+   "source": "https://github.com/TakWolf/fusion-pixel-font"
+  },
+  {
+   "id": "fusion-pixel-12px-monospaced-sc",
+   "family": "Fusion Pixel 12px Monospaced SC",
+   "subsets": [
+    "latin"
+   ],
+   "weights": [
+    400
+   ],
+   "styles": [
+    "normal"
+   ],
+   "variable": false,
+   "lastModified": "2024-07-15",
+   "category": "sans-serif",
+   "license": {
+    "type": "OFL-1.1",
+    "url": "https://raw.githubusercontent.com/TakWolf/fusion-pixel-font/master/LICENSE-OFL",
+    "attribution": "TakWolf (https://takwolf.com)"
+   },
+   "source": "https://github.com/TakWolf/fusion-pixel-font"
+  },
+  {
+   "id": "fusion-pixel-12px-monospaced-tc",
+   "family": "Fusion Pixel 12px Monospaced TC",
+   "subsets": [
+    "latin"
+   ],
+   "weights": [
+    400
+   ],
+   "styles": [
+    "normal"
+   ],
+   "variable": false,
+   "lastModified": "2024-07-15",
+   "category": "sans-serif",
+   "license": {
+    "type": "OFL-1.1",
+    "url": "https://raw.githubusercontent.com/TakWolf/fusion-pixel-font/master/LICENSE-OFL",
+    "attribution": "TakWolf (https://takwolf.com)"
+   },
+   "source": "https://github.com/TakWolf/fusion-pixel-font"
+  },
+  {
+   "id": "fusion-pixel-12px-proportional-jp",
+   "family": "Fusion Pixel 12px Proportional JP",
+   "subsets": [
+    "latin"
+   ],
+   "weights": [
+    400
+   ],
+   "styles": [
+    "normal"
+   ],
+   "variable": false,
+   "lastModified": "2024-07-15",
+   "category": "sans-serif",
+   "license": {
+    "type": "OFL-1.1",
+    "url": "https://raw.githubusercontent.com/TakWolf/fusion-pixel-font/master/LICENSE-OFL",
+    "attribution": "TakWolf (https://takwolf.com)"
+   },
+   "source": "https://github.com/TakWolf/fusion-pixel-font"
+  },
+  {
+   "id": "fusion-pixel-12px-proportional-kr",
+   "family": "Fusion Pixel 12px Proportional KR",
+   "subsets": [
+    "latin"
+   ],
+   "weights": [
+    400
+   ],
+   "styles": [
+    "normal"
+   ],
+   "variable": false,
+   "lastModified": "2024-07-15",
+   "category": "sans-serif",
+   "license": {
+    "type": "OFL-1.1",
+    "url": "https://raw.githubusercontent.com/TakWolf/fusion-pixel-font/master/LICENSE-OFL",
+    "attribution": "TakWolf (https://takwolf.com)"
+   },
+   "source": "https://github.com/TakWolf/fusion-pixel-font"
+  },
+  {
+   "id": "fusion-pixel-12px-proportional-sc",
+   "family": "Fusion Pixel 12px Proportional SC",
+   "subsets": [
+    "latin"
+   ],
+   "weights": [
+    400
+   ],
+   "styles": [
+    "normal"
+   ],
+   "variable": false,
+   "lastModified": "2024-07-15",
+   "category": "sans-serif",
+   "license": {
+    "type": "OFL-1.1",
+    "url": "https://raw.githubusercontent.com/TakWolf/fusion-pixel-font/master/LICENSE-OFL",
+    "attribution": "TakWolf (https://takwolf.com)"
+   },
+   "source": "https://github.com/TakWolf/fusion-pixel-font"
+  },
+  {
+   "id": "fusion-pixel-12px-proportional-tc",
+   "family": "Fusion Pixel 12px Proportional TC",
+   "subsets": [
+    "latin"
+   ],
+   "weights": [
+    400
+   ],
+   "styles": [
+    "normal"
+   ],
+   "variable": false,
+   "lastModified": "2024-07-15",
+   "category": "sans-serif",
+   "license": {
+    "type": "OFL-1.1",
+    "url": "https://raw.githubusercontent.com/TakWolf/fusion-pixel-font/master/LICENSE-OFL",
+    "attribution": "TakWolf (https://takwolf.com)"
+   },
+   "source": "https://github.com/TakWolf/fusion-pixel-font"
+  },
+  {
+   "id": "fusion-pixel-8px-monospaced-jp",
+   "family": "Fusion Pixel 8px Monospaced JP",
+   "subsets": [
+    "latin"
+   ],
+   "weights": [
+    400
+   ],
+   "styles": [
+    "normal"
+   ],
+   "variable": false,
+   "lastModified": "2024-07-15",
+   "category": "sans-serif",
+   "license": {
+    "type": "OFL-1.1",
+    "url": "https://raw.githubusercontent.com/TakWolf/fusion-pixel-font/master/LICENSE-OFL",
+    "attribution": "TakWolf (https://takwolf.com)"
+   },
+   "source": "https://github.com/TakWolf/fusion-pixel-font"
+  },
+  {
+   "id": "fusion-pixel-8px-monospaced-kr",
+   "family": "Fusion Pixel 8px Monospaced KR",
+   "subsets": [
+    "latin"
+   ],
+   "weights": [
+    400
+   ],
+   "styles": [
+    "normal"
+   ],
+   "variable": false,
+   "lastModified": "2024-07-15",
+   "category": "sans-serif",
+   "license": {
+    "type": "OFL-1.1",
+    "url": "https://raw.githubusercontent.com/TakWolf/fusion-pixel-font/master/LICENSE-OFL",
+    "attribution": "TakWolf (https://takwolf.com)"
+   },
+   "source": "https://github.com/TakWolf/fusion-pixel-font"
+  },
+  {
+   "id": "fusion-pixel-8px-monospaced-sc",
+   "family": "Fusion Pixel 8px Monospaced SC",
+   "subsets": [
+    "latin"
+   ],
+   "weights": [
+    400
+   ],
+   "styles": [
+    "normal"
+   ],
+   "variable": false,
+   "lastModified": "2024-07-15",
+   "category": "sans-serif",
+   "license": {
+    "type": "OFL-1.1",
+    "url": "https://raw.githubusercontent.com/TakWolf/fusion-pixel-font/master/LICENSE-OFL",
+    "attribution": "TakWolf (https://takwolf.com)"
+   },
+   "source": "https://github.com/TakWolf/fusion-pixel-font"
+  },
+  {
+   "id": "fusion-pixel-8px-monospaced-tc",
+   "family": "Fusion Pixel 8px Monospaced TC",
+   "subsets": [
+    "latin"
+   ],
+   "weights": [
+    400
+   ],
+   "styles": [
+    "normal"
+   ],
+   "variable": false,
+   "lastModified": "2024-07-15",
+   "category": "sans-serif",
+   "license": {
+    "type": "OFL-1.1",
+    "url": "https://raw.githubusercontent.com/TakWolf/fusion-pixel-font/master/LICENSE-OFL",
+    "attribution": "TakWolf (https://takwolf.com)"
+   },
+   "source": "https://github.com/TakWolf/fusion-pixel-font"
+  },
+  {
+   "id": "fusion-pixel-8px-proportional-jp",
+   "family": "Fusion Pixel 8px Proportional JP",
+   "subsets": [
+    "latin"
+   ],
+   "weights": [
+    400
+   ],
+   "styles": [
+    "normal"
+   ],
+   "variable": false,
+   "lastModified": "2024-07-15",
+   "category": "sans-serif",
+   "license": {
+    "type": "OFL-1.1",
+    "url": "https://raw.githubusercontent.com/TakWolf/fusion-pixel-font/master/LICENSE-OFL",
+    "attribution": "TakWolf (https://takwolf.com)"
+   },
+   "source": "https://github.com/TakWolf/fusion-pixel-font"
+  },
+  {
+   "id": "fusion-pixel-8px-proportional-kr",
+   "family": "Fusion Pixel 8px Proportional KR",
+   "subsets": [
+    "latin"
+   ],
+   "weights": [
+    400
+   ],
+   "styles": [
+    "normal"
+   ],
+   "variable": false,
+   "lastModified": "2024-07-15",
+   "category": "sans-serif",
+   "license": {
+    "type": "OFL-1.1",
+    "url": "https://raw.githubusercontent.com/TakWolf/fusion-pixel-font/master/LICENSE-OFL",
+    "attribution": "TakWolf (https://takwolf.com)"
+   },
+   "source": "https://github.com/TakWolf/fusion-pixel-font"
+  },
+  {
+   "id": "fusion-pixel-8px-proportional-sc",
+   "family": "Fusion Pixel 8px Proportional SC",
+   "subsets": [
+    "latin"
+   ],
+   "weights": [
+    400
+   ],
+   "styles": [
+    "normal"
+   ],
+   "variable": false,
+   "lastModified": "2024-07-15",
+   "category": "sans-serif",
+   "license": {
+    "type": "OFL-1.1",
+    "url": "https://raw.githubusercontent.com/TakWolf/fusion-pixel-font/master/LICENSE-OFL",
+    "attribution": "TakWolf (https://takwolf.com)"
+   },
+   "source": "https://github.com/TakWolf/fusion-pixel-font"
+  },
+  {
+   "id": "fusion-pixel-8px-proportional-tc",
+   "family": "Fusion Pixel 8px Proportional TC",
+   "subsets": [
+    "latin"
+   ],
+   "weights": [
+    400
+   ],
+   "styles": [
+    "normal"
+   ],
+   "variable": false,
+   "lastModified": "2024-07-15",
+   "category": "sans-serif",
+   "license": {
+    "type": "OFL-1.1",
+    "url": "https://raw.githubusercontent.com/TakWolf/fusion-pixel-font/master/LICENSE-OFL",
+    "attribution": "TakWolf (https://takwolf.com)"
+   },
+   "source": "https://github.com/TakWolf/fusion-pixel-font"
+  },
+  {
+   "id": "geist-sans",
+   "family": "Geist Sans",
+   "subsets": [
+    "latin"
+   ],
+   "weights": [
+    100,
+    200,
+    300,
+    400,
+    500,
+    600,
+    700,
+    800,
+    900
+   ],
+   "styles": [
+    "normal"
+   ],
+   "variable": false,
+   "lastModified": "2023-11-10",
+   "category": "sans-serif",
+   "license": {
+    "type": "OFL-1.1",
+    "url": "https://github.com/vercel/geist-sans-font/blob/main/LICENSE.TXT",
+    "attribution": "Vercel"
+   },
+   "source": "https://github.com/vercel/geist-sans-font/tree/main/packages/next/dist/fonts/geist-sans"
+  },
+  {
+   "id": "genjyuu-gothic",
+   "family": "Genjyuu Gothic",
+   "subsets": [
+    "latin"
+   ],
+   "weights": [
+    100,
+    200,
+    300,
+    400,
+    500,
+    700,
+    900
+   ],
+   "styles": [
+    "normal"
+   ],
+   "variable": false,
+   "lastModified": "2024-11-01",
+   "category": "sans-serif",
+   "license": {
+    "type": "OFL-1.1",
+    "url": "http://jikasei.me/info/license.html",
+    "attribution": "\u81ea\u5bb6\u88fd\u30d5\u30a9\u30f3\u30c8\u5de5\u623f"
+   },
+   "source": "http://jikasei.me/font/genjyuu/"
+  },
+  {
+   "id": "hauora-sans",
+   "family": "Hauora Sans",
+   "subsets": [
+    "latin"
+   ],
+   "weights": [
+    200,
+    300,
+    400,
+    500,
+    600,
+    700,
+    800
+   ],
+   "styles": [
+    "normal"
+   ],
+   "variable": false,
+   "lastModified": "2023-05-15",
+   "category": "sans-serif",
+   "license": {
+    "type": "OFL-1.1",
+    "url": "https://github.com/WCYS-Co/Hauora-Sans/blob/master/OFL.txt",
+    "attribution": "WCYS & Co. (https://wcys.co)"
+   },
+   "source": "https://github.com/WCYS-Co/Hauora-Sans"
+  },
+  {
+   "id": "ia-writer-duo",
+   "family": "iA Writer Duo",
+   "subsets": [
+    "latin"
+   ],
+   "weights": [
+    400,
+    700
+   ],
+   "styles": [
+    "normal",
+    "italic"
+   ],
+   "variable": false,
+   "lastModified": "2023-05-15",
+   "category": "monospace",
+   "license": {
+    "type": "OFL-1.1",
+    "url": "https://github.com/iaolo/iA-Fonts/blob/master/iA%20Writer%20Duo/LICENSE.md",
+    "attribution": "Information Architects Inc."
+   },
+   "source": "https://github.com/iaolo/iA-Fonts"
+  },
+  {
+   "id": "ia-writer-mono",
+   "family": "iA Writer Mono",
+   "subsets": [
+    "latin"
+   ],
+   "weights": [
+    400,
+    700
+   ],
+   "styles": [
+    "normal",
+    "italic"
+   ],
+   "variable": false,
+   "lastModified": "2023-05-15",
+   "category": "monospace",
+   "license": {
+    "type": "OFL-1.1",
+    "url": "https://github.com/iaolo/iA-Fonts/blob/master/iA%20Writer%20Mono/LICENSE.md",
+    "attribution": "Information Architects Inc."
+   },
+   "source": "https://github.com/iaolo/iA-Fonts"
+  },
+  {
+   "id": "ia-writer-quattro",
+   "family": "iA Writer Quattro",
+   "subsets": [
+    "latin"
+   ],
+   "weights": [
+    400,
+    700
+   ],
+   "styles": [
+    "normal",
+    "italic"
+   ],
+   "variable": false,
+   "lastModified": "2023-05-15",
+   "category": "sans-serif",
+   "license": {
+    "type": "OFL-1.1",
+    "url": "https://github.com/iaolo/iA-Fonts/blob/master/iA%20Writer%20Quattro/LICENSE.md",
+    "attribution": "Information Architects Inc."
+   },
+   "source": "https://github.com/iaolo/iA-Fonts"
+  },
+  {
+   "id": "iosevka-aile",
+   "family": "Iosevka Aile",
+   "subsets": [
+    "latin"
+   ],
+   "weights": [
+    100,
+    200,
+    300,
+    400,
+    500,
+    600,
+    700,
+    800,
+    900
+   ],
+   "styles": [
+    "normal",
+    "italic"
+   ],
+   "variable": false,
+   "lastModified": "2023-05-16",
+   "category": "monospace",
+   "license": {
+    "type": "OFL-1.1",
+    "url": "https://github.com/be5invis/Iosevka/blob/main/LICENSE.md",
+    "attribution": "Belleve Invis"
+   },
+   "source": "https://github.com/be5invis/Iosevka"
+  },
+  {
+   "id": "iosevka-curly-slab",
+   "family": "Iosevka Curly Slab",
+   "subsets": [
+    "latin"
+   ],
+   "weights": [
+    100,
+    200,
+    300,
+    400,
+    500,
+    600,
+    700,
+    800,
+    900
+   ],
+   "styles": [
+    "normal",
+    "italic"
+   ],
+   "variable": false,
+   "lastModified": "2023-05-16",
+   "category": "monospace",
+   "license": {
+    "type": "OFL-1.1",
+    "url": "https://github.com/be5invis/Iosevka/blob/main/LICENSE.md",
+    "attribution": "Belleve Invis"
+   },
+   "source": "https://github.com/be5invis/Iosevka"
+  },
+  {
+   "id": "iosevka-curly",
+   "family": "Iosevka Curly",
+   "subsets": [
+    "latin"
+   ],
+   "weights": [
+    100,
+    200,
+    300,
+    400,
+    500,
+    600,
+    700,
+    800,
+    900
+   ],
+   "styles": [
+    "normal",
+    "italic"
+   ],
+   "variable": false,
+   "lastModified": "2023-05-16",
+   "category": "monospace",
+   "license": {
+    "type": "OFL-1.1",
+    "url": "https://github.com/be5invis/Iosevka/blob/main/LICENSE.md",
+    "attribution": "Belleve Invis"
+   },
+   "source": "https://github.com/be5invis/Iosevka"
+  },
+  {
+   "id": "iosevka-etoile",
+   "family": "Iosevka Etoile",
+   "subsets": [
+    "latin"
+   ],
+   "weights": [
+    100,
+    200,
+    300,
+    400,
+    500,
+    600,
+    700,
+    800,
+    900
+   ],
+   "styles": [
+    "normal",
+    "italic"
+   ],
+   "variable": false,
+   "lastModified": "2023-05-16",
+   "category": "monospace",
+   "license": {
+    "type": "OFL-1.1",
+    "url": "https://github.com/be5invis/Iosevka/blob/main/LICENSE.md",
+    "attribution": "Belleve Invis"
+   },
+   "source": "https://github.com/be5invis/Iosevka"
+  },
+  {
+   "id": "iosevka",
+   "family": "Iosevka",
+   "subsets": [
+    "latin"
+   ],
+   "weights": [
+    100,
+    200,
+    300,
+    400,
+    500,
+    600,
+    700,
+    800,
+    900
+   ],
+   "styles": [
+    "normal",
+    "italic"
+   ],
+   "variable": false,
+   "lastModified": "2023-05-16",
+   "category": "monospace",
+   "license": {
+    "type": "OFL-1.1",
+    "url": "https://github.com/be5invis/Iosevka/blob/main/LICENSE.md",
+    "attribution": "Belleve Invis"
+   },
+   "source": "https://github.com/be5invis/Iosevka"
+  },
+  {
+   "id": "junction",
+   "family": "Junction",
+   "subsets": [
+    "latin"
+   ],
+   "weights": [
+    300,
+    400,
+    700
+   ],
+   "styles": [
+    "normal"
+   ],
+   "variable": false,
+   "lastModified": "2023-05-15",
+   "category": "sans-serif",
+   "license": {
+    "type": "OFL-1.1",
+    "url": "https://github.com/theleagueof/junction/blob/master/Open%20Font%20License.markdown",
+    "attribution": "Caroline Hadilaksono <caroline@hadilaksono.com>"
+   },
+   "source": "https://github.com/theleagueof/junction"
+  },
+  {
+   "id": "karmilla",
+   "family": "Karmilla",
+   "subsets": [
+    "latin"
+   ],
+   "weights": [
+    400,
+    700
+   ],
+   "styles": [
+    "normal"
+   ],
+   "variable": false,
+   "lastModified": "2023-05-15",
+   "category": "sans-serif",
+   "license": {
+    "type": "OFL-1.1",
+    "url": "https://github.com/ms-studio/karmilla/blob/master/OFL.txt",
+    "attribution": "The Karmilla Project Authors (https://github.com/ms-studio/karmilla)"
+   },
+   "source": "https://github.com/ms-studio/karmilla"
+  },
+  {
+   "id": "league-mono",
+   "family": "League Mono",
+   "subsets": [
+    "latin"
+   ],
+   "weights": [
+    100,
+    200,
+    300,
+    400,
+    500,
+    600,
+    700,
+    800
+   ],
+   "styles": [
+    "normal"
+   ],
+   "variable": false,
+   "lastModified": "2023-05-15",
+   "category": "monospace",
+   "license": {
+    "type": "OFL-1.1",
+    "url": "https://github.com/theleagueof/league-mono/blob/master/OFL.md",
+    "attribution": "Tyler Finck <hi@tylerfinck.com>"
+   },
+   "source": "https://github.com/theleagueof/league-mono"
+  },
+  {
+   "id": "lextrall",
+   "family": "Lextrall",
+   "subsets": [
+    "latin"
+   ],
+   "weights": [
+    100,
+    200,
+    300,
+    400,
+    500,
+    600,
+    700,
+    800,
+    900
+   ],
+   "styles": [
+    "normal"
+   ],
+   "variable": false,
+   "lastModified": "2023-09-16",
+   "category": "sans-serif",
+   "license": {
+    "type": "OFL-1.1",
+    "url": "http://scripts.sil.org/OFL",
+    "attribution": "Copyright 2023 Amuzil (https://github.com/amuzil/lextrall) & Copyright 2019 The Lexend Project Authors (https://github.com/googlefonts/lexend)"
+   },
+   "source": "https://github.com/amuzil/lextrall"
+  },
+  {
+   "id": "lxgw-wenkai",
+   "family": "LXGW WenKai",
+   "subsets": [
+    "latin"
+   ],
+   "weights": [
+    300,
+    500,
+    700
+   ],
+   "styles": [
+    "normal"
+   ],
+   "variable": false,
+   "lastModified": "2023-12-05",
+   "category": "sans-serif",
+   "license": {
+    "type": "OFL-1.1",
+    "url": "https://github.com/lxgw/LxgwWenKai/blob/main/OFL.txt",
+    "attribution": "lxgw"
+   },
+   "source": "https://github.com/lxgw/LxgwWenKai"
+  },
+  {
+   "id": "maple-mono",
+   "family": "Maple Mono",
+   "subsets": [
+    "latin"
+   ],
+   "weights": [
+    100,
+    200,
+    300,
+    400,
+    500,
+    600,
+    700,
+    800
+   ],
+   "styles": [
+    "normal",
+    "italic"
+   ],
+   "variable": false,
+   "lastModified": "2025-10-18",
+   "category": "monospace",
+   "license": {
+    "type": "OFL-1.1",
+    "url": "https://scripts.sil.org/OFL",
+    "attribution": "Subframe7536"
+   },
+   "source": "https://github.com/subframe7536/maple-font"
+  },
+  {
+   "id": "metropolis",
+   "family": "Metropolis",
+   "subsets": [
+    "latin"
+   ],
+   "weights": [
+    100,
+    200,
+    300,
+    400,
+    500,
+    600,
+    700,
+    800,
+    900
+   ],
+   "styles": [
+    "normal",
+    "italic"
+   ],
+   "variable": false,
+   "lastModified": "2023-05-15",
+   "category": "sans-serif",
+   "license": {
+    "type": "Unlicense",
+    "url": "https://github.com/dw5/Metropolis/blob/master/UNLICENSE",
+    "attribution": "Chris Simpson"
+   },
+   "source": "https://github.com/dw5/Metropolis"
+  },
+  {
+   "id": "monaspace-argon",
+   "family": "Monaspace Argon",
+   "subsets": [
+    "latin"
+   ],
+   "weights": [
+    200,
+    300,
+    400,
+    500,
+    600,
+    700,
+    800
+   ],
+   "styles": [
+    "normal",
+    "italic"
+   ],
+   "variable": false,
+   "lastModified": "2024-07-04",
+   "category": "monospace",
+   "license": {
+    "type": "OFL-1.1",
+    "url": "https://github.com/githubnext/monaspace/blob/main/LICENSE",
+    "attribution": "githubnext"
+   },
+   "source": "https://github.com/githubnext/monaspace"
+  },
+  {
+   "id": "monaspace-krypton",
+   "family": "Monaspace Krypton",
+   "subsets": [
+    "latin"
+   ],
+   "weights": [
+    200,
+    300,
+    400,
+    500,
+    600,
+    700,
+    800
+   ],
+   "styles": [
+    "normal",
+    "italic"
+   ],
+   "variable": false,
+   "lastModified": "2024-07-04",
+   "category": "monospace",
+   "license": {
+    "type": "OFL-1.1",
+    "url": "https://github.com/githubnext/monaspace/blob/main/LICENSE",
+    "attribution": "githubnext"
+   },
+   "source": "https://github.com/githubnext/monaspace"
+  },
+  {
+   "id": "monaspace-neon",
+   "family": "Monaspace Neon",
+   "subsets": [
+    "latin"
+   ],
+   "weights": [
+    200,
+    300,
+    400,
+    500,
+    600,
+    700,
+    800
+   ],
+   "styles": [
+    "normal",
+    "italic"
+   ],
+   "variable": false,
+   "lastModified": "2024-07-04",
+   "category": "monospace",
+   "license": {
+    "type": "OFL-1.1",
+    "url": "https://github.com/githubnext/monaspace/blob/main/LICENSE",
+    "attribution": "githubnext"
+   },
+   "source": "https://github.com/githubnext/monaspace"
+  },
+  {
+   "id": "monaspace-radon",
+   "family": "Monaspace Radon",
+   "subsets": [
+    "latin"
+   ],
+   "weights": [
+    200,
+    300,
+    400,
+    500,
+    600,
+    700,
+    800
+   ],
+   "styles": [
+    "normal",
+    "italic"
+   ],
+   "variable": false,
+   "lastModified": "2024-07-04",
+   "category": "handwriting",
+   "license": {
+    "type": "OFL-1.1",
+    "url": "https://github.com/githubnext/monaspace/blob/main/LICENSE",
+    "attribution": "githubnext"
+   },
+   "source": "https://github.com/githubnext/monaspace"
+  },
+  {
+   "id": "monaspace-xenon",
+   "family": "Monaspace Xenon",
+   "subsets": [
+    "latin"
+   ],
+   "weights": [
+    200,
+    300,
+    400,
+    500,
+    600,
+    700,
+    800
+   ],
+   "styles": [
+    "normal",
+    "italic"
+   ],
+   "variable": false,
+   "lastModified": "2024-07-04",
+   "category": "serif",
+   "license": {
+    "type": "OFL-1.1",
+    "url": "https://github.com/githubnext/monaspace/blob/main/LICENSE",
+    "attribution": "githubnext"
+   },
+   "source": "https://github.com/githubnext/monaspace"
+  },
+  {
+   "id": "mononoki",
+   "family": "Mononoki",
+   "subsets": [
+    "latin"
+   ],
+   "weights": [
+    400,
+    700
+   ],
+   "styles": [
+    "normal",
+    "italic"
+   ],
+   "variable": false,
+   "lastModified": "2023-05-15",
+   "category": "monospace",
+   "license": {
+    "type": "OFL-1.1",
+    "url": "https://github.com/madmalik/mononoki/blob/main/LICENSE",
+    "attribution": "Matthias Tellen matthias.tellen@googlemail.com"
+   },
+   "source": "https://github.com/madmalik/mononoki"
+  },
+  {
+   "id": "nebula-sans",
+   "family": "Nebula Sans",
+   "subsets": [
+    "latin"
+   ],
+   "weights": [
+    300,
+    400,
+    500,
+    600,
+    700,
+    900
+   ],
+   "styles": [
+    "normal",
+    "italic"
+   ],
+   "variable": false,
+   "lastModified": "2025-09-19",
+   "category": "sans-serif",
+   "license": {
+    "type": "OFL-1.1",
+    "url": "https://nebulasans.com/license/",
+    "attribution": "Nebula Entertainment & Broadcasting LLC"
+   },
+   "source": "https://nebulasans.com/"
+  },
+  {
+   "id": "norwester",
+   "family": "Norwester",
+   "subsets": [
+    "latin"
+   ],
+   "weights": [
+    400
+   ],
+   "styles": [
+    "normal"
+   ],
+   "variable": false,
+   "lastModified": "2023-05-15",
+   "category": "sans-serif",
+   "license": {
+    "type": "OFL-1.1",
+    "url": "https://jamiewilson.io/norwester/",
+    "attribution": "Jamie Wilson (jamiewilson.io)"
+   },
+   "source": "https://jamiewilson.io/norwester/"
+  },
+  {
+   "id": "noto-mono",
+   "family": "Noto Mono",
+   "subsets": [
+    "latin"
+   ],
+   "weights": [
+    400
+   ],
+   "styles": [
+    "normal"
+   ],
+   "variable": false,
+   "lastModified": "2023-05-15",
+   "category": "monospace",
+   "license": {
+    "type": "OFL-1.1",
+    "url": "https://github.com/notofonts/noto-fonts/blob/master/LICENSE",
+    "attribution": "The Noto Project Authors (github.com/googlei18n/noto-fonts)"
+   },
+   "source": "https://github.com/notofonts/noto-fonts"
+  },
+  {
+   "id": "open-runde",
+   "family": "Open Runde",
+   "subsets": [
+    "latin"
+   ],
+   "weights": [
+    400,
+    500,
+    600,
+    700
+   ],
+   "styles": [
+    "normal"
+   ],
+   "variable": false,
+   "lastModified": "2026-03-15",
+   "category": "sans-serif",
+   "license": {
+    "type": "OFL-1.1",
+    "url": "https://github.com/lauridskern/open-runde/blob/main/LICENSE.txt",
+    "attribution": "Laurids Kern"
+   },
+   "source": "https://github.com/lauridskern/open-runde"
+  },
+  {
+   "id": "open-sauce-one",
+   "family": "Open Sauce One",
+   "subsets": [
+    "latin"
+   ],
+   "weights": [
+    300,
+    400,
+    500,
+    600,
+    700,
+    800,
+    900
+   ],
+   "styles": [
+    "normal",
+    "italic"
+   ],
+   "variable": false,
+   "lastModified": "2023-05-15",
+   "category": "sans-serif",
+   "license": {
+    "type": "OFL-1.1",
+    "url": "https://github.com/marcologous/Open-Sauce-Fonts/blob/master/Open%20Sauce%20One%20OFL.txt",
+    "attribution": "The Open Sauce One Authors (https://github.com/marcologous/Open-Sauce-Fonts)"
+   },
+   "source": "https://github.com/marcologous/Open-Sauce-Fonts"
+  },
+  {
+   "id": "open-sauce-sans",
+   "family": "Open Sauce Sans",
+   "subsets": [
+    "latin"
+   ],
+   "weights": [
+    300,
+    400,
+    500,
+    600,
+    700,
+    800,
+    900
+   ],
+   "styles": [
+    "normal",
+    "italic"
+   ],
+   "variable": false,
+   "lastModified": "2023-05-15",
+   "category": "sans-serif",
+   "license": {
+    "type": "OFL-1.1",
+    "url": "https://github.com/marcologous/Open-Sauce-Fonts/blob/master/Open%20Sauce%20Sans%20OFL.txt",
+    "attribution": "The Open Sauce Sans Authors (https://github.com/marcologous/Open-Sauce-Fonts)"
+   },
+   "source": "https://github.com/marcologous/Open-Sauce-Fonts"
+  },
+  {
+   "id": "open-sauce-two",
+   "family": "Open Sauce Two",
+   "subsets": [
+    "latin"
+   ],
+   "weights": [
+    300,
+    400,
+    500,
+    600,
+    700,
+    800,
+    900
+   ],
+   "styles": [
+    "normal",
+    "italic"
+   ],
+   "variable": false,
+   "lastModified": "2023-05-15",
+   "category": "sans-serif",
+   "license": {
+    "type": "OFL-1.1",
+    "url": "https://github.com/marcologous/Open-Sauce-Fonts/blob/master/Open%20Sauce%20Two%20OFL.txt",
+    "attribution": "The Open Sauce Two Authors (https://github.com/marcologous/Open-Sauce-Fonts)"
+   },
+   "source": "https://github.com/marcologous/Open-Sauce-Fonts"
+  },
+  {
+   "id": "opendyslexic",
+   "family": "OpenDyslexic",
+   "subsets": [
+    "latin"
+   ],
+   "weights": [
+    400,
+    700
+   ],
+   "styles": [
+    "normal",
+    "italic"
+   ],
+   "variable": false,
+   "lastModified": "2023-05-15",
+   "category": "sans-serif",
+   "license": {
+    "type": "OFL-1.1",
+    "url": "https://github.com/antijingoist/opendyslexic/blob/master/OFL.txt",
+    "attribution": "Abbie Gonzalez (https://abbiecod.es|support@abbiecod.es)\\"
+   },
+   "source": "https://github.com/antijingoist/opendyslexic"
+  },
+  {
+   "id": "ostrich-sans",
+   "family": "Ostrich Sans",
+   "subsets": [
+    "latin"
+   ],
+   "weights": [
+    300,
+    400,
+    700,
+    900
+   ],
+   "styles": [
+    "normal"
+   ],
+   "variable": false,
+   "lastModified": "2023-05-15",
+   "category": "sans-serif",
+   "license": {
+    "type": "OFL-1.1",
+    "url": "https://github.com/theleagueof/ostrich-sans/blob/master/Open%20Font%20License.markdown",
+    "attribution": "Tyler Finck <hi@tylerfinck.com>"
+   },
+   "source": "https://github.com/theleagueof/ostrich-sans"
+  },
+  {
+   "id": "peace-sans",
+   "family": "Peace Sans",
+   "subsets": [
+    "latin"
+   ],
+   "weights": [
+    400
+   ],
+   "styles": [
+    "normal"
+   ],
+   "variable": false,
+   "lastModified": "2023-05-15",
+   "category": "sans-serif",
+   "license": {
+    "type": "OFL-1.1",
+    "url": "https://www.dropbox.com/s/nj8rlfgsqpph9h7/Peace%20Sans.zip?dl=0&file_subpath=%2FFREE+FONT+LICENSE.txt",
+    "attribution": "Sergey Ryadovoy"
+   },
+   "source": "https://ryadovoy.com/"
+  },
+  {
+   "id": "pitagon-sans-mono",
+   "family": "Pitagon Sans Mono",
+   "subsets": [
+    "latin"
+   ],
+   "weights": [
+    100,
+    200,
+    300,
+    400,
+    500,
+    600,
+    700,
+    800
+   ],
+   "styles": [
+    "normal",
+    "italic"
+   ],
+   "variable": false,
+   "lastModified": "2023-08-09",
+   "category": "monospace",
+   "license": {
+    "type": "OFL-1.1",
+    "url": "https://github.com/ThePitagon/pitagon-sans-mono/blob/main/LICENSE.md",
+    "attribution": "Travis Tran & Pitagon"
+   },
+   "source": "https://github.com/ThePitagon/pitagon-sans-mono"
+  },
+  {
+   "id": "pitagon-sans-text",
+   "family": "Pitagon Sans Text",
+   "subsets": [
+    "latin"
+   ],
+   "weights": [
+    200,
+    300,
+    400,
+    500,
+    600,
+    700,
+    800
+   ],
+   "styles": [
+    "normal",
+    "italic"
+   ],
+   "variable": false,
+   "lastModified": "2023-08-07",
+   "category": "sans-serif",
+   "license": {
+    "type": "OFL-1.1",
+    "url": "https://github.com/ThePitagon/pitagon-sans-text/blob/main/LICENSE.md",
+    "attribution": "Travis Tran & Pitagon"
+   },
+   "source": "https://github.com/ThePitagon/pitagon-sans-text"
+  },
+  {
+   "id": "pitagon-sans",
+   "family": "Pitagon Sans",
+   "subsets": [
+    "latin"
+   ],
+   "weights": [
+    400,
+    500,
+    600,
+    700,
+    800,
+    900
+   ],
+   "styles": [
+    "normal"
+   ],
+   "variable": false,
+   "lastModified": "2023-08-07",
+   "category": "sans-serif",
+   "license": {
+    "type": "OFL-1.1",
+    "url": "https://github.com/ThePitagon/pitagon-sans/blob/main/LICENSE.md",
+    "attribution": "Travis Tran & Pitagon"
+   },
+   "source": "https://github.com/ThePitagon/pitagon-sans"
+  },
+  {
+   "id": "pitagon-serif",
+   "family": "Pitagon Serif",
+   "subsets": [
+    "latin"
+   ],
+   "weights": [
+    100,
+    200,
+    300,
+    400,
+    500,
+    600,
+    700,
+    800,
+    900
+   ],
+   "styles": [
+    "normal",
+    "italic"
+   ],
+   "variable": false,
+   "lastModified": "2023-08-07",
+   "category": "serif",
+   "license": {
+    "type": "OFL-1.1",
+    "url": "https://github.com/ThePitagon/pitagon-serif/blob/main/LICENSE.md",
+    "attribution": "Travis Tran & Pitagon"
+   },
+   "source": "https://github.com/ThePitagon/pitagon-serif"
+  },
+  {
+   "id": "pretendard",
+   "family": "Pretendard",
+   "subsets": [
+    "latin"
+   ],
+   "weights": [
+    100,
+    200,
+    300,
+    400,
+    500,
+    600,
+    700,
+    800,
+    900
+   ],
+   "styles": [
+    "normal"
+   ],
+   "variable": false,
+   "lastModified": "2024-08-26",
+   "category": "sans-serif",
+   "license": {
+    "type": "OFL-1.1",
+    "url": "https://github.com/orioncactus/pretendard/blob/main/LICENSE",
+    "attribution": "orioncactus"
+   },
+   "source": "https://github.com/orioncactus/pretendard"
+  },
+  {
+   "id": "redaction-10",
+   "family": "Redaction 10",
+   "subsets": [
+    "latin"
+   ],
+   "weights": [
+    400,
+    700
+   ],
+   "styles": [
+    "normal",
+    "italic"
+   ],
+   "variable": false,
+   "lastModified": "2024-04-06",
+   "category": "serif",
+   "license": {
+    "type": "OFL-1.1",
+    "url": "https://www.redaction.us/",
+    "attribution": "Jeremy Mickel"
+   },
+   "source": "https://www.redaction.us/static/redaction.zip"
+  },
+  {
+   "id": "redaction-100",
+   "family": "Redaction 100",
+   "subsets": [
+    "latin"
+   ],
+   "weights": [
+    400,
+    700
+   ],
+   "styles": [
+    "normal",
+    "italic"
+   ],
+   "variable": false,
+   "lastModified": "2024-04-07",
+   "category": "serif",
+   "license": {
+    "type": "OFL-1.1",
+    "url": "https://www.redaction.us/",
+    "attribution": "Jeremy Mickel"
+   },
+   "source": "https://www.redaction.us/static/redaction.zip"
+  },
+  {
+   "id": "redaction-20",
+   "family": "Redaction 20",
+   "subsets": [
+    "latin"
+   ],
+   "weights": [
+    400,
+    700
+   ],
+   "styles": [
+    "normal",
+    "italic"
+   ],
+   "variable": false,
+   "lastModified": "2024-04-07",
+   "category": "serif",
+   "license": {
+    "type": "OFL-1.1",
+    "url": "https://www.redaction.us/",
+    "attribution": "Jeremy Mickel"
+   },
+   "source": "https://www.redaction.us/static/redaction.zip"
+  },
+  {
+   "id": "redaction-35",
+   "family": "Redaction 35",
+   "subsets": [
+    "latin"
+   ],
+   "weights": [
+    400,
+    700
+   ],
+   "styles": [
+    "normal",
+    "italic"
+   ],
+   "variable": false,
+   "lastModified": "2024-04-07",
+   "category": "serif",
+   "license": {
+    "type": "OFL-1.1",
+    "url": "https://www.redaction.us/",
+    "attribution": "Jeremy Mickel"
+   },
+   "source": "https://www.redaction.us/static/redaction.zip"
+  },
+  {
+   "id": "redaction-50",
+   "family": "Redaction 50",
+   "subsets": [
+    "latin"
+   ],
+   "weights": [
+    400,
+    700
+   ],
+   "styles": [
+    "normal",
+    "italic"
+   ],
+   "variable": false,
+   "lastModified": "2024-04-07",
+   "category": "serif",
+   "license": {
+    "type": "OFL-1.1",
+    "url": "https://www.redaction.us/",
+    "attribution": "Jeremy Mickel"
+   },
+   "source": "https://www.redaction.us/static/redaction.zip"
+  },
+  {
+   "id": "redaction-70",
+   "family": "Redaction 70",
+   "subsets": [
+    "latin"
+   ],
+   "weights": [
+    400,
+    700
+   ],
+   "styles": [
+    "normal",
+    "italic"
+   ],
+   "variable": false,
+   "lastModified": "2024-04-07",
+   "category": "serif",
+   "license": {
+    "type": "OFL-1.1",
+    "url": "https://www.redaction.us/",
+    "attribution": "Jeremy Mickel"
+   },
+   "source": "https://www.redaction.us/static/redaction.zip"
+  },
+  {
+   "id": "redaction",
+   "family": "Redaction",
+   "subsets": [
+    "latin"
+   ],
+   "weights": [
+    400,
+    700
+   ],
+   "styles": [
+    "normal",
+    "italic"
+   ],
+   "variable": false,
+   "lastModified": "2024-04-06",
+   "category": "serif",
+   "license": {
+    "type": "OFL-1.1",
+    "url": "https://www.redaction.us/",
+    "attribution": "Jeremy Mickel"
+   },
+   "source": "https://www.redaction.us/static/redaction.zip"
+  },
+  {
+   "id": "rubik-one",
+   "family": "Rubik One",
+   "subsets": [
+    "latin"
+   ],
+   "weights": [
+    400
+   ],
+   "styles": [
+    "normal"
+   ],
+   "variable": false,
+   "lastModified": "2024-04-20",
+   "category": "sans-serif",
+   "license": {
+    "type": "OFL-1.1",
+    "url": "https://raw.githubusercontent.com/google/fonts/main/ofl/rubikone/OFL.txt",
+    "attribution": "Hubert and Fischer, Philipp Hubert (philipp@hubertfischer.com), Sebastian Fischer (sebastian@hubertfischer.com)"
+   },
+   "source": "https://github.com/google/fonts/tree/main/ofl/rubikone"
+  },
+  {
+   "id": "syne-italic",
+   "family": "Syne Italic",
+   "subsets": [
+    "latin"
+   ],
+   "weights": [
+    400
+   ],
+   "styles": [
+    "italic"
+   ],
+   "variable": false,
+   "lastModified": "2023-05-15",
+   "category": "sans-serif",
+   "license": {
+    "type": "OFL-1.1",
+    "url": "https://gitlab.com/bonjour-monde/fonderie/syne-typeface/-/blob/master/OFL.txt",
+    "attribution": "The Syne Project Authors (https://gitlab.com/bonjour-monde/fonderie/syne-typeface)"
+   },
+   "source": "https://gitlab.com/bonjour-monde/fonderie/syne-typeface"
+  },
+  {
+   "id": "uncut-sans",
+   "family": "Uncut Sans",
+   "subsets": [
+    "latin"
+   ],
+   "weights": [
+    300,
+    400,
+    500,
+    600,
+    700
+   ],
+   "styles": [
+    "normal",
+    "italic"
+   ],
+   "variable": false,
+   "lastModified": "2023-05-15",
+   "category": "sans-serif",
+   "license": {
+    "type": "OFL-1.1",
+    "url": "https://github.com/kaspernordkvist/uncut_sans/blob/main/LICENSE.txt",
+    "attribution": "Kasper Nordkvist"
+   },
+   "source": "https://github.com/kaspernordkvist/uncut_sans"
+  },
+  {
+   "id": "unifont",
+   "family": "Unifont",
+   "subsets": [
+    "latin"
+   ],
+   "weights": [
+    400
+   ],
+   "styles": [
+    "normal"
+   ],
+   "variable": false,
+   "lastModified": "2023-05-15",
+   "category": "sans-serif",
+   "license": {
+    "type": "OFL-1.1",
+    "url": "https://unifoundry.com/OFL-1.1.txt",
+    "attribution": "GNU Unifont Authors (https://unifoundry.com/unifont/index.html)"
+   },
+   "source": "https://unifoundry.com/unifont/index.html"
+  },
+  {
+   "id": "unifontex",
+   "family": "UnifontEX",
+   "subsets": [
+    "latin"
+   ],
+   "weights": [
+    400
+   ],
+   "styles": [
+    "normal"
+   ],
+   "variable": false,
+   "lastModified": "2025-10-03",
+   "category": "monospace",
+   "license": {
+    "type": "OFL-1.1",
+    "url": "http://scripts.sil.org/cms/scripts/page.php?site_id=nrsi&id=OFL",
+    "attribution": "stgiga"
+   },
+   "source": "https://github.com/stgiga/UnifontEX"
+  },
+  {
+   "id": "win95fa",
+   "family": "WIN95FA",
+   "subsets": [
+    "latin"
+   ],
+   "weights": [
+    400
+   ],
+   "styles": [
+    "normal"
+   ],
+   "variable": false,
+   "lastModified": "2023-10-13",
+   "category": "sans-serif",
+   "license": {
+    "type": "OFL-1.1",
+    "url": "https://fontsarena.com/w95fa-by-alina-sava/",
+    "attribution": "Alina Sava"
+   },
+   "source": "https://fontsarena.com/w95fa-by-alina-sava/"
+  },
+  {
+   "id": "yakuhanjp",
+   "family": "YakuHanJP",
+   "subsets": [
+    "latin"
+   ],
+   "weights": [
+    100,
+    200,
+    300,
+    400,
+    500,
+    700,
+    900
+   ],
+   "styles": [
+    "normal"
+   ],
+   "variable": false,
+   "lastModified": "2023-05-15",
+   "category": "other",
+   "license": {
+    "type": "OFL-1.1",
+    "url": "https://github.com/qrac/yakuhanjp",
+    "attribution": "QRANOKO (https://qranoko.jp/)"
+   },
+   "source": "https://github.com/qrac/yakuhanjp"
+  },
+  {
+   "id": "yakuhanjps",
+   "family": "YakuHanJPs",
+   "subsets": [
+    "latin"
+   ],
+   "weights": [
+    100,
+    200,
+    300,
+    400,
+    500,
+    700,
+    900
+   ],
+   "styles": [
+    "normal"
+   ],
+   "variable": false,
+   "lastModified": "2023-05-15",
+   "category": "other",
+   "license": {
+    "type": "OFL-1.1",
+    "url": "https://github.com/qrac/yakuhanjp",
+    "attribution": "QRANOKO (https://qranoko.jp/)"
+   },
+   "source": "https://github.com/qrac/yakuhanjp"
+  },
+  {
+   "id": "yakuhanmp",
+   "family": "YakuHanMP",
+   "subsets": [
+    "latin"
+   ],
+   "weights": [
+    100,
+    200,
+    300,
+    400,
+    500,
+    700,
+    900
+   ],
+   "styles": [
+    "normal"
+   ],
+   "variable": false,
+   "lastModified": "2023-05-15",
+   "category": "other",
+   "license": {
+    "type": "OFL-1.1",
+    "url": "https://github.com/qrac/yakuhanjp",
+    "attribution": "QRANOKO (https://qranoko.jp/)"
+   },
+   "source": "https://github.com/qrac/yakuhanjp"
+  },
+  {
+   "id": "yakuhanmps",
+   "family": "YakuHanMPs",
+   "subsets": [
+    "latin"
+   ],
+   "weights": [
+    100,
+    200,
+    300,
+    400,
+    500,
+    700,
+    900
+   ],
+   "styles": [
+    "normal"
+   ],
+   "variable": false,
+   "lastModified": "2023-05-15",
+   "category": "other",
+   "license": {
+    "type": "OFL-1.1",
+    "url": "https://github.com/qrac/yakuhanjp",
+    "attribution": "QRANOKO (https://qranoko.jp/)"
+   },
+   "source": "https://github.com/qrac/yakuhanjp"
+  },
+  {
+   "id": "yakuhanrp",
+   "family": "YakuHanRP",
+   "subsets": [
+    "latin"
+   ],
+   "weights": [
+    100,
+    300,
+    400,
+    500,
+    700,
+    800,
+    900
+   ],
+   "styles": [
+    "normal"
+   ],
+   "variable": false,
+   "lastModified": "2023-05-15",
+   "category": "other",
+   "license": {
+    "type": "OFL-1.1",
+    "url": "https://github.com/qrac/yakuhanjp",
+    "attribution": "QRANOKO (https://qranoko.jp/)"
+   },
+   "source": "https://github.com/qrac/yakuhanjp"
+  },
+  {
+   "id": "yakuhanrps",
+   "family": "YakuHanRPs",
+   "subsets": [
+    "latin"
+   ],
+   "weights": [
+    100,
+    300,
+    400,
+    500,
+    700,
+    800,
+    900
+   ],
+   "styles": [
+    "normal"
+   ],
+   "variable": false,
+   "lastModified": "2023-05-15",
+   "category": "other",
+   "license": {
+    "type": "OFL-1.1",
+    "url": "https://github.com/qrac/yakuhanjp",
+    "attribution": "QRANOKO (https://qranoko.jp/)"
+   },
+   "source": "https://github.com/qrac/yakuhanjp"
+  }
+ ]
+}

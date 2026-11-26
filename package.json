@@ -3,11 +3,12 @@
   "version": "1.0.0",
   "scripts": {
     "dev": "vite",
-    "build": "vite build",
+    "build": "node scripts/build-catalog.mjs --live && vite build",
     "preview": "vite preview",
     "catalog": "node scripts/build-catalog.mjs",
     "lint": "eslint .",
-    "css": "python3 scripts/build-css.py"
+    "css": "python3 scripts/build-css.py",
+    "catalog:live": "node scripts/build-catalog.mjs --live"
   },
   "dependencies": {
     "@hugeicons/core-free-icons": "^4.4.0",
