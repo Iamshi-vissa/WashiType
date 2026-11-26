@@ -1,13 +1,11 @@
-// The Japanese typographic name for each category, shown beside the English one.
 export const CATEGORIES = [
-  { id: 'all', label: 'All', kanji: '全' },
-  { id: 's', label: 'Sans serif', kanji: 'ゴシック' },
-  { id: 'r', label: 'Serif', kanji: '明朝' },
-  { id: 'd', label: 'Display', kanji: '装飾' },
-  { id: 'h', label: 'Handwriting', kanji: '手書き' },
-  { id: 'm', label: 'Monospace', kanji: '等幅' }
+  { id: 'all', label: 'All' },
+  { id: 's', label: 'Sans serif' },
+  { id: 'r', label: 'Serif' },
+  { id: 'd', label: 'Display' },
+  { id: 'h', label: 'Handwriting' },
+  { id: 'm', label: 'Monospace' }
 ];
-export const CATEGORY_KANJI = Object.fromEntries(CATEGORIES.map(c => [c.id, c.kanji]));
 
 export const CATEGORY_NAME = { s: 'Sans serif', r: 'Serif', d: 'Display', h: 'Handwriting', m: 'Monospace' };
 

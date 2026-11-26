@@ -2,8 +2,8 @@ import { useEffect, useRef, useState } from 'react';
 import PaperCrumple from './PaperCrumple/PaperCrumple.jsx';
 import { drawSheet, SHEET_W, SHEET_H } from './drawSheet.js';
 import { loadFamily, cssSnippet, googleUrl } from '../fontLoader.js';
-import { CATEGORY_NAME, CATEGORY_KANJI, SCRIPT_LABEL } from '../data.js';
-import Hanko from './Hanko.jsx';
+import { CATEGORY_NAME, SCRIPT_LABEL } from '../data.js';
+import Hanko, { SaveMark } from './Hanko.jsx';
 
 const WEIGHT_NAME = {
   100: 'Thin', 200: 'Extra light', 300: 'Light', 400: 'Regular', 500: 'Medium',
@@ -30,8 +30,8 @@ export default function SpecimenSheet({ font, text, saved, onToggleSave, onClose
     let live = true;
     setImage('');
     const t = setTimeout(async () => {
-      await Promise.all([loadFamily(font), document.fonts.load('400 34px "Zen Antique"', '和紙').catch(() => {}),
-        document.fonts.load('500 26px "Shippori Mincho"', '明朝ゴシック装飾手書き等幅').catch(() => {})]);
+      await Promise.all([loadFamily(font), document.fonts.load('400 34px "Zen Antique"', 'WT').catch(() => {}),
+        document.fonts.load('500 26px "Shippori Mincho"').catch(() => {})]);
       if (live) setImage(drawSheet(font, text));
     }, 250);
     return () => {
@@ -124,7 +124,7 @@ export default function SpecimenSheet({ font, text, saved, onToggleSave, onClose
 
         <section className="spec-info">
           <p className="kicker">
-            <span lang="ja">{CATEGORY_KANJI[font.c]}</span> {CATEGORY_NAME[font.c]}
+            {CATEGORY_NAME[font.c]}
           </p>
           <h2 id="spec-title" style={{ fontFamily: `"${font.f}", var(--fallback)` }}>
             {font.f}
@@ -135,7 +135,9 @@ export default function SpecimenSheet({ font, text, saved, onToggleSave, onClose
               Get it on Google Fonts
             </a>
             <button type="button" className="ghost seal-label" aria-pressed={saved} onClick={() => onToggleSave(font.id)}>
-              <Hanko key={saved ? 'on' : 'off'} on={saved} stamp={saved} size={26} />
+              <Hanko key={saved ? 'on' : 'off'} on={saved} stamp={saved} size={26}>
+                <SaveMark />
+              </Hanko>
               {saved ? 'Stamped and saved' : 'Stamp to save'}
             </button>
           </div>

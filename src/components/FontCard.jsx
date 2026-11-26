@@ -1,7 +1,7 @@
 import { memo, useEffect, useRef } from 'react';
 import { loadPreview, defaultWeight } from '../fontLoader.js';
-import { CATEGORY_NAME, CATEGORY_KANJI } from '../data.js';
-import Hanko from './Hanko.jsx';
+import { CATEGORY_NAME } from '../data.js';
+import Hanko, { SaveMark } from './Hanko.jsx';
 
 // One shared observer for every card: load a font only once its sheet scrolls near view.
 const watchers = new Map();
@@ -54,7 +54,7 @@ function FontCard({ font, text, size, saved, onToggleSave, onOpen }) {
         <div className="sheet-name">
           <strong>{font.f}</strong>
           <span>
-            <span lang="ja">{CATEGORY_KANJI[font.c]}</span> {CATEGORY_NAME[font.c]} · {font.w.length} {font.w.length === 1 ? 'weight' : 'weights'}
+            {CATEGORY_NAME[font.c]} · {font.w.length} {font.w.length === 1 ? 'weight' : 'weights'}
             {font.a.length ? ' · variable' : ''}
           </span>
         </div>
@@ -65,7 +65,9 @@ function FontCard({ font, text, size, saved, onToggleSave, onOpen }) {
           aria-label={saved ? `Remove ${font.f} from saved` : `Save ${font.f}`}
           onClick={() => onToggleSave(font.id)}
         >
-          <Hanko key={saved ? 'on' : 'off'} on={saved} stamp={saved} size={32} />
+          <Hanko key={saved ? 'on' : 'off'} on={saved} stamp={saved} size={32}>
+            <SaveMark />
+          </Hanko>
         </button>
       </footer>
       </div>

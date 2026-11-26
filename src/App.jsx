@@ -5,7 +5,7 @@ import ClickSpark from './components/reactbits/ClickSpark.jsx';
 import CountUp from './components/reactbits/CountUp.jsx';
 import FontCard from './components/FontCard.jsx';
 import HeroScroll from './components/HeroScroll.jsx';
-import Hanko from './components/Hanko.jsx';
+import Hanko, { SaveMark } from './components/Hanko.jsx';
 // The specimen sheet pulls in three.js, so it loads only when a sheet is opened.
 const SpecimenSheet = lazy(() => import('./components/SpecimenSheet.jsx'));
 import { CATEGORIES, SCRIPTS, SORTS, FEATURED, SIZES, sampleFor } from './data.js';
@@ -147,7 +147,7 @@ export default function App() {
     >
       <header className="top">
         <a className="mark" href="#" onClick={e => (e.preventDefault(), closeFont(), clearFilters())}>
-          <Hanko text="和紙" size={34} />
+          <Hanko text="WT" size={34} />
           <span>Washi Type</span>
         </a>
         <button
@@ -156,7 +156,9 @@ export default function App() {
           aria-pressed={savedOnly}
           onClick={() => setSavedOnly(v => !v)}
         >
-          <Hanko on={savedOnly} size={22} />
+          <Hanko on={savedOnly} size={22}>
+            <SaveMark />
+          </Hanko>
           Stamped · {saved.size}
         </button>
       </header>
@@ -237,11 +239,6 @@ export default function App() {
               onClick={() => setCategory(c.id)}
             >
               {c.label}
-              {c.id !== 'all' && (
-                <small lang="ja" aria-hidden="true">
-                  {c.kanji}
-                </small>
-              )}
             </button>
           ))}
         </div>
@@ -321,7 +318,7 @@ export default function App() {
 
       <footer className="foot band">
         <p>
-          <Hanko text="和紙" size={26} /> Fonts and metadata from <a href="https://fonts.google.com">Google Fonts</a>,
+          <Hanko text="WT" size={26} /> Fonts and metadata from <a href="https://fonts.google.com">Google Fonts</a>,
           served under open licences. Stamped fonts stay in this browser.
         </p>
       </footer>

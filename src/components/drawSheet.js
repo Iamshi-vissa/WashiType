@@ -1,7 +1,7 @@
 // Paints a font specimen onto a sheet of washi (handmade Japanese paper) and returns a PNG data URL.
 // PaperCrumple uses the picture as the paper's texture. Pixels outside the torn (deckled)
 // edge are transparent, so the crumpled sheet keeps its ragged outline.
-import { CATEGORY_NAME, CATEGORY_KANJI } from '../data.js';
+import { CATEGORY_NAME } from '../data.js';
 
 export const SHEET_W = 360;
 export const SHEET_H = 460;
@@ -61,8 +61,8 @@ function seal(ctx, x, y, size, rand) {
   ctx.font = `400 ${size * 0.4}px "Zen Antique", "Shippori Mincho", serif`;
   ctx.textAlign = 'center';
   ctx.textBaseline = 'middle';
-  ctx.fillText('和', 0, -size * 0.2);
-  ctx.fillText('紙', 0, size * 0.22);
+  ctx.fillText('W', 0, -size * 0.2);
+  ctx.fillText('T', 0, size * 0.22);
   // Uneven ink, as from a real stamp
   ctx.globalCompositeOperation = 'destination-out';
   for (let i = 0; i < 160; i++) {
@@ -124,7 +124,7 @@ export function drawSheet(font, text) {
   ctx.fillStyle = 'rgba(26,24,22,0.6)';
   ctx.font = '500 26px "Shippori Mincho", serif';
   ctx.textAlign = 'right';
-  ctx.fillText(`${CATEGORY_KANJI[font.c]}  ${CATEGORY_NAME[font.c]}`, right, 74);
+  ctx.fillText(`${CATEGORY_NAME[font.c]} · ${font.w.length} ${font.w.length === 1 ? 'weight' : 'weights'}`, right, 74);
   ctx.textAlign = 'left';
 
   // Family name
