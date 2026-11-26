@@ -42,6 +42,9 @@ export default function SpecimenSheet({ font, text, saved, onToggleSave, onClose
 
   useEffect(() => {
     const previous = document.activeElement;
+    // Keep keyboard and screen-reader focus inside the sheet while it is open.
+    const app = document.getElementById('root');
+    if (app) app.inert = true;
     closeRef.current?.focus();
     const onKey = e => {
       if (e.key === 'Escape' && !e.target.closest?.('.paper-crumple')) onClose();
@@ -51,6 +54,7 @@ export default function SpecimenSheet({ font, text, saved, onToggleSave, onClose
     return () => {
       window.removeEventListener('keydown', onKey);
       document.body.classList.remove('no-scroll');
+      if (app) app.inert = false;
       previous?.focus?.();
     };
   }, [onClose]);
@@ -71,7 +75,8 @@ export default function SpecimenSheet({ font, text, saved, onToggleSave, onClose
     setTimeout(() => setCopied(''), 2400);
   };
 
-  const license = LICENSE[font.l] ?? { name: font.l, url: googleUrl(font) };
+  // A few fonts have no license record in the catalog; point to Google Fonts instead of guessing.
+  const license = LICENSE[font.l] ?? { name: 'Open-source license (see Google Fonts)', url: googleUrl(font) };
 
   return (
     <div className="overlay" role="dialog" aria-modal="true" aria-labelledby="spec-title" onClick={onClose}>

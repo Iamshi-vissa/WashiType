@@ -85,7 +85,6 @@ button, input, select { font: inherit; color: inherit; }
 /* Hero */
 .hero { padding-bottom: 14px; }
 .hero-grid { display: grid; grid-template-columns: minmax(0, 1.25fr) minmax(0, 0.75fr); gap: 24px 48px; align-items: center; margin-bottom: 26px; }
-.hero h1 { margin: 0; font-weight: 400; }
 .hero .title {
   margin: 0; display: flex; flex-wrap: wrap;
   font: 800 clamp(40px, 6.4vw, 80px)/1.02 'Shippori Mincho', serif; letter-spacing: -0.015em;

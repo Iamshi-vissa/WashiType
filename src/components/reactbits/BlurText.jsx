@@ -193,7 +193,8 @@ const BlurText = ({
   loopDelay = 2,
   color,
   fromColor,
-  focusOnHover = false
+  focusOnHover = false,
+  as: Tag = 'p'
 }) => {
   const ref = useRef(null);
   const [phase, setPhase] = useState(() => startPhase(trigger));
@@ -371,7 +372,7 @@ const BlurText = ({
 
   return (
     <MotionConfig reducedMotion="user">
-      <p
+      <Tag
         ref={ref}
         className={className}
         style={{ display: 'flex', flexWrap: 'wrap', color, cursor: trigger === 'click' ? 'pointer' : undefined }}
@@ -389,7 +390,7 @@ const BlurText = ({
             {indices.map(renderPiece)}
           </span>
         ))}
-      </p>
+      </Tag>
     </MotionConfig>
   );
 };

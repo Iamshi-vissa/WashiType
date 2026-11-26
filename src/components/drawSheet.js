@@ -10,7 +10,7 @@ const S = 2; // draw at 2x for a crisp texture
 const SUMI = '#1a1816';
 const SHU = '#c8341f';
 const RTL = /[֐-ࣿ]/;
-const NO_SPACES = /[　-鿿가-힯฀-໿ក-៿]/;
+const NO_SPACES = /[\u3000-\u9FFF\uAC00-\uD7AF\u0E00-\u0EFF\u1780-\u17FF]/;
 
 function wrap(ctx, text, maxWidth) {
   const unspaced = NO_SPACES.test(text) && !text.includes(' ');
@@ -55,7 +55,8 @@ function seal(ctx, x, y, size, rand) {
   ctx.rotate(-0.08);
   ctx.fillStyle = SHU;
   ctx.beginPath();
-  ctx.roundRect(-size / 2, -size / 2, size, size, size * 0.12);
+  if (ctx.roundRect) ctx.roundRect(-size / 2, -size / 2, size, size, size * 0.12);
+  else ctx.rect(-size / 2, -size / 2, size, size);
   ctx.fill();
   ctx.fillStyle = '#fbf6ec';
   ctx.font = `400 ${size * 0.4}px "Zen Antique", "Shippori Mincho", serif`;

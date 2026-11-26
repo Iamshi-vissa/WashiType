@@ -41,7 +41,8 @@ const rows = Object.values(fonts)
     i: font.styles.includes('italic') ? 1 : 0,
     s: font.subsets.filter(s => SCRIPTS.has(s)),
     u: font.lastModified,
-    l: lic ? LICENSE[lic.type] ?? lic.type : 'OFL',
+    // null when Google Fonts has no license record for the family; the app links to Google instead.
+    l: lic ? LICENSE[lic.type] ?? lic.type : null,
     a: axisText
   };
 });

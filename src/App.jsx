@@ -1,3 +1,4 @@
+import { createPortal } from 'react-dom';
 import { lazy, Suspense, useCallback, useDeferredValue, useEffect, useMemo, useRef, useState } from 'react';
 import BlurText from './components/reactbits/BlurText.jsx';
 import RotatingText from './components/reactbits/RotatingText.jsx';
@@ -166,9 +167,17 @@ export default function App() {
       <section className="hero band" ref={heroRef}>
         <div className="hero-grid">
           <div className="hero-copy">
-            <h1>
-              <BlurText text="Find the right font" animateBy="words" direction="top" delay={120} blur={14} distance={20} className="title" />
-              <span className="for">
+            <BlurText
+              as="h1"
+              text="Find the right font"
+              animateBy="words"
+              direction="top"
+              delay={120}
+              blur={14}
+              distance={20}
+              className="title"
+            />
+            <p className="for">
                 for{' '}
                 <span className="brush">
                   <RotatingText
@@ -179,10 +188,9 @@ export default function App() {
                     rotationInterval={2800}
                   />
                 </span>
-              </span>
-            </h1>
+            </p>
             <p className="lede">
-              <CountUp to={fonts.length || 1900} separator="," duration={1.6} /> free fonts, each written out on a
+              {fonts.length ? <CountUp to={fonts.length} separator="," duration={1.6} /> : <span>1,900+</span>} free fonts, each written out on a
               sheet of washi in your own words. Every one is free to use in personal and commercial work.
             </p>
           </div>
@@ -281,7 +289,7 @@ export default function App() {
           )}
         </p>
 
-        {loadError && <p className="empty">The font list didn't load. Refresh the page to try again.</p>}
+        {loadError && <p className="empty">The font list didn’t load. Refresh the page to try again.</p>}
 
         {fonts.length > 0 && results.length === 0 && (
           <div className="empty">
@@ -323,17 +331,21 @@ export default function App() {
         </p>
       </footer>
 
-      {open && (
+      {/* The sheet renders outside the app root so the page behind it can be made inert. */}
+      {open &&
+        createPortal(
         <Suspense fallback={<div className="overlay" />}>
         <SpecimenSheet
+          key={open.id}
           font={open}
           text={text.trim() || sampleFor(open.s.includes(script) ? script : open.s.includes('latin') ? 'latin' : open.s[0])}
           saved={saved.has(open.id)}
           onToggleSave={toggleSave}
           onClose={closeFont}
         />
-        </Suspense>
-      )}
+        </Suspense>,
+          document.body
+        )}
     </ClickSpark>
   );
 }
