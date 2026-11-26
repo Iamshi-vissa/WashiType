@@ -2,6 +2,7 @@ import { memo, useEffect, useRef } from 'react';
 import { loadPreview, defaultWeight } from '../fontLoader.js';
 import { CATEGORY_NAME } from '../data.js';
 import Hanko, { SaveMark } from './Hanko.jsx';
+import WarmTooltip from './reactbits/WarmTooltip.jsx';
 
 // One shared observer for every card: load a font only once its sheet scrolls near view.
 const watchers = new Map();
@@ -58,17 +59,25 @@ function FontCard({ font, text, size, saved, onToggleSave, onOpen }) {
             {font.a.length ? ' · variable' : ''}
           </span>
         </div>
-        <button
-          type="button"
-          className="seal-btn"
-          aria-pressed={saved}
-          aria-label={saved ? `Remove ${font.f} from saved` : `Save ${font.f}`}
-          onClick={() => onToggleSave(font.id)}
+        <WarmTooltip
+          content={saved ? 'Remove stamp' : 'Stamp to save'}
+          side="top"
+          size="sm"
+          surfaceColor="var(--ink)"
+          inkColor="var(--paper)"
         >
-          <Hanko key={saved ? 'on' : 'off'} on={saved} stamp={saved} size={32}>
-            <SaveMark />
-          </Hanko>
-        </button>
+          <button
+            type="button"
+            className="seal-btn"
+            aria-pressed={saved}
+            aria-label={saved ? `Remove ${font.f} from saved` : `Save ${font.f}`}
+            onClick={() => onToggleSave(font.id)}
+          >
+            <Hanko key={saved ? 'on' : 'off'} on={saved} stamp={saved} size={32}>
+              <SaveMark />
+            </Hanko>
+          </button>
+        </WarmTooltip>
       </footer>
       </div>
     </article>

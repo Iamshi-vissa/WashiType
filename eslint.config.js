@@ -14,6 +14,7 @@ export default [
       parserOptions: { ecmaFeatures: { jsx: true } }
     },
     settings: { react: { version: 'detect' } },
+    linterOptions: { reportUnusedDisableDirectives: 'off' },
     plugins: { react, 'react-hooks': reactHooks },
     rules: {
       ...js.configs.recommended.rules,
@@ -22,7 +23,9 @@ export default [
       'react/prop-types': 'off',
       'react-hooks/rules-of-hooks': 'error',
       'react-hooks/exhaustive-deps': 'warn',
-      'no-unused-vars': ['warn', { argsIgnorePattern: '^_', varsIgnorePattern: '^_' }]
+      'no-unused-vars': ['warn', { argsIgnorePattern: '^_', varsIgnorePattern: '^_' }],
+      // ReactBits components use empty catch blocks on purpose (e.g. releasing pointer capture).
+      'no-empty': ['error', { allowEmptyCatch: true }]
     }
   }
 ];

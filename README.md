@@ -25,7 +25,17 @@ npm run build    # static site in dist/
 - `src/components/Hanko.jsx`: the red seal used for saving fonts and in the logo.
 - `src/components/FontCard.jsx`: one washi sheet in the grid. Fonts load only as their sheet scrolls into view, batched into one Google Fonts request.
 - `src/components/SpecimenSheet.jsx` and `drawSheet.js`: the detail view. `drawSheet` paints the specimen on washi with a torn edge and a seal, and `PaperCrumple` turns it into paper you can crumple. three.js loads only when a sheet is opened.
-- `src/components/reactbits/`: ReactBits components: StrokeText (brushed hero lettering), BlurText (title), RotatingText, CountUp and ClickSpark (ink splatter on click).
+- `src/components/reactbits/`: ReactBits components:
+  - **FoldText**: the title folds in like paper.
+  - **StrokeText**: brushes the hero lettering.
+  - **TearTicket**: the embed code is a ticket; tear off the stub to copy it.
+  - **Shredder**: the Stamped drawer; drag a font slip into the shredder to remove its stamp.
+  - **SwipeToast**: notes for stamping, copying and shredding (with Undo).
+  - **SquishSwitch**: the "Variable only" switch.
+  - **WarmTooltip**: tooltips on the stamp buttons.
+  - **RotatingText**, **CountUp** and **ClickSpark** (ink splatter on click).
+- `src/components/StampDrawer.jsx`: the Stamped drawer built around Shredder.
+- `src/components/Select.jsx`: the Script and Sort dropdowns, which always open downwards.
 
 ## Next steps
 

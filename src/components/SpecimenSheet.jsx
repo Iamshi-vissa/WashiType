@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 import PaperCrumple from './PaperCrumple/PaperCrumple.jsx';
+import TearTicket from './reactbits/TearTicket.jsx';
 import { drawSheet, SHEET_W, SHEET_H } from './drawSheet.js';
 import { loadFamily, cssSnippet, googleUrl } from '../fontLoader.js';
 import { CATEGORY_NAME, SCRIPT_LABEL } from '../data.js';
@@ -15,7 +16,7 @@ const LICENSE = {
   UFL: { name: 'Ubuntu Font Licence 1.0', url: 'https://ubuntu.com/legal/font-licence' }
 };
 
-export default function SpecimenSheet({ font, text, saved, onToggleSave, onClose }) {
+export default function SpecimenSheet({ font, text, saved, onToggleSave, onNotify, onClose }) {
   const [image, setImage] = useState('');
   const [italic, setItalic] = useState(false);
   const [copied, setCopied] = useState('');
@@ -60,10 +61,12 @@ export default function SpecimenSheet({ font, text, saved, onToggleSave, onClose
   }, [onClose]);
 
   const snippet = cssSnippet(font);
+  const [ticket, setTicket] = useState(0);
   const copy = async () => {
     try {
       await navigator.clipboard.writeText(snippet);
       setCopied('Copied');
+      onNotify?.('Embed code copied', { description: `Paste it into your page to use ${font.f}.` });
     } catch {
       const range = document.createRange();
       range.selectNodeContents(codeRef.current);
@@ -74,6 +77,18 @@ export default function SpecimenSheet({ font, text, saved, onToggleSave, onClose
     }
     setTimeout(() => setCopied(''), 2400);
   };
+  // Tearing the stub copies the code; a fresh ticket prints a moment later.
+  const onTear = () => {
+    copy();
+    setTimeout(() => setTicket(t => t + 1), 2800);
+  };
+  // Size the ticket to the code so long weight lists still fit.
+  // On phones the ticket stands upright with the stub at the bottom, so the code stays readable.
+  const narrow = typeof window !== 'undefined' && window.innerWidth < 600;
+  const perLine = narrow ? 38 : 50;
+  const codeLines = snippet.split('\n').reduce((n, line) => n + Math.max(1, Math.ceil(line.length / perLine)), 0);
+  const codeHeight = Math.max(narrow ? 150 : 176, 44 + codeLines * 19);
+  const stubSize = narrow ? 84 : 112;
 
   // A few fonts have no license record in the catalog; point to Google Fonts instead of guessing.
   const license = LICENSE[font.l] ?? { name: 'Open-source license (see Google Fonts)', url: googleUrl(font) };
@@ -211,9 +226,38 @@ export default function SpecimenSheet({ font, text, saved, onToggleSave, onClose
               {copied || 'Copy code'}
             </button>
           </div>
-          <pre className="code">
-            <code ref={codeRef}>{snippet}</code>
-          </pre>
+          <TearTicket
+            key={ticket}
+            orientation={narrow ? 'vertical' : 'horizontal'}
+            width={narrow ? 340 : 540}
+            height={narrow ? codeHeight + stubSize : codeHeight}
+            stubSize={stubSize}
+            radius={8}
+            holes={Math.max(6, Math.round((narrow ? 340 : codeHeight) / 22))}
+            holeSize={5}
+            notch={4}
+            roughness={1.2}
+            rotate={3}
+            tiltMax={4}
+            parallax={2}
+            background="var(--paper)"
+            color="var(--ink)"
+            borderColor="var(--line)"
+            stubBackground="var(--ink)"
+            onTear={onTear}
+            ariaLabel="Tear off the stub to copy the embed code"
+            className="ticket"
+            stub={
+              <div className="ticket-stub">
+                <span className="ticket-seal">WT</span>
+                <span>Tear to copy</span>
+              </div>
+            }
+          >
+            <pre className="ticket-code">
+              <code ref={codeRef}>{snippet}</code>
+            </pre>
+          </TearTicket>
         </section>
       </div>
     </div>

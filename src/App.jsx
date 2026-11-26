@@ -1,6 +1,9 @@
 import { createPortal } from 'react-dom';
 import { lazy, Suspense, useCallback, useDeferredValue, useEffect, useMemo, useRef, useState } from 'react';
-import BlurText from './components/reactbits/BlurText.jsx';
+import FoldText from './components/reactbits/FoldText.jsx';
+import SwipeToast from './components/reactbits/SwipeToast.jsx';
+import SquishSwitch from './components/reactbits/SquishSwitch.jsx';
+import StampDrawer from './components/StampDrawer.jsx';
 import RotatingText from './components/reactbits/RotatingText.jsx';
 import ClickSpark from './components/reactbits/ClickSpark.jsx';
 import CountUp from './components/reactbits/CountUp.jsx';
@@ -39,14 +42,14 @@ export default function App() {
   const [fonts, setFonts] = useState([]);
   const [loadError, setLoadError] = useState(false);
   const [query, setQuery] = useState('');
-  const [text, setText] = useState(() => store.get('typesheet:text', ''));
-  const [size, setSize] = useState(() => store.get('typesheet:size', 36));
+  const [text, setText] = useState(() => store.get('washitype:text', store.get('typesheet:text', '')));
+  const [size, setSize] = useState(() => store.get('washitype:size', store.get('typesheet:size', 36)));
   const [category, setCategory] = useState('all');
   const [script, setScript] = useState('all');
   const [sort, setSort] = useState('featured');
   const [variableOnly, setVariableOnly] = useState(false);
   const [savedOnly, setSavedOnly] = useState(false);
-  const [saved, setSaved] = useState(() => new Set(store.get('typesheet:saved', [])));
+  const [saved, setSaved] = useState(() => new Set(store.get('washitype:saved', store.get('typesheet:saved', []))));
   const [limit, setLimit] = useState(PAGE);
   const [open, setOpen] = useState(null);
   const heroRef = useRef(null);
@@ -59,9 +62,9 @@ export default function App() {
       .catch(() => setLoadError(true));
   }, []);
 
-  useEffect(() => store.set('typesheet:text', text), [text]);
-  useEffect(() => store.set('typesheet:size', size), [size]);
-  useEffect(() => store.set('typesheet:saved', [...saved]), [saved]);
+  useEffect(() => store.set('washitype:text', text), [text]);
+  useEffect(() => store.set('washitype:size', size), [size]);
+  useEffect(() => store.set('washitype:saved', [...saved]), [saved]);
 
   // #font-id opens that font's sheet, so a sheet can be bookmarked or sent.
   useEffect(() => {
@@ -87,13 +90,49 @@ export default function App() {
     }
   }, []);
 
-  const toggleSave = useCallback(id => {
+  // One toast at a time; a new one replaces the old.
+  const [toast, setToast] = useState(null);
+  const notify = useCallback((title, extra = {}) => setToast({ id: `${Date.now()}-${Math.random()}`, title, ...extra }), []);
+
+  const fontById = useMemo(() => new Map(fonts.map(f => [f.id, f])), [fonts]);
+  const savedRef = useRef(saved);
+  useEffect(() => {
+    savedRef.current = saved;
+  }, [saved]);
+
+  const setStamp = useCallback((id, on) => {
     setSaved(prev => {
+      if (prev.has(id) === on) return prev;
       const next = new Set(prev);
-      next.has(id) ? next.delete(id) : next.add(id);
+      if (on) next.add(id);
+      else next.delete(id);
       return next;
     });
   }, []);
+
+  const toggleSave = useCallback(
+    id => {
+      const had = savedRef.current.has(id);
+      setStamp(id, !had);
+      const name = fontById.get(id)?.f ?? 'Font';
+      notify(had ? `Removed the stamp from ${name}` : `Stamped ${name}`, {
+        description: had ? '' : 'Find it under Stamped at the top of the page.'
+      });
+    },
+    [fontById, notify, setStamp]
+  );
+
+  const shred = useCallback(
+    id => {
+      setStamp(id, false);
+      const name = fontById.get(id)?.f ?? 'Font';
+      notify(`Shredded ${name}`, { actionLabel: 'Undo', onAction: () => setStamp(id, true) });
+    },
+    [fontById, notify, setStamp]
+  );
+
+  const [drawer, setDrawer] = useState(false);
+  const closeDrawer = useCallback(() => setDrawer(false), []);
 
   const q = useDeferredValue(query.trim().toLowerCase());
   const results = useMemo(() => {
@@ -154,13 +193,8 @@ export default function App() {
           <Hanko text="WT" size={34} />
           <span>Washi Type</span>
         </a>
-        <button
-          type="button"
-          className={`ghost small${savedOnly ? ' is-on' : ''}`}
-          aria-pressed={savedOnly}
-          onClick={() => setSavedOnly(v => !v)}
-        >
-          <Hanko on={savedOnly} size={22}>
+        <button type="button" className={`ghost small${savedOnly ? ' is-on' : ''}`} aria-haspopup="dialog" onClick={() => setDrawer(true)}>
+          <Hanko on={saved.size > 0} size={22}>
             <SaveMark />
           </Hanko>
           Stamped · {saved.size}
@@ -170,16 +204,19 @@ export default function App() {
       <section className="hero band" ref={heroRef}>
         <div className="hero-grid">
           <div className="hero-copy">
-            <BlurText
-              as="h1"
-              text="Find the right font"
-              animateBy="words"
-              direction="top"
-              delay={120}
-              blur={14}
-              distance={20}
-              className="title"
-            />
+            <h1 className="title">
+              <FoldText
+                text="Find the right font"
+                splitBy="char"
+                foldStyle="paper"
+                hinge="top"
+                fontSize="clamp(40px, 6.4vw, 80px)"
+                fontWeight={800}
+                duration={0.7}
+                stagger={0.035}
+                creaseShading={0.45}
+              />
+            </h1>
             <p className="for">
                 for{' '}
                 <span className="brush">
@@ -256,10 +293,18 @@ export default function App() {
         <div className="selects">
           <Select label="Script" value={script} options={SCRIPT_OPTIONS} onChange={setScript} />
           <Select label="Sort" value={sort} options={SORT_OPTIONS} onChange={setSort} />
-          <label className="toggle">
-            <input type="checkbox" checked={variableOnly} onChange={e => setVariableOnly(e.target.checked)} />
-            <span>Variable only</span>
-          </label>
+          <SquishSwitch
+            checked={variableOnly}
+            onChange={setVariableOnly}
+            label="Variable only"
+            width={48}
+            height={28}
+            trackColor="color-mix(in srgb, var(--ink) 16%, var(--paper))"
+            trackOnColor="var(--shu)"
+            thumbColor="var(--paper)"
+            thumbOnColor="var(--paper)"
+            className="squish"
+          />
         </div>
       </nav>
 
@@ -325,9 +370,45 @@ export default function App() {
           text={text.trim() || sampleFor(open.s.includes(script) ? script : open.s.includes('latin') ? 'latin' : open.s[0])}
           saved={saved.has(open.id)}
           onToggleSave={toggleSave}
+          onNotify={notify}
           onClose={closeFont}
         />
         </Suspense>,
+          document.body
+        )}
+      {drawer &&
+        createPortal(
+          <StampDrawer
+            fonts={[...saved].map(id => fontById.get(id)).filter(Boolean)}
+            savedOnly={savedOnly}
+            onShowOnDesk={() => setSavedOnly(v => !v)}
+            onShred={shred}
+            onOpenFont={font => {
+              setDrawer(false);
+              openFont(font);
+            }}
+            onClose={closeDrawer}
+          />,
+          document.body
+        )}
+
+      {toast &&
+        createPortal(
+          <SwipeToast
+            key={toast.id}
+            title={toast.title}
+            description={toast.description}
+            actionLabel={toast.actionLabel}
+            onAction={toast.onAction}
+            onClose={() => setToast(t => (t?.id === toast.id ? null : t))}
+            background="var(--ink)"
+            color="var(--paper)"
+            fuseColor="var(--shu)"
+            width={340}
+            radius={6}
+            duration={3600}
+            className="toast"
+          />,
           document.body
         )}
     </ClickSpark>
