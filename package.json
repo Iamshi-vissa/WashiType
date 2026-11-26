@@ -1,0 +1,24 @@
+{
+  "name": "washi-type",
+  "version": "1.0.0",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview",
+    "catalog": "node scripts/build-catalog.mjs"
+  },
+  "dependencies": {
+    "gsap": "^3.15.1",
+    "motion": "^14.14.0",
+    "react": "^19.3.1",
+    "react-dom": "^19.3.1",
+    "three": "^0.187.0"
+  },
+  "devDependencies": {
+    "@vitejs/plugin-react": "^6.3.0",
+    "google-font-metadata": "^6.0.8",
+    "vite": "^8.4.0"
+  },
+  "private": true,
+  "type": "module"
+}
