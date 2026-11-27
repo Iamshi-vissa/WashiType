@@ -137,7 +137,7 @@ export default function SpecimenSheet({ font, text, saved, onToggleSave, onNotif
               sceneHeight={sceneHeight}
               releaseBehavior="creased"
               crumpleAmount={0.94}
-              creaseStrength={0.4}
+              creaseStrength={1}
               crinkle={0.8}
               lightIntensity={2.2}
               shadowOpacity={0.14}

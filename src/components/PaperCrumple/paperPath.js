@@ -275,11 +275,16 @@ export function createPaperPath(
   const folded = Float64Array.from(points);
   for (let step = 1; step <= 80; step++) {
     const t = step / 80;
-    const unfold = t * t * (3 - 2 * t);
+    // Washi Type: smoothing stops 6% short of flat, and the pull back to the flat position is
+    // weaker in the plane of the page (0.12, was 0.22) while the edges keep their length. Paper
+    // that still has relief has to be shorter across it, so the printed letters kink and break
+    // along every crease, like a real crumpled letter smoothed out. Before, the sheet sprang
+    // back to within a pixel of flat and the text stayed straight.
+    const unfold = t * t * (3 - 2 * t) * 0.94;
     for (let pass = 0; pass < 12; pass++) {
       for (let i = 0; i < points.length; i++) {
         const target = folded[i] + (rest[i] - folded[i]) * unfold;
-        points[i] += (target - points[i]) * (i % 3 === 2 ? 0.04 : 0.22);
+        points[i] += (target - points[i]) * (i % 3 === 2 ? 0.05 : 0.12);
       }
       constrain(hinges, 4, 0.7, pass % 2 === 0);
       constrain(edges, 3, 1, pass % 2 !== 0);
