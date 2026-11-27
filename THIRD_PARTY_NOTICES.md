@@ -22,6 +22,17 @@ jsDelivr (Fontsource), and each font is under its own licence, shown on its shee
 SIL Open Font License, the Apache License or the ITF Free Font License (Fontshare). The
 catalog in `public/fonts.json` only lists names, styles and licence names.
 
+- **Downloads:** "Download font" fetches the font files from github.com/google/fonts (Google
+  Fonts) or jsDelivr (Fontsource) in the visitor's browser and zips them there, with the font's
+  own licence file (Google Fonts) or a note naming the licence. `data/google-files.json` and
+  `public/downloads.json` only list file names.
+- **Font detector index:** `public/font-index.bin` holds measurements taken from the font files
+  (letter sizes, positions and stroke thickness), not the fonts' outlines or any font data.
+- **Test fixture:** `tests/fixtures/arvo-latin-400-normal.woff2` is the Latin subset of Arvo by
+  Anton Koovit, under the SIL Open Font License 1.1 (`tests/fixtures/Arvo-OFL.txt`), used only
+  by the tests.
+
 npm packages used to build and run the site are under their own licences, listed in
-`package-lock.json` and each package's folder in `node_modules/`. The Google Fonts snapshot in
+`package-lock.json` and each package's folder in `node_modules/`; the one added for downloads,
+fflate (zip files), is MIT. The Google Fonts snapshot in
 `data/google-fonts.json` is trimmed from the data files of google-font-metadata (MIT).

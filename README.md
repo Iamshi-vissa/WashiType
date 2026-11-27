@@ -19,9 +19,11 @@ npm run preview    # serves the production build on http://localhost:4173
 npm run lint       # ESLint 10
 npm test           # browser tests against the production build (run npm run build first)
 npm run vendor:check   # checks no copied component changed without being recorded
+npm run font-index     # measures fonts missing from the font detector's index (all: -- --rebuild)
+npm run google-files   # refreshes which TTF files each Google family has, for downloads
 ```
 
-`npm run build` does three things: refreshes the font catalog, builds the app with Vite, and writes a real HTML page for every font (`scripts/prerender.mjs`).
+`npm run build` does four things: refreshes the font catalog (and the download list), measures any fonts the font detector's index is missing (on Vercel that's the Fontshare fonts, a few seconds), builds the app with Vite, and writes a real HTML page for every font (`scripts/prerender.mjs`).
 
 `npm test` uses Playwright and runs every test in Chromium, Firefox and WebKit (Safari's engine), plus the page tests on an emulated iPhone. The first time, install the browsers with `npx playwright install chromium firefox webkit`. To run only Chromium against a Chrome you already have: `PW_CHROME=/path/to/chrome npx playwright test --project=chromium`.
 
@@ -30,6 +32,8 @@ npm run vendor:check   # checks no copied component changed without being record
 - **Write something:** every sheet shows your text in its font. With no text, each font shows a sample in a script it actually has, so a Khmer-only font isn't previewed in English.
 - **Filters:** source, category, script (27 scripts, including Devanagari, Tamil, Bengali, Japanese and Arabic), variable fonts only, and four sort orders.
 - **Font sheets:** every weight (with an italic toggle), licence, source, designer, a crumplable specimen, and the embed code on a ticket you tear to copy. Every font has its own page, such as `/fonts/inter`, which works with Back and Forward, can be bookmarked and shared, and is indexed by search engines (old `/#inter` links move there).
+- **Download any font:** "Download font" on a sheet saves a .zip of the desktop font files (TTF) with the licence and install steps, to use anywhere: Word, Figma, Photoshop, Canva, games, print. Google Fonts files come straight from Google's own repository (github.com/google/fonts, pinned to one commit so links never move); fonts from independent foundries are Fontsource's TTF for each weight and style. The zip is put together in the browser. Fontshare's licence asks for downloads to come from Fontshare, so its fonts link there.
+- **What font is this?** Add a picture of some lettering (drop, paste or choose one), draw a box around one line, type what it says, and the closest fonts in the catalog come back, best first, with how close each is. It all runs on your device: the picture is never uploaded. See [Finding a font from a picture](#finding-a-font-from-a-picture).
 - **Stamped fonts:** press the seal on any sheet to keep it. The Stamped drawer lists them as paper slips; drag one into the shredder (or press Delete) to remove it, with Undo. Stamps stay in this browser.
 - **Errors you can read:** a retro TV shows what went wrong instead of a blank page (see below).
 - **Light and dark:** the site follows your device; the On/Off switch in the header picks one and remembers it in this browser (it's applied before the page paints, so there's no flash of the other theme).
@@ -50,6 +54,18 @@ npm run vendor:check   # checks no copied component changed without being record
 - `npm run build` refreshes all three sources from the network and falls back to the snapshots in `data/` if one can't be reached. `npm run catalog` rebuilds from the snapshots only; `npm run catalog:live -- --save-snapshot` also refreshes the Google Fonts snapshot.
 - The build checks the catalog (unique ids, valid weights and categories, enough Google fonts) and fails rather than ship a broken one. A single malformed entry from a live API is skipped, not fatal.
 - Fontshare's licence doesn't allow redistributing the files, so Washi Type only displays them through Fontshare's servers and links to fontshare.com for downloads.
+
+## Finding a font from a picture
+
+`src/detect/` matches lettering against the catalog in the browser, in three steps.
+
+1. **Reading the picture** (`analyze.js`): an Otsu threshold separates lettering from background (dark on light or light on dark), connected blobs are grouped into letters (an i's dot joins its stem), and the count is matched to the text typed in, joining broken letters and splitting touching ones. Then each letter's box, the baseline and the stroke thickness are measured. Joined-up scripts, dotted and stencil lettering don't come apart into letters, so those are measured as whole lines instead (x-height band, ascenders, descenders, width, strokes).
+2. **Shape index** (`fontIndex.js`, `public/font-index.bin`, about 500 KB compressed, loaded only when you use the detector): for each of 2,000+ fonts, its regular and bold letters and digits measured from the font files ahead of time by `scripts/font-index.mjs`: every letter's width, height, position on the baseline and spacing, and how thick the strokes are. For each font the picture's size and baseline are fitted from all the letters at once, then compared. That narrows the catalog to the 60 closest. Fonts with the same Latin letters (most Noto families share Noto Sans's) are grouped, so they don't crowd out others.
+3. **Drawing** (`match.js`): those 60 are loaded and the same letters drawn at the same size, then compared with the picture pixel by pixel (blurred, with a pixel of give). Medium and semibold weights are estimated from the stroke thickness and drawn too. Look-alikes in a group (Allerta and Allerta Stencil) are drawn to tell them apart.
+
+On test pictures (blurred, JPEG-compressed, at different sizes), the right font comes first about three times in four and in the top three nine times in ten; near-misses are usually fonts drawn from the same design (Inter and Pretendard). It works with Latin letters and upright text; italics, heavy perspective and very distorted lettering match less well.
+
+`npm run font-index` adds fonts that are new to the catalog; the build runs it too. Font files come from Fontsource's repository on GitHub (Google Fonts and independent foundries) and Fontshare's servers.
 
 ## Error screens
 
@@ -74,12 +90,17 @@ index.html, 404.html          two entry pages (the app and the 404 page)
 api/report.js                 Vercel function: writes visitors' error reports to the logs
 public/
   fonts.json                  the merged catalog (generated)
+  downloads.json              where each font's desktop files are (generated; read on Download)
+  font-index.bin              the font detector's shape index (scripts/font-index.mjs)
   sw.js                       service worker: network first, saved copy after 3.5 s or offline
   theme.js                    applies a saved light/dark choice before the page paints
   favicon.svg, og.jpg         tab icon and link preview image (og.jpg's source is docs/og/og.html)
-data/                         snapshots of the Google Fonts, Fontshare and Fontsource catalogs, Google licence folders
+data/                         snapshots of the Google Fonts, Fontshare and Fontsource catalogs; Google licence
+                              folders; google-files.json, each Google family's TTF files in google/fonts
 scripts/
-  build-catalog.mjs           builds and checks public/fonts.json
+  build-catalog.mjs           builds and checks public/fonts.json and public/downloads.json
+  font-index.mjs              measures fonts into public/font-index.bin
+  google-files.mjs            refreshes data/google-files.json from github.com/google/fonts
   prerender.mjs               writes dist/fonts/<id>/index.html, sitemap.xml, robots.txt
   vendor.mjs                  vendor:check / vendor:record for copied components
 vendor/                       manifest, untouched originals and patches of copied components
@@ -93,6 +114,8 @@ src/
   main.jsx, notfound.jsx      entry points (error boundary, service worker)
   data.js                     categories, scripts and samples, sorts, featured fonts
   fontLoader.js               loads each font from its own source; embed code; source links
+  download.js                 Download font: fetches the TTF files and zips them in the browser
+  detect/                     What font is this?: reading pictures, the shape index, matching
   focus.js, useMedia.js       focus return after dialogs; media-query hook
   theme.js                    light/dark: follows the device until the switch saves a choice
   paperSettings.js            size, detail and fold settings shared by every sheet
@@ -102,13 +125,15 @@ src/
     SpecimenSheet.jsx         the font sheet (lazy-loaded with three.js)
     drawSheet.js              paints the specimen on washi for the crumple
     StampDrawer.jsx           Stamped drawer with the shredder (lazy-loaded)
+    FontDetector.jsx          What font is this? dialog (lazy-loaded)
     Select.jsx                dropdowns that always open downwards
     HeroScroll.jsx, Hanko.jsx hero sheet and the red seal
     ErrorBoundary.jsx, ErrorScreen.jsx, TvError/   error handling and the TV
     OnOffSwitch/              the light/dark switch (from Uiverse)
     PaperCrumple/             crumplable paper; the fold simulation runs in a Web Worker
     reactbits/                ReactBits components (see below)
-tests/app.spec.js             Playwright tests: main flows, real pages, every error path
+tests/app.spec.js             Playwright tests: main flows, real pages, downloads, the font detector, every error path
+tests/fixtures/               Arvo (OFL), so the detector test doesn't depend on Google Fonts
 vercel.json                   security headers (CSP and others) and caching
 .github/workflows/ci.yml      lint, vendor check, build and tests (3 browsers) on every push, on Node 26 like Vercel
 .nvmrc                        the Node version (26) for CI and local work; package.json allows 22.13 and up
@@ -135,12 +160,13 @@ To upgrade one: copy the new upstream file over it, `git apply` its patch from `
 
 ## Security and performance
 
-- `vercel.json` sets a Content-Security-Policy that only allows the site itself plus the three font services, along with `X-Content-Type-Options`, `Referrer-Policy`, `Permissions-Policy` and `Cross-Origin-Opener-Policy`. Built code files are cached for a year; `sw.js` is never cached.
+- `vercel.json` sets a Content-Security-Policy that only allows the site itself plus the three font services (and, for downloads, Google's font repository on GitHub and jsDelivr), along with `X-Content-Type-Options`, `Referrer-Policy`, `Permissions-Policy` and `Cross-Origin-Opener-Policy`. Built code files are cached for a year; `sw.js` is never cached.
 - Licence links from third-party data are kept only if they're plain `http(s)` links.
 - **First load:** about 96 KB of compressed JavaScript (was 212 KB). The animation libraries (motion, gsap) load right after the first paint; until then the page shows working stand-ins (`src/deferred.jsx`).
 - **Scrolling and typing:** `VirtualGrid` keeps only 12 to 18 sheets on the page at any time, whichever of the 2,091 you're looking at. Typing in "Write something" takes 7 to 13 ms per keystroke.
 - **Opening a sheet:** the crumple simulation runs in a Web Worker, shaders compile in parallel before the first frame, and the specimen picture is encoded off the main thread. Blocking time when opening halved in tests. The sheet's paper settings live in `src/paperSettings.js` and are the same for every font, so the app runs the simulation once in the background after the catalog loads; the first sheet you open is ready straight away.
-- The three.js font sheet and the Stamped drawer load only when opened.
+- The three.js font sheet, the Stamped drawer and the font detector load only when opened. The detector's index (about 500 KB compressed) loads the first time you search with a picture; matching takes a few seconds, most of it fetching the closest fonts to draw.
+- The picture you give the font detector stays on your device; nothing about it is sent anywhere. The test checks that no request is made with it.
 
 ## Deploying
 

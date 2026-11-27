@@ -3,6 +3,8 @@
 //   fs Fontshare      api.fontshare.com    (one request per family)
 //   o  Fontsource     cdn.jsdelivr.net/npm/@fontsource/<id>@5/<weight>.css (pinned to the major version)
 const requested = new Set();
+// Fonts whose stylesheet failed to load: waiting for them is pointless.
+const failed = new Set();
 const queues = { g: [] };
 let timer = 0;
 
@@ -33,7 +35,9 @@ const googleCss = params => `https://fonts.googleapis.com/css2?${params.join('&'
 // Google answers 400 for the whole request if any one family in it is unknown, so a failed
 // batch is retried one family at a time: one bad entry can't blank twenty cards.
 function addGoogleBatch(params) {
-  addStylesheet(googleCss(params), params.length > 1 ? () => params.forEach(p => addGoogleBatch([p])) : undefined);
+  addStylesheet(googleCss(params), () =>
+    params.length > 1 ? params.forEach(p => addGoogleBatch([p])) : failed.add(params[0].split(':')[0])
+  );
 }
 
 function flush() {
@@ -47,15 +51,16 @@ const fontsourceCss = (font, weight, italic) =>
   `https://cdn.jsdelivr.net/npm/@fontsource/${font.pk}@5/${weight}${italic ? '-italic' : ''}.css`;
 
 function request(font, weights, italic) {
+  const fail = () => failed.add(`family=${plus(font.f)}`);
   if (font.src === 'o') {
     for (const w of weights) {
-      addStylesheet(fontsourceCss(font, w, false));
+      addStylesheet(fontsourceCss(font, w, false), fail);
       if (italic) addStylesheet(fontsourceCss(font, w, true));
     }
     return;
   }
   if (font.src === 'fs') {
-    addStylesheet(`https://api.fontshare.com/v2/css?${fontshareParam(font.slug, weights, italic)}&display=swap`);
+    addStylesheet(`https://api.fontshare.com/v2/css?${fontshareParam(font.slug, weights, italic)}&display=swap`, fail);
     return;
   }
   queues.g.push(googleParam(font.f, weights, italic));
@@ -90,6 +95,44 @@ export async function loadFamily(font) {
   } catch {
     /* the sheet still renders with fallback lettering */
   }
+}
+
+/** Whether a FontFace weight ("700", or "100 900" for a variable font) includes `weight`. */
+const coversWeight = (faceWeight, weight) => {
+  const [lo, hi = lo] = String(faceWeight)
+    .split(/\s+/)
+    .map(w => (w === 'normal' ? 400 : w === 'bold' ? 700 : Number(w)));
+  return weight >= lo && weight <= hi;
+};
+
+/**
+ * Load one weight of a family and wait for it (the font detector draws candidates with it).
+ * Resolves true when the font is ready to draw with, false if it didn't arrive in time.
+ */
+export async function loadWeight(font, weight, timeout = 5000) {
+  const key = `${font.id}@${weight}`;
+  if (!requested.has(key) && !requested.has(`${font.id}@all`)) {
+    requested.add(key);
+    request(font, [weight], false);
+    flush();
+  }
+  // fonts.load resolves with the faces it loaded: none means the stylesheet hasn't defined the
+  // font (yet), and fonts.check would wrongly say yes to a font it has never heard of.
+  const spec = `${weight} 40px "${font.f}"`;
+  const deadline = Date.now() + timeout;
+  while (Date.now() < deadline) {
+    if (failed.has(`family=${plus(font.f)}`)) return false;
+    try {
+      const faces = await Promise.race([document.fonts.load(spec), new Promise(r => setTimeout(() => r(null), 1500))]);
+      // The face must be this weight: with only the regular loaded so far, the browser hands
+      // back the regular and would fake the bold by thickening it.
+      if (faces?.some(face => coversWeight(face.weight, weight))) return true;
+    } catch {
+      return false;
+    }
+    await new Promise(r => setTimeout(r, 150)); // the stylesheet may still be on its way
+  }
+  return false;
 }
 
 const FALLBACK = { s: 'sans-serif', r: 'serif', d: 'sans-serif', h: 'cursive', m: 'monospace' };

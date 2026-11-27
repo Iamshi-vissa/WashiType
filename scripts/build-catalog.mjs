@@ -183,6 +183,8 @@ const ids = new Set(google.map(f => f.id));
 const uniqueId = (id, prefix) => (ids.has(id) ? `${prefix}-${id}` : id);
 
 const others = [];
+// The language subset each open-source font's files are cut for (one each), for downloads.
+const otherSubset = {};
 for (const f of await openSourceFonts()) {
   // One malformed entry from a live API must not fail the deploy: skip it.
   if (!f?.family || !f.id || !Array.isArray(f.weights) || !f.weights.length) continue;
@@ -190,6 +192,7 @@ for (const f of await openSourceFonts()) {
   seen.add(familyKey(f.family));
   const id = uniqueId(f.id, 'os');
   ids.add(id);
+  otherSubset[id] = f.subsets?.length === 1 ? f.subsets[0] : null;
   others.push({
     f: f.family,
     id,
@@ -251,4 +254,24 @@ if (problems.length) {
 writeFileSync(new URL('public/fonts.json', root), '[\n' + rows.map(r => JSON.stringify(r)).join(',\n') + '\n]\n');
 console.log(
   `Wrote ${rows.length} fonts: ${google.length} Google Fonts, ${fontshare.length} Fontshare, ${others.length} open-source foundries`
+);
+
+// ---------- Downloads ----------
+// public/downloads.json, fetched when someone clicks "Download font": where each font's
+// desktop files are. Google Fonts: the TTF/OTF files in github.com/google/fonts at the commit
+// data/google-files.json was read from. Open-source foundries: Fontsource's TTF per weight and
+// style (each of these fonts has a single language subset, so that file is the whole font).
+// Fontshare isn't listed: its licence asks for downloads to come from fontshare.com.
+const googleFiles = readJSON('data/google-files.json');
+const downloads = { google: `https://raw.githubusercontent.com/google/fonts/${googleFiles.commit}/`, g: {}, o: {} };
+for (const font of google) {
+  const family = googleFiles.families[familyKey(font.f)];
+  if (family) downloads.g[font.id] = [`${family.folder}/${familyKey(font.f)}`, family.licence, ...family.fonts];
+}
+for (const font of others) if (otherSubset[font.id]) downloads.o[font.id] = otherSubset[font.id];
+writeFileSync(new URL('public/downloads.json', root), JSON.stringify(downloads) + '\n');
+const missing = google.length - Object.keys(downloads.g).length;
+console.log(
+  `Downloads: ${Object.keys(downloads.g).length} Google families, ${Object.keys(downloads.o).length} open-source fonts` +
+    (missing ? ` (${missing} Google families not in the google/fonts snapshot link to Google Fonts)` : '')
 );

@@ -4,6 +4,7 @@ import TearTicket from './reactbits/TearTicket.jsx';
 import { drawSheet } from './drawSheet.js';
 import { SHEET_PAPER } from '../paperSettings.js';
 import { loadFamily, cssSnippet, sourceUrl, SOURCES } from '../fontLoader.js';
+import { canDownload, downloadFont } from '../download.js';
 import { CATEGORY_NAME, SCRIPT_LABEL } from '../data.js';
 import Hanko, { SaveMark } from './Hanko.jsx';
 import { restoreFocus } from '../focus.js';
@@ -28,6 +29,20 @@ export default function SpecimenSheet({ font, text, saved, onToggleSave, onNotif
   const [image, setImage] = useState('');
   const [italic, setItalic] = useState(false);
   const [copied, setCopied] = useState('');
+  // Download state belongs to one font; opening another sheet starts fresh.
+  const [dl, setDl] = useState({ id: null });
+  const download = dl.id === font.id ? dl : { id: font.id, state: 'idle', progress: 0 };
+  const startDownload = async () => {
+    const id = font.id;
+    setDl({ id, state: 'busy', progress: 0 });
+    try {
+      const ok = await downloadFont(font, progress => setDl(d => (d.id === id ? { ...d, progress } : d)));
+      setDl({ id, state: ok ? 'done' : 'missing', progress: 1 });
+    } catch (err) {
+      setDl({ id, state: 'error', progress: 0, error: navigator.onLine === false ? 'you’re offline' : 'a file wouldn’t load' });
+      console.warn('Download failed', err);
+    }
+  };
   const [resetKey, setResetKey] = useState(0);
   const [paperState, setPaperState] = useState('flat');
   const closeRef = useRef(null);
@@ -175,9 +190,19 @@ export default function SpecimenSheet({ font, text, saved, onToggleSave, onNotif
           </h2>
 
           <div className="actions">
-            <a className="btn" href={sourceUrl(font)} target="_blank" rel="noreferrer">
-              Get it on {SOURCES[font.src].name}
-            </a>
+            {canDownload(font) && download.state !== 'missing' ? (
+              <button type="button" className="btn" onClick={startDownload} disabled={download.state === 'busy'} aria-live="polite">
+                {download.state === 'busy'
+                  ? `Downloading… ${Math.round(download.progress * 100)}%`
+                  : download.state === 'done'
+                    ? 'Downloaded · get it again'
+                    : 'Download font'}
+              </button>
+            ) : (
+              <a className="btn" href={sourceUrl(font)} target="_blank" rel="noreferrer">
+                {font.src === 'fs' ? 'Download from Fontshare' : `Get it on ${SOURCES[font.src].name}`}
+              </a>
+            )}
             <button type="button" className="ghost seal-label" aria-pressed={saved} onClick={() => onToggleSave(font.id)}>
               <Hanko key={saved ? 'on' : 'off'} on={saved} stamp={saved} size={26}>
                 <SaveMark />
@@ -185,6 +210,28 @@ export default function SpecimenSheet({ font, text, saved, onToggleSave, onNotif
               {saved ? 'Stamped and saved' : 'Stamp to save'}
             </button>
           </div>
+
+          <p className="download-note">
+            {download.state === 'error' ? (
+              <span className="err">
+                The download didn’t finish ({download.error}). Try again, or{' '}
+                <a href={sourceUrl(font)} target="_blank" rel="noreferrer">
+                  get it on {SOURCES[font.src].name}
+                </a>
+                .
+              </span>
+            ) : canDownload(font) && download.state !== 'missing' ? (
+              <>
+                Desktop font files (.zip) to install and use anywhere: Word, Figma, Photoshop, Canva.{' '}
+                <a href={sourceUrl(font)} target="_blank" rel="noreferrer">
+                  Also on {SOURCES[font.src].name}
+                </a>
+                .
+              </>
+            ) : font.src === 'fs' ? null : (
+              `${SOURCES[font.src].name} has the files for this one.`
+            )}
+          </p>
 
           <dl className="facts">
             <div>

@@ -10,6 +10,7 @@ import Hanko, { SaveMark } from './components/Hanko.jsx';
 const SpecimenSheet = lazy(() => import('./components/SpecimenSheet.jsx'));
 // The drawer (with the Shredder) only loads when it's opened.
 const StampDrawer = lazy(() => import('./components/StampDrawer.jsx'));
+const FontDetector = lazy(() => import('./components/FontDetector.jsx'));
 import ErrorScreen from './components/ErrorScreen.jsx';
 import ErrorBoundary from './components/ErrorBoundary.jsx';
 import { CATEGORIES, SCRIPTS, SORTS, FEATURED, SIZES, sampleFor, previewText } from './data.js';
@@ -221,6 +222,8 @@ export default function App() {
 
   const [drawer, setDrawer] = useState(false);
   const closeDrawer = useCallback(() => setDrawer(false), []);
+  const [detector, setDetector] = useState(false);
+  const closeDetector = useCallback(() => setDetector(false), []);
 
   const q = useDeferredValue(query.trim().toLowerCase());
   const results = useMemo(() => {
@@ -392,6 +395,14 @@ export default function App() {
                 autoComplete="off"
               />
             </label>
+            <button type="button" className="ghost small from-picture" onClick={() => setDetector(true)} disabled={!fonts.length}>
+              <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true">
+                <rect x="3" y="5" width="18" height="14" rx="2" />
+                <circle cx="9" cy="10" r="1.6" />
+                <path d="M21 16l-5-5-8 8" />
+              </svg>
+              What font is this?
+            </button>
             <div className="sizes" role="group" aria-label="Preview size">
               {SIZES.map(s => (
                 <button key={s} type="button" className={s === size ? 'is-on' : ''} aria-pressed={s === size} onClick={() => setSize(s)}>
@@ -545,6 +556,23 @@ export default function App() {
             onClose={closeDrawer}
           />
           </Suspense>
+          </ErrorBoundary>,
+          document.body
+        )}
+
+      {detector &&
+        createPortal(
+          <ErrorBoundary fallback={() => null}>
+            <Suspense fallback={<div className="overlay" />}>
+              <FontDetector
+                fonts={fonts}
+                onOpenFont={font => {
+                  setDetector(false);
+                  openFont(font);
+                }}
+                onClose={closeDetector}
+              />
+            </Suspense>
           </ErrorBoundary>,
           document.body
         )}

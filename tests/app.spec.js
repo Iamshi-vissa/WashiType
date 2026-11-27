@@ -200,3 +200,131 @@ test('with no choice saved, the switch follows the device', async ({ page }) => 
   await expect(page.getByRole('switch', { name: 'Dark mode' })).toBeChecked();
   await expect(page.locator('html')).not.toHaveAttribute('data-theme', /./);
 });
+
+test('Download font saves a zip of the desktop files with the licence', async ({ page }) => {
+  // Stand-in font files, so the test doesn't depend on GitHub or jsDelivr.
+  await page.route('https://raw.githubusercontent.com/google/fonts/**', route =>
+    route.fulfill({ status: 200, contentType: 'font/ttf', body: `file:${new URL(route.request().url()).pathname}` })
+  );
+  await page.goto('/fonts/inter');
+  const button = page.locator('.spec .actions .btn').first();
+  await expect(button).toHaveText('Download font');
+  const [download] = await Promise.all([page.waitForEvent('download'), button.click()]);
+  expect(download.suggestedFilename()).toBe('Inter.zip');
+  const { unzipSync, strFromU8 } = await import('fflate');
+  const files = unzipSync(new Uint8Array(await (await import('node:fs/promises')).readFile(await download.path())));
+  expect(Object.keys(files).sort()).toEqual(
+    ['Inter/Inter-Italic[opsz,wght].ttf', 'Inter/Inter[opsz,wght].ttf', 'Inter/OFL.txt', 'READ ME.txt'].sort()
+  );
+  expect(strFromU8(files['READ ME.txt'])).toContain('SIL Open Font License');
+  await expect(button).toHaveText('Downloaded · get it again');
+});
+
+test('fonts from other foundries download one TTF per weight and style', async ({ page }) => {
+  await page.route('https://cdn.jsdelivr.net/fontsource/fonts/**', route =>
+    route.fulfill({ status: 200, contentType: 'font/ttf', body: 'ttf' })
+  );
+  await page.goto('/fonts/adwaita-mono');
+  const [download] = await Promise.all([page.waitForEvent('download'), page.locator('.spec .actions .btn').first().click()]);
+  const { unzipSync } = await import('fflate');
+  const files = unzipSync(new Uint8Array(await (await import('node:fs/promises')).readFile(await download.path())));
+  expect(Object.keys(files).filter(name => name.endsWith('.ttf')).sort()).toEqual([
+    'Adwaita Mono/AdwaitaMono-400.ttf',
+    'Adwaita Mono/AdwaitaMono-400Italic.ttf',
+    'Adwaita Mono/AdwaitaMono-700.ttf',
+    'Adwaita Mono/AdwaitaMono-700Italic.ttf'
+  ]);
+});
+
+test('a failed download says so and offers the source instead', async ({ page }) => {
+  await page.route('https://raw.githubusercontent.com/google/fonts/**', route => route.fulfill({ status: 503, body: '' }));
+  await page.goto('/fonts/inter');
+  await page.locator('.spec .actions .btn').first().click();
+  await expect(page.locator('.download-note .err')).toContainText('didn’t finish');
+  await expect(page.locator('.download-note .err a')).toHaveAttribute('href', /fonts\.google\.com\/specimen\/Inter/);
+});
+
+test('Fontshare fonts link to Fontshare for the download', async ({ page }) => {
+  await page.goto('/fonts/satoshi');
+  await expect(page.locator('.spec .actions a.btn')).toHaveText('Download from Fontshare');
+  await expect(page.locator('.spec .actions a.btn')).toHaveAttribute('href', /fontshare\.com\/fonts\/satoshi/);
+});
+
+// "What font is this?" runs on the device and fetches the closest fonts to draw them. The
+// test serves one real font (Arvo, OFL, tests/fixtures) and refuses every other font
+// stylesheet, so it doesn't depend on Google Fonts and finishes quickly.
+async function serveOnlyArvo(page) {
+  const { readFile } = await import('node:fs/promises');
+  const arvo = await readFile(new URL('./fixtures/arvo-latin-400-normal.woff2', import.meta.url));
+  await page.route('https://fixtures.test/arvo.woff2', route =>
+    route.fulfill({ status: 200, contentType: 'font/woff2', headers: { 'access-control-allow-origin': '*' }, body: arvo })
+  );
+  await page.route('https://fonts.googleapis.com/css2?**', route => {
+    const families = new URL(route.request().url()).searchParams.getAll('family');
+    if (families.length === 1 && families[0].startsWith('Arvo')) {
+      return route.fulfill({
+        status: 200,
+        contentType: 'text/css',
+        body: "@font-face{font-family:'Arvo';font-weight:400;src:url(https://fixtures.test/arvo.woff2) format('woff2')}"
+      });
+    }
+    return route.fulfill({ status: 404, body: '' });
+  });
+  for (const host of ['https://cdn.jsdelivr.net/npm/@fontsource/**', 'https://api.fontshare.com/**']) {
+    await page.route(host, route => route.fulfill({ status: 404, body: '' }));
+  }
+}
+
+/** A picture of some lettering in Arvo, as PNG bytes. */
+async function arvoPicture(page, text) {
+  const url = await page.evaluate(async text => {
+    const face = new FontFace('Arvo picture', 'url(https://fixtures.test/arvo.woff2)');
+    document.fonts.add(await face.load());
+    const canvas = Object.assign(document.createElement('canvas'), { width: 900, height: 260 });
+    const ctx = canvas.getContext('2d');
+    ctx.fillStyle = '#efe6d2';
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
+    ctx.fillStyle = '#2a211a';
+    ctx.font = '64px "Arvo picture"';
+    ctx.fillText(text, 60, 150);
+    return canvas.toDataURL('image/png');
+  }, text);
+  return Buffer.from(url.split(',')[1], 'base64');
+}
+
+test('What font is this? finds the font in a picture, on the device', async ({ page }) => {
+  test.setTimeout(90000);
+  await serveOnlyArvo(page);
+  await page.goto('/');
+  await page.getByRole('button', { name: 'What font is this?' }).click();
+  const dialog = page.getByRole('dialog', { name: 'What font is this?' });
+  await expect(dialog).toBeVisible();
+  // Nothing is uploaded: count requests carrying the picture.
+  const uploads = [];
+  page.on('request', req => req.method() !== 'GET' && !req.url().includes('/api/report') && uploads.push(req.url()));
+  await dialog.locator('input[type=file]').setInputFiles({ name: 'sign.png', mimeType: 'image/png', buffer: await arvoPicture(page, 'Handgloves') });
+  await expect(dialog.locator('.detect-view canvas')).toBeVisible();
+  await dialog.getByLabel('What does it say?').fill('Handgloves');
+  await dialog.getByRole('button', { name: 'Find the font' }).click();
+  await expect(dialog.locator('.detect-results li').first().locator('.detect-name')).toHaveText(/^Arvo\b/, { timeout: 60000 });
+  expect(uploads).toEqual([]);
+  // Open goes to the font's sheet.
+  await dialog.locator('.detect-results li').first().getByRole('button', { name: 'Open' }).click();
+  await expect(page.locator('.spec h2')).toHaveText('Arvo');
+});
+
+test('What font is this? explains what it needs', async ({ page }) => {
+  await serveOnlyArvo(page);
+  await page.goto('/');
+  await page.getByRole('button', { name: 'What font is this?' }).click();
+  const dialog = page.getByRole('dialog', { name: 'What font is this?' });
+  await dialog.getByRole('button', { name: 'Find the font' }).click();
+  await expect(dialog.locator('.detect-status .err')).toHaveText('Add a picture first.');
+  await dialog.locator('input[type=file]').setInputFiles({ name: 'notes.txt', mimeType: 'text/plain', buffer: Buffer.from('hello') });
+  await expect(dialog.locator('.detect-status .err')).toContainText('isn’t a picture');
+  await dialog.locator('input[type=file]').setInputFiles({ name: 'sign.png', mimeType: 'image/png', buffer: await arvoPicture(page, 'Handgloves') });
+  await dialog.getByRole('button', { name: 'Find the font' }).click();
+  await expect(dialog.locator('.detect-status .err')).toContainText('Type what the lettering says');
+  await page.keyboard.press('Escape');
+  await expect(dialog).toHaveCount(0);
+});
