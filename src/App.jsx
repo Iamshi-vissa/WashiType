@@ -43,7 +43,8 @@ export default function App() {
   // 'loading' | 'ready' | 'offline' | 'unreachable'
   const [catalog, setCatalog] = useState('loading');
   const [online, setOnline] = useState(() => navigator.onLine !== false);
-  const [missing, setMissing] = useState(null); // a #link to a font that doesn't exist
+  const [missing, setMissing] = useState(null); // a link to a font that doesn't exist
+  const [savedCopy, setSavedCopy] = useState(false); // the font list came from the offline copy
   const [query, setQuery] = useState('');
   const [text, setText] = useState(() => store.get('washitype:text', store.get('typesheet:text', '')));
   const [size, setSize] = useState(() => store.get('washitype:size', store.get('typesheet:size', 36)));
@@ -66,6 +67,7 @@ export default function App() {
         if (!res.ok) throw new Error(`fonts.json answered ${res.status}`);
         const data = await res.json();
         if (!Array.isArray(data) || !data.length) throw new Error('fonts.json is empty');
+        setSavedCopy(res.headers.get('X-Washi-Copy') === '1');
         setFonts(data);
         setCatalog('ready');
         return;
@@ -268,9 +270,12 @@ export default function App() {
           Stamped · {saved.size}
         </button>
       </header>
-      {!online && catalog === 'ready' && (
+      {(!online || savedCopy) && catalog === 'ready' && (
         <div className="offline-bar" role="status">
-          <strong>NO SIGNAL</strong> You’re offline. Fonts that haven’t loaded yet show a stand-in until you reconnect.
+          <strong>NO SIGNAL</strong>
+          {online
+            ? 'Washi Type couldn’t be reached, so this is the copy saved on your device. Reload to try again.'
+            : 'You’re offline. Fonts that haven’t loaded yet show a stand-in until you reconnect.'}
         </div>
       )}
 
