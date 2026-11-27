@@ -17,6 +17,7 @@ const StampDrawer = lazy(() => import('./components/StampDrawer.jsx'));
 import ErrorScreen from './components/ErrorScreen.jsx';
 import ErrorBoundary from './components/ErrorBoundary.jsx';
 import { CATEGORIES, SCRIPTS, SORTS, FEATURED, SIZES, sampleFor, previewText } from './data.js';
+import { fontPath, readFontRoute, upgradeHashLink } from './routes.js';
 
 const PAGE = 48;
 const SCRIPT_OPTIONS = [{ value: 'all', label: 'Any script' }, ...SCRIPTS.map(s => ({ value: s.id, label: s.label }))];
@@ -111,38 +112,38 @@ export default function App() {
   useEffect(() => store.set('washitype:size', size), [size]);
   useEffect(() => store.set('washitype:saved', [...saved]), [saved]);
 
-  // #font-id opens that font's sheet, so a sheet can be bookmarked or sent.
+  // /fonts/<id> opens that font's sheet; the address can be bookmarked, shared and indexed.
   useEffect(() => {
     if (!fonts.length) return;
+    upgradeHashLink();
     const sync = () => {
-      const raw = location.hash.slice(1);
-      let id = raw;
-      let garbled = false;
-      try {
-        id = decodeURIComponent(raw);
-      } catch {
-        garbled = true; // e.g. #%E0%A4: treat it as a font that isn't found
-      }
-      const font = id && !garbled ? fonts.find(f => f.id === id) : null;
+      const route = readFontRoute();
+      const font = route?.id ? fonts.find(f => f.id === route.id) : null;
       setOpen(font ?? null);
-      setMissing(id && !font ? (garbled ? { term: '' } : { term: id }) : null);
+      setMissing(route && !font ? { term: route.garbled ? '' : route.id } : null);
     };
     sync();
-    window.addEventListener('hashchange', sync);
-    return () => window.removeEventListener('hashchange', sync);
+    window.addEventListener('popstate', sync);
+    return () => window.removeEventListener('popstate', sync);
   }, [fonts]);
 
+  // The tab title follows the open sheet.
+  useEffect(() => {
+    const base = 'Washi Type font finder';
+    document.title = open ? `${open.f} · Washi Type` : base;
+  }, [open]);
+
   const openFont = useCallback(font => {
-    location.hash = font.id;
+    // Remember that this sheet was opened from inside the app, so closing can go Back.
+    history.pushState({ washiSheet: true }, '', fontPath(font.id));
+    setMissing(null);
+    setOpen(font);
   }, []);
   const closeFont = useCallback(() => {
     setOpen(null);
     setMissing(null);
-    try {
-      history.replaceState(null, '', location.pathname + location.search);
-    } catch {
-      location.hash = '';
-    }
+    if (history.state?.washiSheet) history.back();
+    else history.replaceState(null, '', '/' + location.search);
   }, []);
 
   // One toast at a time; a new one replaces the old.
@@ -267,7 +268,7 @@ export default function App() {
       style={{ height: 'auto' }}
     >
       <header className="top">
-        <a className="mark" href="#" onClick={e => (e.preventDefault(), closeFont(), clearFilters())}>
+        <a className="mark" href="/" onClick={e => (e.preventDefault(), open || missing ? closeFont() : null, clearFilters())}>
           <Hanko text="WT" size={34} />
           <span>Washi Type</span>
         </a>

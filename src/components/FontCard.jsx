@@ -1,6 +1,7 @@
 import { memo, useEffect, useRef } from 'react';
 import { loadPreview, defaultWeight, SOURCES } from '../fontLoader.js';
 import { CATEGORY_NAME } from '../data.js';
+import { fontPath } from '../routes.js';
 import Hanko, { SaveMark } from './Hanko.jsx';
 import WarmTooltip from './reactbits/WarmTooltip.jsx';
 
@@ -43,14 +44,24 @@ function FontCard({ font, text, size, saved, onToggleSave, onOpen }) {
   return (
     <article ref={ref} className="sheet" style={{ '--tilt': `${tilt(font.id)}deg` }}>
       <div className="sheet-paper">
-      <button type="button" className="sheet-open" onClick={() => onOpen(font)} aria-label={`Open ${font.f}`}>
+      {/* A real link, so the page can be crawled and opened in a new tab; a plain click opens it in place. */}
+      <a
+        className="sheet-open"
+        href={fontPath(font.id)}
+        aria-label={`Open ${font.f}`}
+        onClick={e => {
+          if (e.defaultPrevented || e.button !== 0 || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return;
+          e.preventDefault();
+          onOpen(font);
+        }}
+      >
         <span
           className="sheet-text"
           style={{ fontFamily: `"${font.f}", var(--fallback)`, fontSize: size, fontWeight: defaultWeight(font) }}
         >
           {text}
         </span>
-      </button>
+      </a>
       <footer className="sheet-foot">
         <div className="sheet-name">
           <strong>{font.f}</strong>

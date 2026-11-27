@@ -3,12 +3,13 @@
   "version": "1.0.0",
   "scripts": {
     "dev": "vite",
-    "build": "node scripts/build-catalog.mjs --live && vite build",
+    "build": "node scripts/build-catalog.mjs --live && vite build && node scripts/prerender.mjs",
     "preview": "vite preview",
     "catalog": "node scripts/build-catalog.mjs",
     "lint": "eslint .",
     "catalog:live": "node scripts/build-catalog.mjs --live",
-    "test": "playwright test"
+    "test": "playwright test",
+    "prerender": "node scripts/prerender.mjs"
   },
   "dependencies": {
     "@hugeicons/core-free-icons": "^4.4.0",

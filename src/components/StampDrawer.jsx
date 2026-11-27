@@ -3,6 +3,7 @@ import Shredder from './reactbits/Shredder.jsx';
 import Hanko from './Hanko.jsx';
 import { CATEGORY_NAME } from '../data.js';
 import { restoreFocus } from '../focus.js';
+import { fontPath } from '../routes.js';
 
 const SLIP = 58; // height of one paper slip
 const GAP = 10;
@@ -96,9 +97,17 @@ export default function StampDrawer({ fonts, savedOnly, onShowOnDesk, onShred, o
             <ul className="drawer-links">
               {fonts.map(font => (
                 <li key={font.id}>
-                  <button type="button" className="link" onClick={() => onOpenFont(font)}>
+                  <a
+                    className="link"
+                    href={fontPath(font.id)}
+                    onClick={e => {
+                      if (e.button !== 0 || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return;
+                      e.preventDefault();
+                      onOpenFont(font);
+                    }}
+                  >
                     Open {font.f}
-                  </button>
+                  </a>
                 </li>
               ))}
             </ul>
