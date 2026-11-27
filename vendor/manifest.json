@@ -159,8 +159,8 @@
       "upstream": "https://github.com/DavidHDev/react-bits/tree/a30a9da9b40a91c5672fc8cd77785719e8e5b1e6/src/content/Micro/PaperCrumple",
       "original": "vendor/originals/PaperCrumple.jsx",
       "patch": "vendor/patches/PaperCrumple.jsx.patch",
-      "changes": "The fold simulation (createPaperPath) moved to paperPath.js and runs in a Web Worker via paperPathClient.js, cached by its settings; nothing renders before the sheet is ready; shaders compile with renderer.compileAsync; PCFShadowMap instead of the removed PCFSoftShadowMap.",
-      "sha256": "f1deaf3472d685ce666f02fd9ba35196bee3f66cccb0b3e9097e2fbeeb3e0faf"
+      "changes": "The fold simulation (createPaperPath) moved to paperPath.js and runs in a Web Worker via paperPathClient.js, cached by its settings; nothing renders before the sheet is ready; shaders compile with renderer.compileAsync; PCFShadowMap instead of the removed PCFSoftShadowMap; collision between paper layers uses a spatial grid instead of checking every pair; the mesh is capped at 40 points per side instead of 16; a tileable crinkle normal map (createCrinkleNormals) adds fine creases that deepen as the sheet is crushed and stay after release (new crinkle prop); buildSheetGrid/paperPathKey/prewarmPaper let the app run the simulation in the background before a sheet is opened.",
+      "sha256": "c93ead275072df6819e5ce8db323105bc77942ecece6098ecb47c7ef1ca0f41a"
     },
     {
       "name": "PaperCrumple.css",

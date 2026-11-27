@@ -5,8 +5,10 @@ import { CATEGORY_NAME } from '../data.js';
 
 const SOURCE_NAME = { g: 'Google Fonts', fs: 'Fontshare', o: 'Fontsource' };
 
-export const SHEET_W = 360;
-export const SHEET_H = 460;
+import { SHEET_PAPER } from '../paperSettings.js';
+
+export const SHEET_W = SHEET_PAPER.width;
+export const SHEET_H = SHEET_PAPER.height;
 const S = 2; // draw at 2x for a crisp texture
 
 const SUMI = '#1a1816';

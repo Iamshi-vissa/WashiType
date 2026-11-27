@@ -4,7 +4,7 @@ import { useEffect, useRef, useState } from 'react';
 import * as THREE from 'three';
 import './PaperCrumple.css';
 import { requestPaperPath } from './paperPathClient.js';
-import { randomSource } from './paperPath.js';
+import { buildSheetGrid, paperPathKey } from './paperPath.js';
 const spring = (value = 0) => ({ value, target: value, velocity: 0 });
 const clamp = (value, min, max) => Math.min(max, Math.max(min, value));
 const finite = (value, fallback) => (Number.isFinite(value) ? value : fallback);
@@ -46,6 +46,7 @@ const PaperCrumple = ({
   paperColor = '#f4f0e8',
   roughness = 0.92,
   paperTexture = 0.08,
+  crinkle = 0.7,
   lightIntensity = 1.8,
   lightAngle = -35,
   shadow = true,
@@ -76,6 +77,7 @@ const PaperCrumple = ({
     crumpleDuration,
     releaseDuration,
     creaseStrength,
+    crinkle,
     draggable,
     dragRotation,
     dragRadius,
@@ -90,6 +92,7 @@ const PaperCrumple = ({
     crumpleDuration,
     releaseDuration,
     creaseStrength,
+    crinkle,
     draggable,
     dragRotation,
     dragRadius,
@@ -127,42 +130,19 @@ const PaperCrumple = ({
     }
     const paperWidth = Math.max(1, finite(width, 320));
     const paperHeight = Math.max(1, finite(height, 400));
-    const aspect = paperHeight / paperWidth;
-    const shortSide = Math.min(1, aspect);
-    const resolution = Math.round(clamp(finite(detail, 64) / 4, 8, 24));
-    const columns = Math.max(8, Math.round(resolution / Math.max(1, aspect)));
-    const rows = Math.max(8, Math.round(resolution * Math.min(1, aspect)));
-    const rng = randomSource(finite(seed, 7));
-    const sharpness = clamp(finite(foldSharpness, 0.6), 0, 1);
-    const foldTotal = Math.round(clamp(finite(foldCount, 6), 3, 16));
-    const depth = clamp(finite(wrinkleDepth, 0.65), 0, 2);
-    const count = (columns + 1) * (rows + 1);
-    const original = new Float32Array(count * 3);
+    // Washi Type: the mesh and the fold settings come from buildSheetGrid/paperSettings in
+    // paperPath.js, so the same path can be computed ahead of time (prewarmPaper).
+    const { aspect, shortSide, resolution, sharpness, foldTotal, depth, count, original, uvs, indices, rng } = buildSheetGrid({
+      paperWidth,
+      paperHeight,
+      detail,
+      seed,
+      foldCount,
+      foldSharpness,
+      wrinkleDepth
+    });
     const positions = new Float32Array(count * 3);
-    const uvs = new Float32Array(count * 2);
-    const indices = [];
-    for (let row = 0; row <= rows; row++) {
-      for (let col = 0; col <= columns; col++) {
-        const index = row * (columns + 1) + col;
-        const u = (col + (col > 0 && col < columns ? (rng() - 0.5) * 0.5 : 0)) / columns;
-        const v = (row + (row > 0 && row < rows ? (rng() - 0.5) * 0.5 : 0)) / rows;
-        const x = u - 0.5,
-          y = (v - 0.5) * aspect;
-        original[index * 3] = x;
-        original[index * 3 + 1] = y;
-        uvs[index * 2] = u;
-        uvs[index * 2 + 1] = v;
-        if (col < columns && row < rows) {
-          const a = index,
-            b = index + 1,
-            c = index + columns + 1,
-            d = c + 1;
-          if (rng() > 0.5) indices.push(a, b, d, a, d, c);
-          else indices.push(a, b, c, b, d, c);
-        }
-      }
-    }
-    const pathKey = JSON.stringify([paperWidth, paperHeight, resolution, foldTotal, sharpness, depth, seed]);
+    const pathKey = paperPathKey({ paperWidth, paperHeight, resolution, foldTotal, sharpness, depth, seed });
     // Washi Type: the fold path is computed in a Web Worker (and cached by key). Until it
     // arrives the sheet stays flat and can't be grabbed.
     let paperPath = { samples: [original], creased: original };
@@ -210,6 +190,9 @@ const PaperCrumple = ({
       color: backSrc ? '#ffffff' : paperColor
     });
     const lighting = { value: 0 };
+    // Washi Type: fine crinkles. A normal map of small flat facets (createCrinkleNormals) that
+    // fades in as the sheet crumples and partly stays when it's let go; set in deform().
+    let crinkleMap = null;
     for (const material of [frontMaterial, backMaterial]) {
       material.onBeforeCompile = shader => {
         shader.uniforms.paperLighting = lighting;
@@ -396,6 +379,12 @@ const PaperCrumple = ({
       geometry.computeBoundingSphere();
       geometry.computeBoundingBox();
       lighting.value = THREE.MathUtils.smoothstep(fold + memory.value, 0, 0.4);
+      if (crinkleMap) {
+        const strength = clamp(finite(options.current.crinkle, 0.7), 0, 2);
+        const amount = clamp(fold * 1.15 + memory.value * 1.6, 0, 1) * strength;
+        frontMaterial.normalScale.set(amount, amount);
+        backMaterial.normalScale.set(amount, amount);
+      }
     }
     function placeHitTarget() {
       const bounds = geometry.boundingBox;
@@ -797,6 +786,21 @@ const PaperCrumple = ({
       .then(path => {
         if (disposed) return;
         paperPath = path;
+        if (path.crinkle) {
+          crinkleMap = new THREE.DataTexture(path.crinkle, 256, 256);
+          crinkleMap.wrapS = crinkleMap.wrapT = THREE.RepeatWrapping;
+          crinkleMap.repeat.set(2.4, 2.4 * aspect);
+          crinkleMap.magFilter = THREE.LinearFilter;
+          crinkleMap.minFilter = THREE.LinearMipmapLinearFilter;
+          crinkleMap.generateMipmaps = true;
+          crinkleMap.anisotropy = Math.min(8, renderer.capabilities.getMaxAnisotropy());
+          crinkleMap.needsUpdate = true;
+          for (const material of [frontMaterial, backMaterial]) {
+            material.normalMap = crinkleMap;
+            material.normalScale.set(0, 0);
+            material.needsUpdate = true;
+          }
+        }
         previousAmount = -1; // force deform() to use the new path
         pathReady = true;
         becomeReady();
@@ -857,6 +861,7 @@ const PaperCrumple = ({
       depthMaterial.dispose();
       floorMaterial.dispose();
       grain.dispose();
+      crinkleMap?.dispose();
       textures.forEach(texture => texture.dispose());
       light.shadow.dispose();
       renderer.dispose();

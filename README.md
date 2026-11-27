@@ -86,6 +86,7 @@ src/
   data.js                     categories, scripts and samples, sorts, featured fonts
   fontLoader.js               loads each font from its own source; embed code; source links
   focus.js, useMedia.js       focus return after dialogs; media-query hook
+  paperSettings.js            size, detail and fold settings shared by every sheet
   components/
     VirtualGrid.jsx           renders only the rows of sheets near the screen
     FontCard.jsx              one sheet in the grid (a real link; its font loads when it appears)
@@ -115,7 +116,7 @@ Copied into `src/components/reactbits/` from [ReactBits](https://reactbits.dev) 
 `vendor/manifest.json` records where every copied file came from and whether it carries local changes. 18 are untouched. The changed ones keep their untouched original in `vendor/originals/` and the difference in `vendor/patches/`:
 
 - **TearTicket:** `onTear` fires the moment the stub is let go (inside the pointer-up handler), not after it finishes falling, because Safari only allows copying to the clipboard during a user gesture.
-- **PaperCrumple:** the fold simulation moved to `paperPath.js` and runs in a Web Worker (`paperPath.worker.js`), cached by its settings; nothing renders before the sheet is ready; shaders compile with `renderer.compileAsync`.
+- **PaperCrumple:** the fold simulation moved to `paperPath.js` and runs in a Web Worker (`paperPath.worker.js`), cached by its settings; nothing renders before the sheet is ready; shaders compile with `renderer.compileAsync`. Layer collision uses a spatial grid, the mesh goes up to 40×40 points, and a generated crinkle normal map adds fine creases that deepen as you squeeze and stay after you let go (`crinkle` prop).
 - **TvError** (from Uiverse): ported to React, classes prefixed `tv404-`.
 
 To upgrade one: copy the new upstream file over it, `git apply` its patch from `vendor/patches/`, then `npm run vendor:record`. If you edit a copied file on purpose, run `npm run vendor:record` and describe the change in the manifest; otherwise `npm run vendor:check` (run in CI) fails.
@@ -126,7 +127,7 @@ To upgrade one: copy the new upstream file over it, `git apply` its patch from `
 - Licence links from third-party data are kept only if they're plain `http(s)` links.
 - **First load:** about 96 KB of compressed JavaScript (was 212 KB). The animation libraries (motion, gsap) load right after the first paint; until then the page shows working stand-ins (`src/deferred.jsx`).
 - **Scrolling and typing:** `VirtualGrid` keeps only 12 to 18 sheets on the page at any time, whichever of the 2,091 you're looking at. Typing in "Write something" takes 7 to 13 ms per keystroke.
-- **Opening a sheet:** the crumple simulation runs in a Web Worker, shaders compile in parallel before the first frame, and the specimen picture is encoded off the main thread. Blocking time when opening halved in tests.
+- **Opening a sheet:** the crumple simulation runs in a Web Worker, shaders compile in parallel before the first frame, and the specimen picture is encoded off the main thread. Blocking time when opening halved in tests. The sheet's paper settings live in `src/paperSettings.js` and are the same for every font, so the app runs the simulation once in the background after the catalog loads; the first sheet you open is ready straight away.
 - The three.js font sheet and the Stamped drawer load only when opened.
 
 ## Deploying

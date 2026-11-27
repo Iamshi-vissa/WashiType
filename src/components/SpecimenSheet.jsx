@@ -1,7 +1,8 @@
 import { useEffect, useRef, useState } from 'react';
 import PaperCrumple from './PaperCrumple/PaperCrumple.jsx';
 import TearTicket from './reactbits/TearTicket.jsx';
-import { drawSheet, SHEET_W, SHEET_H } from './drawSheet.js';
+import { drawSheet } from './drawSheet.js';
+import { SHEET_PAPER } from '../paperSettings.js';
 import { loadFamily, cssSnippet, sourceUrl, SOURCES } from '../fontLoader.js';
 import { CATEGORY_NAME, SCRIPT_LABEL } from '../data.js';
 import Hanko, { SaveMark } from './Hanko.jsx';
@@ -131,15 +132,14 @@ export default function SpecimenSheet({ font, text, saved, onToggleSave, onNotif
               key={font.id}
               src={image}
               alt={`Specimen sheet for ${font.f}`}
-              width={SHEET_W}
-              height={SHEET_H}
+              {...SHEET_PAPER}
               sceneHeight={sceneHeight}
               releaseBehavior="creased"
-              crumpleAmount={0.9}
-              creaseStrength={0.22}
-              foldCount={7}
-              seed={font.id.length * 7 + 3}
-              shadowOpacity={0.12}
+              crumpleAmount={0.94}
+              creaseStrength={0.4}
+              crinkle={0.8}
+              lightIntensity={2.2}
+              shadowOpacity={0.14}
               resetKey={resetKey}
               onStateChange={setPaperState}
             />

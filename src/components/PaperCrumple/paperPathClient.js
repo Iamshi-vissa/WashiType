@@ -1,6 +1,6 @@
 // Hands the PaperCrumple fold simulation to a Web Worker and caches the result by its
 // settings, so the second sheet with the same size and fold settings opens instantly.
-import { createPaperPath } from './paperPath.js';
+import { createPaperPath, createCrinkleNormals, buildSheetGrid, paperPathKey } from './paperPath.js';
 
 const cache = new Map();
 let worker = null;
@@ -16,7 +16,7 @@ function getWorker() {
       if (!job) return;
       pending.delete(data.id);
       if (data.error) job.reject(new Error(data.error));
-      else job.resolve({ samples: data.samples, creased: data.creased });
+      else job.resolve({ samples: data.samples, creased: data.creased, crinkle: data.crinkle });
     };
     worker.onerror = event => {
       // A broken worker shouldn't break the sheet: fall back to the main thread.
@@ -35,7 +35,10 @@ function getWorker() {
 
 export function requestPaperPath(key, rest, triangles, shortSide, density, sharpness, depth, seed) {
   if (cache.has(key)) return cache.get(key);
-  const runHere = () => createPaperPath(rest, triangles, shortSide, density, sharpness, depth, seed);
+  const runHere = () => ({
+    ...createPaperPath(rest, triangles, shortSide, density, sharpness, depth, seed),
+    crinkle: createCrinkleNormals(256, seed)
+  });
   const job = new Promise((resolve, reject) => {
     const w = getWorker();
     if (!w) {
@@ -67,4 +70,16 @@ export function requestPaperPath(key, rest, triangles, shortSide, density, sharp
   cache.set(key, job);
   job.catch(() => cache.delete(key));
   return job;
+}
+
+/**
+ * Compute a sheet's fold path in the background before it's opened, so opening is instant.
+ * Takes the same props PaperCrumple gets (width, height, detail, seed, foldCount, ...).
+ */
+export function prewarmPaper({ width, height, detail, seed, foldCount, foldSharpness, wrinkleDepth }) {
+  const paperWidth = Math.max(1, Number.isFinite(width) ? width : 320);
+  const paperHeight = Math.max(1, Number.isFinite(height) ? height : 400);
+  const grid = buildSheetGrid({ paperWidth, paperHeight, detail, seed, foldCount, foldSharpness, wrinkleDepth });
+  const key = paperPathKey({ paperWidth, paperHeight, ...grid, seed });
+  return requestPaperPath(key, grid.original, grid.indices, grid.shortSide, grid.foldTotal, grid.sharpness, grid.depth, Number.isFinite(seed) ? seed : 7);
 }

@@ -15,6 +15,7 @@ import ErrorBoundary from './components/ErrorBoundary.jsx';
 import { CATEGORIES, SCRIPTS, SORTS, FEATURED, SIZES, sampleFor, previewText } from './data.js';
 import { fontPath, readFontRoute, upgradeHashLink } from './routes.js';
 import { reportError } from './reportError.js';
+import { SHEET_PAPER } from './paperSettings.js';
 
 const SCRIPT_OPTIONS = [{ value: 'all', label: 'Any script' }, ...SCRIPTS.map(s => ({ value: s.id, label: s.label }))];
 const SORT_OPTIONS = SORTS.map(s => ({ value: s.id, label: s.label }));
@@ -123,6 +124,23 @@ export default function App() {
     window.addEventListener('popstate', sync);
     return () => window.removeEventListener('popstate', sync);
   }, [fonts]);
+
+  // Once the page has settled, compute the crumple simulation in the background (a Web
+  // Worker) and fetch the sheet's code, so the first font opens without a wait.
+  useEffect(() => {
+    if (catalog !== 'ready') return;
+    const run = () => {
+      import('./components/PaperCrumple/paperPathClient.js')
+        .then(m => m.prewarmPaper(SHEET_PAPER))
+        .catch(() => {});
+    };
+    const idle = window.requestIdleCallback;
+    const handle = idle ? idle(run, { timeout: 4000 }) : setTimeout(run, 2000);
+    return () => (idle ? window.cancelIdleCallback(handle) : clearTimeout(handle));
+  }, [catalog]);
+  const prefetchSheet = useCallback(() => {
+    import('./components/SpecimenSheet.jsx').catch(() => {});
+  }, []);
 
   // The tab title follows the open sheet.
   useEffect(() => {
@@ -401,7 +419,7 @@ export default function App() {
         </div>
       </nav>
 
-      <main className="band desk">
+      <main className="band desk" onPointerOver={prefetchSheet} onFocus={prefetchSheet}>
         <p className="count" aria-live="polite">
           {fonts.length
             ? `${results.length.toLocaleString()} ${results.length === 1 ? 'font' : 'fonts'}`
