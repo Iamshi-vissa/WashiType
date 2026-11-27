@@ -4,6 +4,8 @@ A font finder dressed as a calligrapher's desk. More than 2,000 free fonts from 
 
 **Live:** https://washi-type.vercel.app
 
+![Washi Type home page: the headline "Find the right font for your résumé" beside a hand-lettered Washi Type sheet with a red seal, above the sample text box and search](docs/screenshot.webp)
+
 ## Run it
 
 ```bash
