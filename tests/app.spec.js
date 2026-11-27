@@ -74,12 +74,18 @@ test('the 404 page shows the TV', async ({ page }) => {
 
 test('a font sheet opens, crumples and closes', async ({ page }) => {
   await page.goto('/fonts/inter');
-  await expect(page.locator('.paper-crumple[data-status=ready]')).toBeVisible({ timeout: 20000 });
-  const box = await page.locator('.paper-crumple-hit').boundingBox();
-  await page.mouse.move(box.x + box.width / 2, box.y + box.height / 2);
-  await page.mouse.down();
-  await expect(page.locator('.paper-crumple-hit[data-held=true]')).toHaveCount(1);
-  await page.mouse.up();
+  const paper = page.locator('.paper-crumple');
+  await expect(paper).toHaveAttribute('data-status', /ready|error/, { timeout: 20000 });
+  if ((await paper.getAttribute('data-status')) === 'ready') {
+    const box = await page.locator('.paper-crumple-hit').boundingBox();
+    await page.mouse.move(box.x + box.width / 2, box.y + box.height / 2);
+    await page.mouse.down();
+    await expect(page.locator('.paper-crumple-hit[data-held=true]')).toHaveCount(1);
+    await page.mouse.up();
+  } else {
+    // No WebGL in this browser: the specimen still shows as a flat picture.
+    await expect(page.locator('.paper-crumple-fallback')).toBeVisible();
+  }
   await page.locator('.close').click();
   await expect(page.locator('.spec')).toHaveCount(0);
 });
