@@ -13,18 +13,22 @@ npm run build      # refreshes the font catalog, then builds dist/
 npm run preview    # serves the production build on http://localhost:4173
 npm run lint       # ESLint
 npm test           # browser tests against the production build (run npm run build first)
+npm run vendor:check   # checks no copied component changed without being recorded
 ```
 
-`npm test` uses Playwright. The first time, install its browser with `npx playwright install chromium`, or point it at a Chrome you already have: `PW_CHROME=/path/to/chrome npm test`.
+`npm run build` does three things: refreshes the font catalog, builds the app with Vite, and writes a real HTML page for every font (`scripts/prerender.mjs`).
+
+`npm test` uses Playwright and runs every test in Chromium, Firefox and WebKit (Safari's engine), plus the page tests on an emulated iPhone. The first time, install the browsers with `npx playwright install chromium firefox webkit`. To run only Chromium against a Chrome you already have: `PW_CHROME=/path/to/chrome npx playwright test --project=chromium`.
 
 ## Features
 
 - **Write something:** every sheet shows your text in its font. With no text, each font shows a sample in a script it actually has, so a Khmer-only font isn't previewed in English.
 - **Filters:** source, category, script (27 scripts, including Devanagari, Tamil, Bengali, Japanese and Arabic), variable fonts only, and four sort orders.
-- **Font sheets:** every weight (with an italic toggle), licence, source, designer, a crumplable specimen, and the embed code on a ticket you tear to copy. Each sheet has its own link, such as `/#inter`.
+- **Font sheets:** every weight (with an italic toggle), licence, source, designer, a crumplable specimen, and the embed code on a ticket you tear to copy. Every font has its own page, such as `/fonts/inter`, which works with Back and Forward, can be bookmarked and shared, and is indexed by search engines (old `/#inter` links move there).
 - **Stamped fonts:** press the seal on any sheet to keep it. The Stamped drawer lists them as paper slips; drag one into the shredder (or press Delete) to remove it, with Undo. Stamps stay in this browser.
 - **Errors you can read:** a retro TV shows what went wrong instead of a blank page (see below).
-- **Works offline after the first visit:** a service worker keeps a copy of the site.
+- **Works offline after the first visit:** a service worker keeps a copy of the site, and says when you're looking at it.
+- **Fast with 2,000+ fonts:** only the sheets near the screen exist on the page.
 
 ## Where the fonts come from
 
@@ -36,6 +40,7 @@ npm test           # browser tests against the production build (run npm run bui
 | Fontshare (Indian Type Foundry) | 65 not already on Google Fonts | ITF Free Font License | api.fontshare.com |
 | Independent foundries via Fontsource | 119 | OFL, Apache, MIT, CC0, Unlicense | cdn.jsdelivr.net (pinned to `@fontsource/*@5`) |
 
+- Google Fonts licences come from `google-font-metadata`; for the ~150 families it has no record for, the licence folder they sit in on the google/fonts repository (`data/google-licence-folders.json`). Three new families still link to Google Fonts for their licence.
 - `npm run build` refreshes Fontshare and Fontsource from their live APIs and falls back to the snapshots in `data/` if they can't be reached. `npm run catalog` rebuilds from the snapshots only.
 - The build checks the catalog (unique ids, valid weights and categories, enough Google fonts) and fails rather than ship a broken one. A single malformed entry from a live API is skipped, not fatal.
 - Fontshare's licence doesn't allow redistributing the files, so Washi Type only displays them through Fontshare's servers and links to fontshare.com for downloads.
@@ -44,11 +49,14 @@ npm test           # browser tests against the production build (run npm run bui
 
 | What happened | What you see |
 |---|---|
-| An address that doesn't exist (e.g. `/fonts/inter`) | Vercel serves `404.html` with a real 404 status: the TV shows **NOT FOUND 404** |
+| An address that doesn't exist (e.g. `/fonts/not-a-font` or `/about`) | Vercel serves `404.html` with a real 404 status: the TV shows **NOT FOUND 404** |
 | A link to a font that isn't in the catalog, or a garbled link | The TV in a dialog, with a button to search for the name |
 | The font list can't be loaded | Retries twice, then the TV shows **NO SIGNAL 503** with Try again |
 | You're offline | **NO SIGNAL OFF**; it retries by itself when the connection returns. If the site was visited before, it opens from the offline copy with a "you're offline" bar |
+| The site can't be reached, or the connection is very slow | After 3.5 s the saved copy answers (from then on, straight away for 20 s), with a bar saying it's the copy saved on this device |
 | A code file from an older deploy is gone, or anything crashes | Reloads once to pick up the new deploy; if that doesn't fix it, the TV shows **ERROR ERR** with Reload. A crash inside a font sheet only replaces that sheet |
+
+Errors are also **reported to you**: `src/reportError.js` sends render crashes, missing code files, an unreachable font list and uncaught errors to `api/report.js`, a Vercel function that writes each one to the Vercel logs as a line starting with `[client-error]` (Vercel dashboard → washi-type → Logs). Only short plain text is kept (what failed, on which page, which deploy, which browser), at most 10 different errors per visit and 60 reports a minute.
 
 The TV is `src/components/TvError/`, adapted from [Uiverse.io by Praashoo7](https://uiverse.io/Praashoo7/fat-horse-65) (MIT License, Copyright (c) Praashoo7 (Prashant)). Its classes are prefixed `tv404-` so they can't collide with the site's styles. `src/components/ErrorScreen.jsx` puts the words and buttons around it.
 
@@ -56,22 +64,31 @@ The TV is `src/components/TvError/`, adapted from [Uiverse.io by Praashoo7](http
 
 ```
 index.html, 404.html          two entry pages (the app and the 404 page)
+api/report.js                 Vercel function: writes visitors' error reports to the logs
 public/
   fonts.json                  the merged catalog (generated)
-  sw.js                       service worker: network first, offline copy as fallback
+  sw.js                       service worker: network first, saved copy after 3.5 s or offline
   favicon.svg, og.jpg         tab icon and link preview image
-data/                         snapshots of the Fontshare and Fontsource catalogs
+data/                         snapshots of the Fontshare and Fontsource catalogs, Google licence folders
 scripts/
   build-catalog.mjs           builds and checks public/fonts.json
-  build-css.py                writes src/styles.css from styles.template.css
+  prerender.mjs               writes dist/fonts/<id>/index.html, sitemap.xml, robots.txt
+  vendor.mjs                  vendor:check / vendor:record for copied components
+vendor/                       manifest, untouched originals and patches of copied components
 src/
-  App.jsx                     page, filters, catalog loading, links, dialogs
+  App.jsx                     page, filters, catalog loading, routing, dialogs
+  routes.js                   /fonts/<id> addresses (and moving old #links)
+  deferred.jsx                animated pieces loaded after the first paint, with stand-ins
+  reportError.js              sends errors to api/report
+  styles.css                  the stylesheet
+  assets/textures/            washi fibres, dry brush, torn edge, seal ink (SVG, inlined by Vite)
   main.jsx, notfound.jsx      entry points (error boundary, service worker)
   data.js                     categories, scripts and samples, sorts, featured fonts
   fontLoader.js               loads each font from its own source; embed code; source links
   focus.js, useMedia.js       focus return after dialogs; media-query hook
   components/
-    FontCard.jsx              one sheet in the grid (font loads when it scrolls into view)
+    VirtualGrid.jsx           renders only the rows of sheets near the screen
+    FontCard.jsx              one sheet in the grid (a real link; its font loads when it appears)
     SpecimenSheet.jsx         the font sheet (lazy-loaded with three.js)
     drawSheet.js              paints the specimen on washi for the crumple
     StampDrawer.jsx           Stamped drawer with the shredder (lazy-loaded)
@@ -80,32 +97,38 @@ src/
     ErrorBoundary.jsx, ErrorScreen.jsx, TvError/   error handling and the TV
     PaperCrumple/             crumplable paper; the fold simulation runs in a Web Worker
     reactbits/                ReactBits components (see below)
-tests/app.spec.js             Playwright tests for the main flows and every error path
+tests/app.spec.js             Playwright tests: main flows, real pages, every error path
 vercel.json                   security headers (CSP and others) and caching
-.github/workflows/ci.yml      lint, build and tests on every push
+.github/workflows/ci.yml      lint, vendor check, build and tests (3 browsers) on every push
 ```
 
 ## Styles
 
-`styles.template.css` is the stylesheet you edit. The washi fibres, dry-brush stroke, torn paper edge and seal ink are SVG textures inlined by `scripts/build-css.py`, which writes `src/styles.css`. After changing the template, run `npm run css`. Don't edit `src/styles.css` directly.
+`src/styles.css` is the only stylesheet. The washi fibres, dry-brush stroke, torn paper edge and seal ink are small SVG files in `src/assets/textures/`; Vite inlines them into the CSS at build time, so there's no separate step to run.
 
 Colours: washi off-white, sumi black and one vermilion red (shu). Dark mode is the same desk at night. Lettering: Shippori Mincho for headings, Yuji Boku and Yuji Syuku for brush lettering, Zen Antique in the seals, Instrument Sans for the interface.
 
 ## ReactBits components
 
-Copied into `src/components/reactbits/` from [ReactBits](https://reactbits.dev): FoldText, StrokeText, RotatingText, CountUp, ClickSpark, TearTicket, Shredder, SwipeToast, SquishSwitch and WarmTooltip.
+Copied into `src/components/reactbits/` from [ReactBits](https://reactbits.dev) (commit `a30a9da`): FoldText, StrokeText, RotatingText, CountUp, ClickSpark, TearTicket, Shredder, SwipeToast, SquishSwitch and WarmTooltip, plus PaperCrumple as pasted into the project.
 
-Local changes to keep when updating them:
+`vendor/manifest.json` records where every copied file came from and whether it carries local changes. 18 are untouched. The changed ones keep their untouched original in `vendor/originals/` and the difference in `vendor/patches/`:
 
-- **TearTicket:** `onTear` fires the moment the stub is let go (inside the pointer-up handler), not after it finishes falling. Browsers such as Safari only allow copying to the clipboard during a user gesture.
-- **PaperCrumple:** the fold simulation was moved to `paperPath.js` and runs in `paperPath.worker.js`, cached by its settings. Opening a sheet no longer freezes the page.
+- **TearTicket:** `onTear` fires the moment the stub is let go (inside the pointer-up handler), not after it finishes falling, because Safari only allows copying to the clipboard during a user gesture.
+- **PaperCrumple:** the fold simulation moved to `paperPath.js` and runs in a Web Worker (`paperPath.worker.js`), cached by its settings; nothing renders before the sheet is ready; shaders compile with `renderer.compileAsync`.
+- **TvError** (from Uiverse): ported to React, classes prefixed `tv404-`.
+
+To upgrade one: copy the new upstream file over it, `git apply` its patch from `vendor/patches/`, then `npm run vendor:record`. If you edit a copied file on purpose, run `npm run vendor:record` and describe the change in the manifest; otherwise `npm run vendor:check` (run in CI) fails.
 
 ## Security and performance
 
 - `vercel.json` sets a Content-Security-Policy that only allows the site itself plus the three font services, along with `X-Content-Type-Options`, `Referrer-Policy`, `Permissions-Policy` and `Cross-Origin-Opener-Policy`. Built code files are cached for a year; `sw.js` is never cached.
 - Licence links from third-party data are kept only if they're plain `http(s)` links.
-- The three.js font sheet and the Stamped drawer load only when opened. Sheets far off screen skip layout and paint (`content-visibility`), and typing updates the sheets in the background, so the input stays responsive with hundreds of sheets on the page.
+- **First load:** about 96 KB of compressed JavaScript (was 212 KB). The animation libraries (motion, gsap) load right after the first paint; until then the page shows working stand-ins (`src/deferred.jsx`).
+- **Scrolling and typing:** `VirtualGrid` keeps only 12 to 18 sheets on the page at any time, whichever of the 2,091 you're looking at. Typing in "Write something" takes 7 to 13 ms per keystroke.
+- **Opening a sheet:** the crumple simulation runs in a Web Worker, shaders compile in parallel before the first frame, and the specimen picture is encoded off the main thread. Blocking time when opening halved in tests.
+- The three.js font sheet and the Stamped drawer load only when opened.
 
 ## Deploying
 
-Vercel builds every push to `main` with `npm run build` and serves `dist/`. Unknown addresses get `404.html` automatically.
+Vercel builds every push to `main` with `npm run build`, serves `dist/` and runs `api/report.js` as a function. Unknown addresses get `404.html` with a 404 status. Set `SITE_URL` in the Vercel project if the site moves to its own domain, so canonical links and the sitemap use it.
