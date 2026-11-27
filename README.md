@@ -4,7 +4,10 @@ A font finder dressed as a calligrapher's desk. More than 2,000 free fonts from 
 
 **Live:** https://washi-type.vercel.app
 
-![Washi Type home page: the headline "Find the right font for your résumé" beside a hand-lettered Washi Type sheet with a red seal, above the sample text box and search](docs/screenshot.webp)
+<picture>
+  <source media="(prefers-color-scheme: dark)" srcset="docs/screenshot-dark.webp">
+  <img alt="Washi Type home page: the headline &quot;Find the right font for your résumé&quot; beside a hand-lettered Washi Type sheet with a red seal, the On/Off light switch in the header, and the sample text box, search and filters below" src="docs/screenshot-light.webp">
+</picture>
 
 ## Run it
 
@@ -73,7 +76,7 @@ public/
   fonts.json                  the merged catalog (generated)
   sw.js                       service worker: network first, saved copy after 3.5 s or offline
   theme.js                    applies a saved light/dark choice before the page paints
-  favicon.svg, og.jpg         tab icon and link preview image
+  favicon.svg, og.jpg         tab icon and link preview image (og.jpg's source is docs/og/og.html)
 data/                         snapshots of the Google Fonts, Fontshare and Fontsource catalogs, Google licence folders
 scripts/
   build-catalog.mjs           builds and checks public/fonts.json
@@ -107,7 +110,8 @@ src/
     reactbits/                ReactBits components (see below)
 tests/app.spec.js             Playwright tests: main flows, real pages, every error path
 vercel.json                   security headers (CSP and others) and caching
-.github/workflows/ci.yml      lint, vendor check, build and tests (3 browsers) on every push
+.github/workflows/ci.yml      lint, vendor check, build and tests (3 browsers) on every push, on Node 26 like Vercel
+.nvmrc                        the Node version (26) for CI and local work; package.json allows 22.13 and up
 ```
 
 ## Styles
