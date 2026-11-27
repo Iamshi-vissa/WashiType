@@ -7,6 +7,7 @@ import RotatingText from './components/reactbits/RotatingText.jsx';
 import ClickSpark from './components/reactbits/ClickSpark.jsx';
 import CountUp from './components/reactbits/CountUp.jsx';
 import FontCard from './components/FontCard.jsx';
+import VirtualGrid from './components/VirtualGrid.jsx';
 import Select from './components/Select.jsx';
 import HeroScroll from './components/HeroScroll.jsx';
 import Hanko, { SaveMark } from './components/Hanko.jsx';
@@ -19,7 +20,6 @@ import ErrorBoundary from './components/ErrorBoundary.jsx';
 import { CATEGORIES, SCRIPTS, SORTS, FEATURED, SIZES, sampleFor, previewText } from './data.js';
 import { fontPath, readFontRoute, upgradeHashLink } from './routes.js';
 
-const PAGE = 48;
 const SCRIPT_OPTIONS = [{ value: 'all', label: 'Any script' }, ...SCRIPTS.map(s => ({ value: s.id, label: s.label }))];
 const SORT_OPTIONS = SORTS.map(s => ({ value: s.id, label: s.label }));
 const SOURCE_LABELS = { all: 'All sources', g: 'Google Fonts', fs: 'Fontshare (Indian Type Foundry)', o: 'Open-source foundries' };
@@ -59,10 +59,8 @@ export default function App() {
   const [variableOnly, setVariableOnly] = useState(false);
   const [savedOnly, setSavedOnly] = useState(false);
   const [saved, setSaved] = useState(() => new Set(store.get('washitype:saved', store.get('typesheet:saved', []))));
-  const [limit, setLimit] = useState(PAGE);
   const [open, setOpen] = useState(null);
   const heroRef = useRef(null);
-  const moreRef = useRef(null);
 
   // Load the catalog, retrying twice with a short pause before showing the error TV.
   const loadCatalog = useCallback(async () => {
@@ -220,7 +218,6 @@ export default function App() {
     return list.sort(sorters[sort]);
   }, [fonts, source, category, script, variableOnly, savedOnly, saved, q, sort]);
 
-  useEffect(() => setLimit(PAGE), [source, category, script, variableOnly, savedOnly, q, sort]);
 
   // Source options show how many fonts each source brings.
   const sourceOptions = useMemo(() => {
@@ -232,18 +229,8 @@ export default function App() {
     }));
   }, [fonts]);
 
-  // Keep adding sheets as the reader reaches the bottom of the pile.
-  useEffect(() => {
-    const node = moreRef.current;
-    if (!node) return;
-    const io = new IntersectionObserver(([e]) => e.isIntersecting && setLimit(l => l + PAGE), { rootMargin: '800px' });
-    io.observe(node);
-    return () => io.disconnect();
-  }, [results.length, limit]);
-
   // Typing re-renders every sheet; deferring keeps the input responsive while they catch up.
   const userText = useDeferredValue(text.trim());
-  const shown = results.slice(0, limit);
   const catalogFailed = catalog === 'offline' || catalog === 'unreachable';
   const filtered = source !== 'all' || category !== 'all' || script !== 'all' || variableOnly || savedOnly || q;
 
@@ -438,10 +425,12 @@ export default function App() {
           </div>
         )}
 
-        <div className="grid">
-          {shown.map(font => (
+        <VirtualGrid
+          items={results}
+          getKey={font => font.id}
+          estimateRowHeight={size > 48 ? 330 : 260}
+          renderItem={font => (
             <FontCard
-              key={font.id}
               font={font}
               text={previewText(font, userText, script)}
               size={size}
@@ -449,15 +438,8 @@ export default function App() {
               onToggleSave={toggleSave}
               onOpen={openFont}
             />
-          ))}
-        </div>
-        {limit < results.length && (
-          <div ref={moreRef} className="more">
-            <button type="button" className="ghost" onClick={() => setLimit(l => l + PAGE)}>
-              Show more fonts
-            </button>
-          </div>
-        )}
+          )}
+        />
       </main>
 
         </>

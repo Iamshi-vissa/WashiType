@@ -207,8 +207,11 @@ button, input, select { font: inherit; color: inherit; }
   animation: settle 0.45s ease both;
 }
 .sheet:hover { transform: rotate(0deg) translateY(-4px); }
-/* Sheets far off screen skip layout and paint: keeps scrolling and typing smooth with thousands of them. */
-.sheet { content-visibility: auto; contain-intrinsic-size: auto 270px; }
+/* Virtualised grid: only rows near the screen exist (VirtualGrid.jsx). */
+.vgrid { position: relative; width: 100%; }
+.vgrid-row { position: absolute; top: 0; left: 0; width: 100%; display: grid; }
+.vgrid-cell { display: flex; min-width: 0; }
+.vgrid-cell > .sheet { flex: 1; }
 @keyframes settle { from { opacity: 0; transform: translateY(10px) rotate(var(--tilt)); } }
 .sheet-paper {
   flex: 1; display: flex; flex-direction: column;
