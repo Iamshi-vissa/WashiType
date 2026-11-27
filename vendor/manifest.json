@@ -185,6 +185,22 @@
       "upstream": "https://uiverse.io/Praashoo7/fat-horse-65",
       "changes": "Every class prefixed tv404-; wrapper isolates the negative z-index layers; size scales with --tv-size; digits use currentColor; reduced-motion stops the static.",
       "sha256": "8d3d1676126f3a63b5bc0a18be61a6fd7898d3ed5a2574c14e55c674e8df08a8"
+    },
+    {
+      "name": "OnOffSwitch.jsx",
+      "local": "src/components/OnOffSwitch/OnOffSwitch.jsx",
+      "source": "Uiverse.io by m1her (MIT), odd-fireant-56",
+      "upstream": "https://uiverse.io/m1her/odd-fireant-56",
+      "changes": "Ported from HTML + Tailwind to React: checked/onChange/label props; the checkbox has role=switch and a label; the divs inside the label are spans.",
+      "sha256": "9a6651606e461aa18084433976c5d932a44f504377c09dcb75906276518b59d5"
+    },
+    {
+      "name": "OnOffSwitch.css",
+      "local": "src/components/OnOffSwitch/OnOffSwitch.css",
+      "source": "Uiverse.io by m1her (MIT), odd-fireant-56",
+      "upstream": "https://uiverse.io/m1her/odd-fireant-56",
+      "changes": "Tailwind utilities written out as plain CSS with every class prefixed onoff-; the checkbox is visually hidden (not display: none) so it works by keyboard, with a focus ring; size scales with --onoff-scale.",
+      "sha256": "0966456e9252ece374f6a7d5b6f8a09eaa1509bf4f14b3ce76c9b09d0220de5a"
     }
   ]
 }

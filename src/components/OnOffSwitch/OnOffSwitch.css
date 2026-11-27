@@ -1,0 +1,156 @@
+/*
+From Uiverse.io by m1her - https://uiverse.io/m1her/odd-fireant-56
+MIT License, Copyright (c) m1her (Maher Nas)
+
+Washi Type changes: the Tailwind utilities are written out as plain CSS, with every class
+prefixed onoff- so it can't collide with the site's styles. The divs inside the label are
+spans (a label may only hold inline content), shown as blocks. The checkbox is visually
+hidden instead of display: none, so it can be reached with Tab and shows a focus ring; Space
+flips it. The size scales with --onoff-scale. Look and behaviour are otherwise unchanged
+(the original has no transition: the rocker flips at once).
+*/
+
+/* Holds the scaled switch's real size in the layout. */
+.onoff {
+  --onoff-scale: 1;
+  flex: none;
+  width: calc(192px * var(--onoff-scale));
+  height: calc(108px * var(--onoff-scale));
+}
+
+/* w-48 aspect-video rounded-xl bg-[#ebe6ef] border-4 border-[#121331]
+   has-[:checked]:bg-[#3a3347] */
+.onoff-card {
+  box-sizing: border-box;
+  width: 192px;
+  aspect-ratio: 16 / 9;
+  border: 4px solid #121331;
+  border-radius: 0.75rem;
+  background: #ebe6ef;
+  transform: scale(var(--onoff-scale));
+  transform-origin: 0 0;
+}
+.onoff-card:has(.onoff-input:checked) { background: #3a3347; }
+.onoff-card:has(.onoff-input:focus-visible) { outline: 4px solid var(--shu, #c8341f); outline-offset: 4px; }
+
+.onoff-card *,
+.onoff-card *::before,
+.onoff-card *::after { box-sizing: border-box; }
+
+/* flex h-full w-full px-2 items-center gap-x-2 */
+.onoff-row {
+  display: flex;
+  align-items: center;
+  column-gap: 0.5rem;
+  width: 100%;
+  height: 100%;
+  padding: 0 0.5rem;
+}
+
+/* w-6 h-6 flex-shrink-0 rounded-full border-4 border-[#121331] */
+.onoff-ring {
+  display: block;
+  flex-shrink: 0;
+  width: 1.5rem;
+  height: 1.5rem;
+  border: 4px solid #121331;
+  border-radius: 9999px;
+}
+
+/* w-full h-10 border-4 border-[#121331] rounded cursor-pointer has-[:checked]:scale-x-[-1] */
+.onoff-rocker {
+  display: block;
+  width: 100%;
+  height: 2.5rem;
+  border: 4px solid #121331;
+  border-radius: 0.25rem;
+  cursor: pointer;
+}
+.onoff-rocker:has(.onoff-input:checked) { transform: scaleX(-1); }
+
+/* "hidden" in the original; kept reachable by keyboard and screen readers */
+.onoff-input {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+  border: 0;
+  opacity: 0;
+}
+
+/* w-full h-full bg-[#f24c00] relative */
+.onoff-face {
+  position: relative;
+  display: block;
+  width: 100%;
+  height: 100%;
+  background: #f24c00;
+}
+
+/* w-0 h-0 z-20 relative, a 48 × 20 px dark triangle pointing down */
+.onoff-cap {
+  position: relative;
+  z-index: 20;
+  display: block;
+  width: 0;
+  height: 0;
+  border-left: 24px solid transparent;
+  border-right: 24px solid transparent;
+  border-top: 20px solid #121331;
+}
+
+/* the lighter triangle inside it: absolute -top-5 -left-[18px] */
+.onoff-cap-light {
+  position: absolute;
+  top: -1.25rem;
+  left: -18px;
+  display: block;
+  width: 0;
+  height: 0;
+  border-left: 18px solid transparent;
+  border-right: 18px solid transparent;
+  border-top: 15px solid #e44901;
+}
+
+/* the two slanted faces of the rocker: h-9 z-10 absolute top-[9px] */
+.onoff-side {
+  position: absolute;
+  top: 9px;
+  z-index: 10;
+  display: block;
+  height: 2.25rem;
+  border: 0 solid #121331;
+}
+/* w-[24px] left-0 bg-[#f24c00] border-r-2 border-b-4 skew-y-[39deg] */
+.onoff-side--left {
+  left: 0;
+  width: 24px;
+  background: #f24c00;
+  border-right-width: 2px;
+  border-bottom-width: 4px;
+  transform: skewY(39deg);
+}
+/* w-[25px] left-[24px] bg-[#c44002] border-r-4 border-l-2 border-b-4 skew-y-[-39deg] */
+.onoff-side--right {
+  left: 24px;
+  width: 25px;
+  background: #c44002;
+  border-right-width: 4px;
+  border-left-width: 2px;
+  border-bottom-width: 4px;
+  transform: skewY(-39deg);
+}
+
+/* w-6 h-1 flex-shrink-0 bg-[#121331] rounded-full */
+.onoff-bar {
+  display: block;
+  flex-shrink: 0;
+  width: 1.5rem;
+  height: 0.25rem;
+  border-radius: 9999px;
+  background: #121331;
+}

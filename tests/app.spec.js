@@ -171,3 +171,32 @@ test('the 404 page for an unknown font offers to search for it', async ({ page, 
   await expect(page.locator('input[type=search]')).toHaveValue('comic sans pro');
   await expect(page).toHaveURL(/\/$/);
 });
+
+test('the On/Off switch changes the theme, and the choice survives a reload', async ({ page }) => {
+  await page.emulateMedia({ colorScheme: 'light' });
+  await page.goto('/');
+  const toggle = page.getByRole('switch', { name: 'Dark mode' });
+  await expect(toggle).not.toBeChecked();
+  const background = () => page.evaluate(() => getComputedStyle(document.body).backgroundColor);
+  const light = await background();
+  // Click the visible switch, as a visitor would (the checkbox inside is visually hidden).
+  await page.locator('.theme-switch').click();
+  await expect(toggle).toBeChecked();
+  await expect(page.locator('html')).toHaveAttribute('data-theme', 'dark');
+  expect(await background()).not.toBe(light);
+  await page.reload();
+  await expect(page.locator('html')).toHaveAttribute('data-theme', 'dark');
+  await expect(page.getByRole('switch', { name: 'Dark mode' })).toBeChecked();
+  // Keyboard: Space flips it back.
+  await page.getByRole('switch', { name: 'Dark mode' }).focus();
+  await page.keyboard.press('Space');
+  await expect(page.locator('html')).toHaveAttribute('data-theme', 'light');
+  expect(await background()).toBe(light);
+});
+
+test('with no choice saved, the switch follows the device', async ({ page }) => {
+  await page.emulateMedia({ colorScheme: 'dark' });
+  await page.goto('/');
+  await expect(page.getByRole('switch', { name: 'Dark mode' })).toBeChecked();
+  await expect(page.locator('html')).not.toHaveAttribute('data-theme', /./);
+});

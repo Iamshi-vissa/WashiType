@@ -16,7 +16,8 @@ import { CATEGORIES, SCRIPTS, SORTS, FEATURED, SIZES, sampleFor, previewText } f
 import { fontPath, readFontRoute, upgradeHashLink, searchTerm, readSearchParam, clearSearchParam } from './routes.js';
 import { reportError } from './reportError.js';
 import { SHEET_PAPER } from './paperSettings.js';
-import useMedia from './useMedia.js';
+import { useTheme } from './theme.js';
+import OnOffSwitch from './components/OnOffSwitch/OnOffSwitch.jsx';
 
 const SCRIPT_OPTIONS = [{ value: 'all', label: 'Any script' }, ...SCRIPTS.map(s => ({ value: s.id, label: s.label }))];
 const SORT_OPTIONS = SORTS.map(s => ({ value: s.id, label: s.label }));
@@ -65,7 +66,7 @@ export default function App() {
   const [saved, setSaved] = useState(() => new Set(store.get('washitype:saved', store.get('typesheet:saved', []))));
   const [open, setOpen] = useState(null);
   const heroRef = useRef(null);
-  const dark = useMedia('(prefers-color-scheme: dark)');
+  const [theme, setTheme] = useTheme();
 
   // Load the catalog, retrying twice with a short pause before showing the error TV.
   const loadCatalog = useCallback(async () => {
@@ -269,7 +270,7 @@ export default function App() {
 
   return (
     <ClickSpark
-      sparkColor={dark ? SPARKS.dark : SPARKS.light}
+      sparkColor={SPARKS[theme]}
       shape="dot"
       sparkSize={6}
       sparkRadius={22}
@@ -283,6 +284,13 @@ export default function App() {
           <Hanko text="WT" size={34} />
           <span>Washi Type</span>
         </a>
+        <div className="top-actions">
+        <OnOffSwitch
+          checked={theme === 'dark'}
+          onChange={on => setTheme(on ? 'dark' : 'light')}
+          label="Dark mode"
+          className="theme-switch"
+        />
         <button
           type="button"
           className={`ghost small${savedOnly ? ' is-on' : ''}`}
@@ -294,8 +302,10 @@ export default function App() {
           <Hanko on={saved.size > 0} size={22}>
             <SaveMark />
           </Hanko>
-          Stamped · {saved.size}
+          <span className="top-label">Stamped · </span>
+          {saved.size}
         </button>
+        </div>
       </header>
       {(!online || savedCopy) && catalog === 'ready' && (
         <div className="offline-bar" role="status">

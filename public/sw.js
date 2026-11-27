@@ -4,8 +4,8 @@
 // copy and shows its "no signal" screen instead of the browser's "can't be reached" page.
 // On a weak connection, pages and the font list fall back to the copy after 3.5 seconds
 // (the network answer still refreshes the copy in the background).
-const CACHE = 'washi-type-v2';
-const SHELL = ['/', '/fonts.json', '/404.html', '/favicon.svg'];
+const CACHE = 'washi-type-v3';
+const SHELL = ['/', '/fonts.json', '/404.html', '/favicon.svg', '/theme.js'];
 const MAX_ENTRIES = 80; // old deploys' code files would otherwise pile up forever
 const SLOW_NETWORK_MS = 3500;
 // After one timeout, assume the connection stays slow for a while and answer from the copy

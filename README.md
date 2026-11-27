@@ -13,7 +13,7 @@ npm install
 npm run dev        # http://localhost:5173
 npm run build      # refreshes the font catalog, then builds dist/
 npm run preview    # serves the production build on http://localhost:4173
-npm run lint       # ESLint
+npm run lint       # ESLint 10
 npm test           # browser tests against the production build (run npm run build first)
 npm run vendor:check   # checks no copied component changed without being recorded
 ```
@@ -29,6 +29,7 @@ npm run vendor:check   # checks no copied component changed without being record
 - **Font sheets:** every weight (with an italic toggle), licence, source, designer, a crumplable specimen, and the embed code on a ticket you tear to copy. Every font has its own page, such as `/fonts/inter`, which works with Back and Forward, can be bookmarked and shared, and is indexed by search engines (old `/#inter` links move there).
 - **Stamped fonts:** press the seal on any sheet to keep it. The Stamped drawer lists them as paper slips; drag one into the shredder (or press Delete) to remove it, with Undo. Stamps stay in this browser.
 - **Errors you can read:** a retro TV shows what went wrong instead of a blank page (see below).
+- **Light and dark:** the site follows your device; the On/Off switch in the header picks one and remembers it in this browser (it's applied before the page paints, so there's no flash of the other theme).
 - **Works offline after the first visit:** a service worker keeps a copy of the site, and says when you're looking at it.
 - **Fast with 2,000+ fonts:** only the sheets near the screen exist on the page.
 
@@ -42,8 +43,8 @@ npm run vendor:check   # checks no copied component changed without being record
 | Fontshare (Indian Type Foundry) | 65 not already on Google Fonts | ITF Free Font License | api.fontshare.com |
 | Independent foundries via Fontsource | 119 | OFL, Apache, MIT, CC0, Unlicense | cdn.jsdelivr.net (pinned to `@fontsource/*@5`) |
 
-- Google Fonts licences come from `google-font-metadata`; for the ~150 families it has no record for, the licence folder they sit in on the google/fonts repository (`data/google-licence-folders.json`). Three new families still link to Google Fonts for their licence.
-- `npm run build` refreshes Fontshare and Fontsource from their live APIs and falls back to the snapshots in `data/` if they can't be reached. `npm run catalog` rebuilds from the snapshots only.
+- Google Fonts comes from the data files published by [google-font-metadata](https://github.com/fontsource/google-font-metadata), read from jsDelivr at build time (pinned to version 6), with a trimmed snapshot in `data/google-fonts.json` as the fallback. Only its data is used, so the package itself isn't installed. Licences come from the same data; for the ~150 families it has no record for, the licence folder they sit in on the google/fonts repository (`data/google-licence-folders.json`). Three new families still link to Google Fonts for their licence.
+- `npm run build` refreshes all three sources from the network and falls back to the snapshots in `data/` if one can't be reached. `npm run catalog` rebuilds from the snapshots only; `npm run catalog:live -- --save-snapshot` also refreshes the Google Fonts snapshot.
 - The build checks the catalog (unique ids, valid weights and categories, enough Google fonts) and fails rather than ship a broken one. A single malformed entry from a live API is skipped, not fatal.
 - Fontshare's licence doesn't allow redistributing the files, so Washi Type only displays them through Fontshare's servers and links to fontshare.com for downloads.
 
@@ -71,8 +72,9 @@ api/report.js                 Vercel function: writes visitors' error reports to
 public/
   fonts.json                  the merged catalog (generated)
   sw.js                       service worker: network first, saved copy after 3.5 s or offline
+  theme.js                    applies a saved light/dark choice before the page paints
   favicon.svg, og.jpg         tab icon and link preview image
-data/                         snapshots of the Fontshare and Fontsource catalogs, Google licence folders
+data/                         snapshots of the Google Fonts, Fontshare and Fontsource catalogs, Google licence folders
 scripts/
   build-catalog.mjs           builds and checks public/fonts.json
   prerender.mjs               writes dist/fonts/<id>/index.html, sitemap.xml, robots.txt
@@ -89,6 +91,7 @@ src/
   data.js                     categories, scripts and samples, sorts, featured fonts
   fontLoader.js               loads each font from its own source; embed code; source links
   focus.js, useMedia.js       focus return after dialogs; media-query hook
+  theme.js                    light/dark: follows the device until the switch saves a choice
   paperSettings.js            size, detail and fold settings shared by every sheet
   components/
     VirtualGrid.jsx           renders only the rows of sheets near the screen
@@ -99,6 +102,7 @@ src/
     Select.jsx                dropdowns that always open downwards
     HeroScroll.jsx, Hanko.jsx hero sheet and the red seal
     ErrorBoundary.jsx, ErrorScreen.jsx, TvError/   error handling and the TV
+    OnOffSwitch/              the light/dark switch (from Uiverse)
     PaperCrumple/             crumplable paper; the fold simulation runs in a Web Worker
     reactbits/                ReactBits components (see below)
 tests/app.spec.js             Playwright tests: main flows, real pages, every error path
@@ -121,6 +125,7 @@ Copied into `src/components/reactbits/` from [ReactBits](https://reactbits.dev) 
 - **TearTicket:** `onTear` fires the moment the stub is let go (inside the pointer-up handler), not after it finishes falling, because Safari only allows copying to the clipboard during a user gesture.
 - **PaperCrumple:** the fold simulation moved to `paperPath.js` and runs in a Web Worker (`paperPath.worker.js`), cached by its settings; nothing renders before the sheet is ready; shaders compile with `renderer.compileAsync`. Layer collision uses a spatial grid, the mesh goes up to 40×40 points, and a generated crinkle normal map adds fine creases that deepen as you squeeze and stay after you let go (`crinkle` prop). When you let go, the sheet doesn't spring back perfectly flat: it keeps its relief, so the printed letters kink and break along the creases.
 - **TvError** (from Uiverse): ported to React, classes prefixed `tv404-`.
+- **OnOffSwitch** (from [Uiverse.io by m1her](https://uiverse.io/m1her/odd-fireant-56), MIT License, Copyright (c) m1her (Maher Nas)): ported from HTML + Tailwind to React and plain CSS, classes prefixed `onoff-`. The checkbox is visually hidden rather than removed, so the switch works with Tab and Space and announces itself as "Dark mode". In the header it's shown at 40% of its original size (30% on phones).
 
 To upgrade one: copy the new upstream file over it, `git apply` its patch from `vendor/patches/`, then `npm run vendor:record`. If you edit a copied file on purpose, run `npm run vendor:record` and describe the change in the manifest; otherwise `npm run vendor:check` (run in CI) fails.
 
@@ -136,3 +141,7 @@ To upgrade one: copy the new upstream file over it, `git apply` its patch from `
 ## Deploying
 
 Vercel builds every push to `main` with `npm run build`, serves `dist/` and runs `api/report.js` as a function. Unknown addresses get `404.html` with a 404 status. Set `SITE_URL` in the Vercel project if the site moves to its own domain, so canonical links and the sitemap use it.
+
+## Licence
+
+Washi Type's own code is under the [MIT License](LICENSE). The copied ReactBits components keep the ReactBits licence (MIT + Commons Clause: use them in a site or product, don't resell or redistribute the components themselves), and the TV error screen and the On/Off switch keep their MIT licences from Uiverse; see [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md). Every font keeps its own licence, shown on its sheet.

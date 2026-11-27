@@ -77,6 +77,20 @@ button, input, select { font: inherit; color: inherit; }
   display: flex; align-items: center; justify-content: space-between; gap: 12px;
   padding: 12px max(5vw, 16px); border-bottom: 1px solid var(--line);
 }
+.top-actions { display: flex; align-items: center; gap: 14px; }
+.top-actions .ghost { white-space: nowrap; }
+/* The On/Off switch (src/components/OnOffSwitch) at 40% of its original 192 × 108 px. */
+.theme-switch { --onoff-scale: 0.4; }
+@media (max-width: 480px) {
+  .top-actions { gap: 8px; }
+  .theme-switch { --onoff-scale: 0.3; }
+  .mark span { white-space: nowrap; }
+  /* Phones: the Stamped button shows the seal and the count; the word stays for screen readers. */
+  .top-label {
+    position: absolute; width: 1px; height: 1px; margin: -1px; padding: 0;
+    overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0;
+  }
+}
 .mark {
   display: inline-flex; align-items: center; gap: 12px; text-decoration: none; color: var(--ink);
   font: 800 24px/1 'Shippori Mincho', serif; letter-spacing: 0.01em;
