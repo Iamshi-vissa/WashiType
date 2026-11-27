@@ -1,0 +1,190 @@
+{
+  "about": "Files copied into this project from other projects. Checked by scripts/vendor.mjs (npm run vendor:check).",
+  "reactbits": {
+    "repository": "https://github.com/DavidHDev/react-bits",
+    "commit": "a30a9da9b40a91c5672fc8cd77785719e8e5b1e6",
+    "date": "2026-11-26"
+  },
+  "files": [
+    {
+      "name": "ClickSpark.jsx",
+      "local": "src/components/reactbits/ClickSpark.jsx",
+      "source": "ReactBits src/content/Animations/ClickSpark/ClickSpark.jsx",
+      "upstream": "https://github.com/DavidHDev/react-bits/blob/a30a9da9b40a91c5672fc8cd77785719e8e5b1e6/src/content/Animations/ClickSpark/ClickSpark.jsx",
+      "changes": null,
+      "sha256": "d826b10004a9ba67ee88c3692230055513491495fbdc149598310e77edef170f"
+    },
+    {
+      "name": "CountUp.jsx",
+      "local": "src/components/reactbits/CountUp.jsx",
+      "source": "ReactBits src/content/TextAnimations/CountUp/CountUp.jsx",
+      "upstream": "https://github.com/DavidHDev/react-bits/blob/a30a9da9b40a91c5672fc8cd77785719e8e5b1e6/src/content/TextAnimations/CountUp/CountUp.jsx",
+      "changes": null,
+      "sha256": "7c3d3b6cdbd6957484fd7f3a2149d9cd56ad3e4df11437e09dcfa84225b648e3"
+    },
+    {
+      "name": "FoldText.css",
+      "local": "src/components/reactbits/FoldText.css",
+      "source": "ReactBits src/content/TextAnimations/FoldText/FoldText.css",
+      "upstream": "https://github.com/DavidHDev/react-bits/blob/a30a9da9b40a91c5672fc8cd77785719e8e5b1e6/src/content/TextAnimations/FoldText/FoldText.css",
+      "changes": null,
+      "sha256": "258db96ff4cab514fa3215ee1753e0dccde8958e14a2779cecc96a590be7f8b6"
+    },
+    {
+      "name": "FoldText.jsx",
+      "local": "src/components/reactbits/FoldText.jsx",
+      "source": "ReactBits src/content/TextAnimations/FoldText/FoldText.jsx",
+      "upstream": "https://github.com/DavidHDev/react-bits/blob/a30a9da9b40a91c5672fc8cd77785719e8e5b1e6/src/content/TextAnimations/FoldText/FoldText.jsx",
+      "changes": null,
+      "sha256": "a1373e0f02db84664e68200bc4b99b30e7555bdf07389fba93372b8eb98ee6cd"
+    },
+    {
+      "name": "RotatingText.css",
+      "local": "src/components/reactbits/RotatingText.css",
+      "source": "ReactBits src/content/TextAnimations/RotatingText/RotatingText.css",
+      "upstream": "https://github.com/DavidHDev/react-bits/blob/a30a9da9b40a91c5672fc8cd77785719e8e5b1e6/src/content/TextAnimations/RotatingText/RotatingText.css",
+      "changes": null,
+      "sha256": "9d77b26466ede85569dc01da9e44b60fb3337023c850c309a6efe9e231183f83"
+    },
+    {
+      "name": "RotatingText.jsx",
+      "local": "src/components/reactbits/RotatingText.jsx",
+      "source": "ReactBits src/content/TextAnimations/RotatingText/RotatingText.jsx",
+      "upstream": "https://github.com/DavidHDev/react-bits/blob/a30a9da9b40a91c5672fc8cd77785719e8e5b1e6/src/content/TextAnimations/RotatingText/RotatingText.jsx",
+      "changes": null,
+      "sha256": "176bcf8ecd215441b85756e607df91e73cf37ba401dd21fdca4302bac9f7676a"
+    },
+    {
+      "name": "Shredder.css",
+      "local": "src/components/reactbits/Shredder.css",
+      "source": "ReactBits src/content/Micro/Shredder/Shredder.css",
+      "upstream": "https://github.com/DavidHDev/react-bits/blob/a30a9da9b40a91c5672fc8cd77785719e8e5b1e6/src/content/Micro/Shredder/Shredder.css",
+      "changes": null,
+      "sha256": "fac84b2dfbb2ed9500cfdcfb41f6e5693c4b2c09259405ee408246a72718cecd"
+    },
+    {
+      "name": "Shredder.jsx",
+      "local": "src/components/reactbits/Shredder.jsx",
+      "source": "ReactBits src/content/Micro/Shredder/Shredder.jsx",
+      "upstream": "https://github.com/DavidHDev/react-bits/blob/a30a9da9b40a91c5672fc8cd77785719e8e5b1e6/src/content/Micro/Shredder/Shredder.jsx",
+      "changes": null,
+      "sha256": "e6c3afd16a17da2d76867006526e8c2d839f15ad0ac1777ea9924f6f56b35303"
+    },
+    {
+      "name": "SquishSwitch.css",
+      "local": "src/components/reactbits/SquishSwitch.css",
+      "source": "ReactBits src/content/Micro/SquishSwitch/SquishSwitch.css",
+      "upstream": "https://github.com/DavidHDev/react-bits/blob/a30a9da9b40a91c5672fc8cd77785719e8e5b1e6/src/content/Micro/SquishSwitch/SquishSwitch.css",
+      "changes": null,
+      "sha256": "c05d751d50995b2683ea005098c8459694e03a2c2a3d532f4ab545aac5d5dfcb"
+    },
+    {
+      "name": "SquishSwitch.jsx",
+      "local": "src/components/reactbits/SquishSwitch.jsx",
+      "source": "ReactBits src/content/Micro/SquishSwitch/SquishSwitch.jsx",
+      "upstream": "https://github.com/DavidHDev/react-bits/blob/a30a9da9b40a91c5672fc8cd77785719e8e5b1e6/src/content/Micro/SquishSwitch/SquishSwitch.jsx",
+      "changes": null,
+      "sha256": "44402b851bbe4f82cabce067cf0b94eded19ad3e925bda3a8f0cb5781982a664"
+    },
+    {
+      "name": "StrokeText.css",
+      "local": "src/components/reactbits/StrokeText.css",
+      "source": "ReactBits src/content/TextAnimations/StrokeText/StrokeText.css",
+      "upstream": "https://github.com/DavidHDev/react-bits/blob/a30a9da9b40a91c5672fc8cd77785719e8e5b1e6/src/content/TextAnimations/StrokeText/StrokeText.css",
+      "changes": null,
+      "sha256": "572e1f8076a85a564f099496b8dac313a5e2e0a5afa9fc29db0f90089e711ad8"
+    },
+    {
+      "name": "StrokeText.jsx",
+      "local": "src/components/reactbits/StrokeText.jsx",
+      "source": "ReactBits src/content/TextAnimations/StrokeText/StrokeText.jsx",
+      "upstream": "https://github.com/DavidHDev/react-bits/blob/a30a9da9b40a91c5672fc8cd77785719e8e5b1e6/src/content/TextAnimations/StrokeText/StrokeText.jsx",
+      "changes": null,
+      "sha256": "0c8c15f248d7efecb66158c7afc4226b0f7129ba53bdd3fe3b68bdaaff829a09"
+    },
+    {
+      "name": "SwipeToast.css",
+      "local": "src/components/reactbits/SwipeToast.css",
+      "source": "ReactBits src/content/Micro/SwipeToast/SwipeToast.css",
+      "upstream": "https://github.com/DavidHDev/react-bits/blob/a30a9da9b40a91c5672fc8cd77785719e8e5b1e6/src/content/Micro/SwipeToast/SwipeToast.css",
+      "changes": null,
+      "sha256": "dcb13f804fa6c3012b48bfa3c2c3c2ca35369209c4fe0687283191b516db22be"
+    },
+    {
+      "name": "SwipeToast.jsx",
+      "local": "src/components/reactbits/SwipeToast.jsx",
+      "source": "ReactBits src/content/Micro/SwipeToast/SwipeToast.jsx",
+      "upstream": "https://github.com/DavidHDev/react-bits/blob/a30a9da9b40a91c5672fc8cd77785719e8e5b1e6/src/content/Micro/SwipeToast/SwipeToast.jsx",
+      "changes": null,
+      "sha256": "0d111d637b5ba6ec388d68ee3fca6ae9f60ecd632363381c7b20ec56a5300154"
+    },
+    {
+      "name": "TearTicket.css",
+      "local": "src/components/reactbits/TearTicket.css",
+      "source": "ReactBits src/content/Micro/TearTicket/TearTicket.css",
+      "upstream": "https://github.com/DavidHDev/react-bits/blob/a30a9da9b40a91c5672fc8cd77785719e8e5b1e6/src/content/Micro/TearTicket/TearTicket.css",
+      "changes": null,
+      "sha256": "2599cee61597409350e6d93548c9f14cdda6befaee9a4c46cc31f51ca5f6fb6c"
+    },
+    {
+      "name": "TearTicket.jsx",
+      "local": "src/components/reactbits/TearTicket.jsx",
+      "source": "ReactBits src/content/Micro/TearTicket/TearTicket.jsx",
+      "upstream": "https://github.com/DavidHDev/react-bits/blob/a30a9da9b40a91c5672fc8cd77785719e8e5b1e6/src/content/Micro/TearTicket/TearTicket.jsx",
+      "original": "vendor/originals/TearTicket.jsx",
+      "patch": "vendor/patches/TearTicket.jsx.patch",
+      "changes": "onTear fires inside the pointer-up handler when the stub is let go (not after it finishes falling), so copying to the clipboard counts as a user gesture in Safari; it fires once.",
+      "sha256": "74c269ea8d617925874dbe859bc0ea9d3fade507bc79fa957ea5eb760d265546"
+    },
+    {
+      "name": "WarmTooltip.css",
+      "local": "src/components/reactbits/WarmTooltip.css",
+      "source": "ReactBits src/content/Micro/WarmTooltip/WarmTooltip.css",
+      "upstream": "https://github.com/DavidHDev/react-bits/blob/a30a9da9b40a91c5672fc8cd77785719e8e5b1e6/src/content/Micro/WarmTooltip/WarmTooltip.css",
+      "changes": null,
+      "sha256": "241941731b1a83626caa3df16bb535e55ece65591154d5eac4ea9c5e3e940386"
+    },
+    {
+      "name": "WarmTooltip.jsx",
+      "local": "src/components/reactbits/WarmTooltip.jsx",
+      "source": "ReactBits src/content/Micro/WarmTooltip/WarmTooltip.jsx",
+      "upstream": "https://github.com/DavidHDev/react-bits/blob/a30a9da9b40a91c5672fc8cd77785719e8e5b1e6/src/content/Micro/WarmTooltip/WarmTooltip.jsx",
+      "changes": null,
+      "sha256": "bec4e1fa39b681da5b4e88bde945f374bb87fe734ef745ab44ca82f8ac1bdcba"
+    },
+    {
+      "name": "PaperCrumple.jsx",
+      "local": "src/components/PaperCrumple/PaperCrumple.jsx",
+      "source": "PaperCrumple as pasted into this project (ReactBits Micro/PaperCrumple)",
+      "upstream": "https://github.com/DavidHDev/react-bits/tree/a30a9da9b40a91c5672fc8cd77785719e8e5b1e6/src/content/Micro/PaperCrumple",
+      "original": "vendor/originals/PaperCrumple.jsx",
+      "patch": "vendor/patches/PaperCrumple.jsx.patch",
+      "changes": "The fold simulation (createPaperPath) moved to paperPath.js and runs in a Web Worker via paperPathClient.js, cached by its settings; nothing renders before the sheet is ready; shaders compile with renderer.compileAsync; PCFShadowMap instead of the removed PCFSoftShadowMap.",
+      "sha256": "f1deaf3472d685ce666f02fd9ba35196bee3f66cccb0b3e9097e2fbeeb3e0faf"
+    },
+    {
+      "name": "PaperCrumple.css",
+      "local": "src/components/PaperCrumple/PaperCrumple.css",
+      "source": "PaperCrumple as pasted into this project",
+      "upstream": "https://github.com/DavidHDev/react-bits/tree/a30a9da9b40a91c5672fc8cd77785719e8e5b1e6/src/content/Micro/PaperCrumple",
+      "changes": null,
+      "sha256": "a400135beabf955bed3ef33e3ca838ce14c51a5a1033f5d68f4272fba23316f8"
+    },
+    {
+      "name": "TvError.jsx",
+      "local": "src/components/TvError/TvError.jsx",
+      "source": "Uiverse.io by Praashoo7 (MIT), fat-horse-65",
+      "upstream": "https://uiverse.io/Praashoo7/fat-horse-65",
+      "changes": "Ported from HTML to React; screen text and digits are props.",
+      "sha256": "6debfec4d6ab62d7e6e4760e8348495f4815fa070ee7735de35b3dbb4b3efa53"
+    },
+    {
+      "name": "TvError.css",
+      "local": "src/components/TvError/TvError.css",
+      "source": "Uiverse.io by Praashoo7 (MIT), fat-horse-65",
+      "upstream": "https://uiverse.io/Praashoo7/fat-horse-65",
+      "changes": "Every class prefixed tv404-; wrapper isolates the negative z-index layers; size scales with --tv-size; digits use currentColor; reduced-motion stops the static.",
+      "sha256": "8d3d1676126f3a63b5bc0a18be61a6fd7898d3ed5a2574c14e55c674e8df08a8"
+    }
+  ]
+}

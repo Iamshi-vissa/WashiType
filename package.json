@@ -9,7 +9,9 @@
     "lint": "eslint .",
     "catalog:live": "node scripts/build-catalog.mjs --live",
     "test": "playwright test",
-    "prerender": "node scripts/prerender.mjs"
+    "prerender": "node scripts/prerender.mjs",
+    "vendor:check": "node scripts/vendor.mjs check",
+    "vendor:record": "node scripts/vendor.mjs record"
   },
   "dependencies": {
     "@hugeicons/core-free-icons": "^4.4.0",

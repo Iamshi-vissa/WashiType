@@ -1,0 +1,23 @@
+--- a/TearTicket.jsx
++++ b/TearTicket.jsx
+@@ -263,7 +263,10 @@
+     const c = cfg.current;
+     if (stubRef.current) stubRef.current.style.visibility = 'hidden';
+     if (!c.controlled) setInner(true);
+-    c.onTear?.();
++    // Washi Type: fire once. When the stub is let go after tearing, onTear already ran
++    // inside the pointerup handler, so clipboard writes count as a user gesture.
++    if (!sim.current.notified) c.onTear?.();
++    sim.current.notified = false;
+   };
+ 
+   const step = now => {
+@@ -471,6 +474,8 @@
+     } catch {}
+     setGrabbing(false);
+     if (s.phase === 'free') {
++      s.notified = true;
++      cfg.current.onTear?.();
+       const still = performance.now() - s.pt > 80;
+       s.vx = still ? 0 : clamp(s.pvx, -1600, 1600);
+       s.vy = still ? 0 : clamp(s.pvy, -1600, 1200);
