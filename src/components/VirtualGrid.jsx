@@ -47,7 +47,10 @@ export default function VirtualGrid({ items, getKey, renderItem, estimateRowHeig
     count: rows,
     estimateSize: () => estimateRowHeight + ROW_GAP,
     overscan: 3,
-    scrollMargin: offset
+    scrollMargin: offset,
+    // Measure rows on the next frame too, for the same reason as above: a row's new height
+    // moves the rows below it, which the same observer is watching.
+    useAnimationFrameWithResizeObserver: true
   });
 
   return (
