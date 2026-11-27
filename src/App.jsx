@@ -14,6 +14,7 @@ import ErrorScreen from './components/ErrorScreen.jsx';
 import ErrorBoundary from './components/ErrorBoundary.jsx';
 import { CATEGORIES, SCRIPTS, SORTS, FEATURED, SIZES, sampleFor, previewText } from './data.js';
 import { fontPath, readFontRoute, upgradeHashLink } from './routes.js';
+import { reportError } from './reportError.js';
 
 const SCRIPT_OPTIONS = [{ value: 'all', label: 'Any script' }, ...SCRIPTS.map(s => ({ value: s.id, label: s.label }))];
 const SORT_OPTIONS = SORTS.map(s => ({ value: s.id, label: s.label }));
@@ -76,6 +77,7 @@ export default function App() {
         await new Promise(resolve => setTimeout(resolve, 600 * (attempt + 1)));
       }
     }
+    if (navigator.onLine !== false) reportError('catalog', 'fonts.json could not be loaded after 3 tries');
     setCatalog(navigator.onLine === false ? 'offline' : 'unreachable');
   }, []);
 

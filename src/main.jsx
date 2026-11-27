@@ -2,7 +2,10 @@ import { StrictMode } from 'react';
 import { createRoot } from 'react-dom/client';
 import App from './App.jsx';
 import ErrorBoundary, { reloadOnce } from './components/ErrorBoundary.jsx';
+import { watchForErrors } from './reportError.js';
 import './styles.css';
+
+watchForErrors();
 
 // A code file from an older deploy failed to preload: reload once to get the new ones.
 window.addEventListener('vite:preloadError', event => {

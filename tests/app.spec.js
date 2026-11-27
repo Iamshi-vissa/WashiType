@@ -39,12 +39,18 @@ test('an unreachable catalog shows the no-signal TV, and Try again recovers', as
   await expect(page.locator('.sheet').first()).toBeVisible();
 });
 
-test('a missing code file shows the crash TV instead of a blank page', async ({ page }) => {
+test('a missing code file shows the crash TV instead of a blank page, and is reported', async ({ page }) => {
+  const reports = [];
+  await page.route('**/api/report', async route => {
+    reports.push(JSON.parse(route.request().postData() || '{}'));
+    await route.fulfill({ status: 204 });
+  });
   await page.route('**/assets/SpecimenSheet-*.js', route => route.fulfill({ status: 404, body: 'gone' }));
   await page.goto('/');
   await expect(page.locator('.sheet').first()).toBeVisible();
   await page.goto('/fonts/inter');
   await expect(page.locator('.err-title')).toHaveText('Inter couldn’t open', { timeout: 15000 });
+  await expect.poll(() => reports.some(r => r.kind === 'chunk-load' && r.page === '/fonts/inter')).toBe(true);
 });
 
 test('stamps for fonts that left the catalog are forgotten', async ({ page }) => {

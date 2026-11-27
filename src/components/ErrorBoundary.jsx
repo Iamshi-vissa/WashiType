@@ -1,5 +1,6 @@
 import { Component } from 'react';
 import ErrorScreen from './ErrorScreen.jsx';
+import { reportError } from '../reportError.js';
 
 // After a new deploy, a tab opened earlier asks for code files that no longer exist.
 // Those show up as these errors; a single reload fetches the new files.
@@ -33,6 +34,7 @@ export default class ErrorBoundary extends Component {
   }
 
   componentDidCatch(error) {
+    reportError(isChunkError(error) ? 'chunk-load' : 'render', error);
     if (isChunkError(error) && navigator.onLine !== false) reloadOnce();
   }
 
