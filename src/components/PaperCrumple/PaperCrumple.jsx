@@ -641,8 +641,10 @@ const PaperCrumple = ({
       hit.dataset.pointer = 'false';
       if (event.key === 'Escape') {
         // Escape smooths a crumpled or moved sheet. A flat sheet has nothing to undo, so the
-        // key is left alone for the page (closing the dialog the paper sits in, say).
-        const touched = held || springs.some(s => Math.abs(s.value) > 0.001 || Math.abs(s.target) > 0.001);
+        // key is left alone for the page (closing the dialog the paper sits in, say). Judged
+        // by where the paper is heading, not where it is: right after one Escape it is still
+        // springing flat, and a second Escape should close.
+        const touched = held || springs.some(s => Math.abs(s.target) > 0.001);
         if (!touched) return;
         event.preventDefault();
         reset();
