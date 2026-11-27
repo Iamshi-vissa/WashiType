@@ -122,3 +122,52 @@ test('old #links move to the new address', async ({ page }) => {
   await expect(page).toHaveURL(/\/fonts\/inter$/);
   await expect(page.locator('.spec')).toBeVisible();
 });
+
+test('Escape smooths a crumpled sheet first, then closes it', async ({ page }) => {
+  await page.goto('/fonts/inter');
+  const paper = page.locator('.paper-crumple');
+  await expect(paper).toHaveAttribute('data-status', /ready|error/, { timeout: 20000 });
+  if ((await paper.getAttribute('data-status')) === 'ready') {
+    const box = await page.locator('.paper-crumple-hit').boundingBox();
+    await page.mouse.move(box.x + box.width / 2, box.y + box.height / 2);
+    await page.mouse.down();
+    await page.waitForTimeout(400);
+    await page.mouse.up();
+    await page.keyboard.press('Escape'); // smooths the creases
+    await expect(page.locator('.spec')).toBeVisible();
+  }
+  await page.keyboard.press('Escape'); // nothing left to smooth: closes
+  await expect(page.locator('.spec')).toHaveCount(0);
+});
+
+test('a ?q= link fills the search and leaves a clean address', async ({ page }) => {
+  await page.goto('/?q=noto%20sans');
+  await expect(page.locator('input[type=search]')).toHaveValue('noto sans');
+  await expect(page).toHaveURL(/\/$/);
+  await expect(page.locator('.count')).toContainText(/\d[\d,]* fonts?/);
+});
+
+test('one bad family in a Google Fonts batch does not blank the rest', async ({ page }) => {
+  const singles = new Set();
+  await page.route('https://fonts.googleapis.com/css2?**', route => {
+    const families = new URL(route.request().url()).searchParams.getAll('family');
+    if (families.length > 1) return route.fulfill({ status: 400, body: 'bad request' });
+    singles.add(families[0]);
+    return route.fulfill({ status: 200, contentType: 'text/css', body: '/* ok */' });
+  });
+  await page.goto('/');
+  await expect(page.locator('.sheet').first()).toBeVisible();
+  await expect.poll(() => singles.size, { timeout: 10000 }).toBeGreaterThan(1);
+});
+
+test('the 404 page for an unknown font offers to search for it', async ({ page, request }) => {
+  // On Vercel, /fonts/<unknown> gets 404.html with a 404 status; the local preview server
+  // would answer with the app instead, so serve 404.html at that address the same way.
+  const notFound = await (await request.get('/404.html')).text();
+  await page.route('**/fonts/comic-sans-pro', route => route.fulfill({ status: 404, contentType: 'text/html', body: notFound }));
+  await page.goto('/fonts/comic-sans-pro');
+  await expect(page.locator('.err-title')).toHaveText('No font called “comic sans pro”');
+  await page.getByRole('link', { name: 'Search for “comic sans pro”' }).click();
+  await expect(page.locator('input[type=search]')).toHaveValue('comic sans pro');
+  await expect(page).toHaveURL(/\/$/);
+});

@@ -640,6 +640,10 @@ const PaperCrumple = ({
       if (options.current.disabled || !ready) return;
       hit.dataset.pointer = 'false';
       if (event.key === 'Escape') {
+        // Escape smooths a crumpled or moved sheet. A flat sheet has nothing to undo, so the
+        // key is left alone for the page (closing the dialog the paper sits in, say).
+        const touched = held || springs.some(s => Math.abs(s.value) > 0.001 || Math.abs(s.target) > 0.001);
+        if (!touched) return;
         event.preventDefault();
         reset();
         return;

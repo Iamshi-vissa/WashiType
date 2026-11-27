@@ -20,19 +20,27 @@ const googleParam = (family, weights, italic = false) => {
 const fontshareParam = (slug, weights, italic = false) =>
   `f[]=${encodeURIComponent(slug)}@${[...weights, ...(italic ? weights.map(w => w + 1) : [])].join(',')}`;
 
-const addStylesheet = href => {
+const addStylesheet = (href, onError) => {
   const link = document.createElement('link');
   link.rel = 'stylesheet';
   link.href = href;
+  if (onError) link.onerror = () => (link.remove(), onError());
   document.head.appendChild(link);
 };
+
+const googleCss = params => `https://fonts.googleapis.com/css2?${params.join('&')}&display=swap`;
+
+// Google answers 400 for the whole request if any one family in it is unknown, so a failed
+// batch is retried one family at a time: one bad entry can't blank twenty cards.
+function addGoogleBatch(params) {
+  addStylesheet(googleCss(params), params.length > 1 ? () => params.forEach(p => addGoogleBatch([p])) : undefined);
+}
 
 function flush() {
   timer = 0;
   // Keep URLs well under browser limits.
   const g = queues.g.splice(0);
-  for (let i = 0; i < g.length; i += 20)
-    addStylesheet(`https://fonts.googleapis.com/css2?${g.slice(i, i + 20).join('&')}&display=swap`);
+  for (let i = 0; i < g.length; i += 20) addGoogleBatch(g.slice(i, i + 20));
 }
 
 const fontsourceCss = (font, weight, italic) =>

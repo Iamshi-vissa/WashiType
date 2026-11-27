@@ -13,14 +13,18 @@ const StampDrawer = lazy(() => import('./components/StampDrawer.jsx'));
 import ErrorScreen from './components/ErrorScreen.jsx';
 import ErrorBoundary from './components/ErrorBoundary.jsx';
 import { CATEGORIES, SCRIPTS, SORTS, FEATURED, SIZES, sampleFor, previewText } from './data.js';
-import { fontPath, readFontRoute, upgradeHashLink } from './routes.js';
+import { fontPath, readFontRoute, upgradeHashLink, searchTerm, readSearchParam, clearSearchParam } from './routes.js';
 import { reportError } from './reportError.js';
 import { SHEET_PAPER } from './paperSettings.js';
+import useMedia from './useMedia.js';
 
 const SCRIPT_OPTIONS = [{ value: 'all', label: 'Any script' }, ...SCRIPTS.map(s => ({ value: s.id, label: s.label }))];
 const SORT_OPTIONS = SORTS.map(s => ({ value: s.id, label: s.label }));
 const SOURCE_LABELS = { all: 'All sources', g: 'Google Fonts', fs: 'Fontshare (Indian Type Foundry)', o: 'Open-source foundries' };
 const FEATURED_RANK = new Map(FEATURED.map((name, i) => [name, i]));
+// Sparks are drawn on a canvas, which can't read CSS variables, so the ink colours are spelled out
+// for each theme (they match --ink and --shu in styles.css).
+const SPARKS = { light: ['#1a1816', '#1a1816', '#c8341f'], dark: ['#ece5d6', '#ece5d6', '#ef5a40'] };
 
 const store = {
   get(key, fallback) {
@@ -47,7 +51,9 @@ export default function App() {
   const [online, setOnline] = useState(() => navigator.onLine !== false);
   const [missing, setMissing] = useState(null); // a link to a font that doesn't exist
   const [savedCopy, setSavedCopy] = useState(false); // the font list came from the offline copy
-  const [query, setQuery] = useState('');
+  // /?q=… (the 404 page links here to search for a font that wasn't found).
+  const [query, setQuery] = useState(readSearchParam);
+  useEffect(clearSearchParam, []);
   const [text, setText] = useState(() => store.get('washitype:text', store.get('typesheet:text', '')));
   const [size, setSize] = useState(() => store.get('washitype:size', store.get('typesheet:size', 36)));
   const [category, setCategory] = useState('all');
@@ -59,6 +65,7 @@ export default function App() {
   const [saved, setSaved] = useState(() => new Set(store.get('washitype:saved', store.get('typesheet:saved', []))));
   const [open, setOpen] = useState(null);
   const heroRef = useRef(null);
+  const dark = useMedia('(prefers-color-scheme: dark)');
 
   // Load the catalog, retrying twice with a short pause before showing the error TV.
   const loadCatalog = useCallback(async () => {
@@ -262,7 +269,7 @@ export default function App() {
 
   return (
     <ClickSpark
-      sparkColor={['#1a1816', '#1a1816', '#c8341f']}
+      sparkColor={dark ? SPARKS.dark : SPARKS.light}
       shape="dot"
       sparkSize={6}
       sparkRadius={22}
@@ -310,7 +317,7 @@ export default function App() {
           />
         </main>
       ) : (
-        <>
+        <main>
       <section className="hero band" ref={heroRef}>
         <div className="hero-grid">
           <div className="hero-copy">
@@ -419,7 +426,7 @@ export default function App() {
         </div>
       </nav>
 
-      <main className="band desk" onPointerOver={prefetchSheet} onFocus={prefetchSheet}>
+      <section className="band desk" aria-label="Fonts" onPointerOver={prefetchSheet} onFocus={prefetchSheet}>
         <p className="count" aria-live="polite">
           {fonts.length
             ? `${results.length.toLocaleString()} ${results.length === 1 ? 'font' : 'fonts'}`
@@ -460,9 +467,8 @@ export default function App() {
             />
           )}
         />
-      </main>
-
-        </>
+      </section>
+        </main>
       )}
 
       <footer className="foot band">
@@ -556,7 +562,7 @@ export default function App() {
   );
 }
 
-// Shown for a #link to a font that isn't in the catalog (or a garbled link).
+// Shown for a link to a font that isn't in the catalog (or a garbled link).
 function MissingFont({ id, onSearch, onClose }) {
   const closeRef = useRef(null);
   useEffect(() => {
@@ -570,7 +576,7 @@ function MissingFont({ id, onSearch, onClose }) {
       if (app) app.inert = false;
     };
   }, [onClose]);
-  const term = id.replace(/[-_]+/g, ' ').replace(/[^\p{L}\p{N} ]/gu, '').trim().slice(0, 40);
+  const term = searchTerm(id);
   return (
     <div className="overlay" role="dialog" aria-modal="true" aria-label="Font not found" onClick={onClose}>
       <div className="spec spec--error" ref={closeRef} onClick={e => e.stopPropagation()}>

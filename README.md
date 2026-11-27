@@ -51,8 +51,9 @@ npm run vendor:check   # checks no copied component changed without being record
 
 | What happened | What you see |
 |---|---|
-| An address that doesn't exist (e.g. `/fonts/not-a-font` or `/about`) | Vercel serves `404.html` with a real 404 status: the TV shows **NOT FOUND 404** |
-| A link to a font that isn't in the catalog, or a garbled link | The TV in a dialog, with a button to search for the name |
+| An address that doesn't exist (e.g. `/about`) | Vercel serves `404.html` with a real 404 status: the TV shows **NOT FOUND 404** |
+| `/fonts/<name>` for a font that isn't in the catalog | The same 404 page and status, titled "No font called …", with a button that opens the front page searching for that name (`/?q=<name>`) |
+| Inside the app: a font that isn't in the catalog, or a garbled link | The TV in a dialog, with a button to search for the name |
 | The font list can't be loaded | Retries twice, then the TV shows **NO SIGNAL 503** with Try again |
 | You're offline | **NO SIGNAL OFF**; it retries by itself when the connection returns. If the site was visited before, it opens from the offline copy with a "you're offline" bar |
 | The site can't be reached, or the connection is very slow | After 3.5 s the saved copy answers (from then on, straight away for 20 s), with a bar saying it's the copy saved on this device |

@@ -5,6 +5,9 @@ const sent = new Set();
 export function reportError(kind, error) {
   if (!import.meta.env.PROD) return;
   const message = String(error?.message || error || 'Unknown error').slice(0, 500);
+  // "Script error." is all a browser reveals about errors in other sites' scripts (extensions,
+  // injected code); there's nothing in it to act on.
+  if (/^Script error\.?$/.test(message)) return;
   const key = `${kind}:${message}`;
   if (sent.has(key) || sent.size >= 10) return;
   sent.add(key);

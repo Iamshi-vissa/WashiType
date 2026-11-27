@@ -10,7 +10,8 @@ let count = 0;
 
 // Control characters (line breaks, escape codes) become spaces so one report is one log line.
 const clean = (value, max) =>
-  [...String(value ?? '')]
+  // Cut first, so a huge body isn't split into millions of characters just to be thrown away.
+  [...String(value ?? '').slice(0, max * 2)]
     .map(ch => (ch.charCodeAt(0) < 32 || ch.charCodeAt(0) === 127 ? ' ' : ch))
     .join('')
     .slice(0, max);

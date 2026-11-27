@@ -68,7 +68,8 @@ export default function SpecimenSheet({ font, text, saved, onToggleSave, onNotif
     if (app) app.inert = true;
     closeRef.current?.focus();
     const onKey = e => {
-      if (e.key === 'Escape' && !e.target.closest?.('.paper-crumple')) onClose();
+      // The paper handles Escape first and claims it (preventDefault) only when it had a crumple to smooth.
+      if (e.key === 'Escape' && !e.defaultPrevented) onClose();
     };
     window.addEventListener('keydown', onKey);
     document.body.classList.add('no-scroll');
