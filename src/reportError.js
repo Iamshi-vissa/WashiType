@@ -8,6 +8,9 @@ export function reportError(kind, error) {
   // "Script error." is all a browser reveals about errors in other sites' scripts (extensions,
   // injected code); there's nothing in it to act on.
   if (/^Script error\.?$/.test(message)) return;
+  // A browser notice that some resize callbacks were put off to the next frame. Harmless,
+  // and it can come from any component (or an extension) that watches sizes.
+  if (/^ResizeObserver loop/.test(message)) return;
   const key = `${kind}:${message}`;
   if (sent.has(key) || sent.size >= 10) return;
   sent.add(key);

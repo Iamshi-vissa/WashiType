@@ -26,10 +26,20 @@ export default function VirtualGrid({ items, getKey, renderItem, estimateRowHeig
       setOffset(node.getBoundingClientRect().top + window.scrollY);
     };
     measure();
-    const observer = new ResizeObserver(measure);
+    // Measure on the next frame, not inside the observer's callback: the new column count
+    // changes the grid's height, which resizes the body this observer is watching, and
+    // Safari reports that same-frame loop as an error ("ResizeObserver loop completed").
+    let frame = 0;
+    const observer = new ResizeObserver(() => {
+      cancelAnimationFrame(frame);
+      frame = requestAnimationFrame(measure);
+    });
     observer.observe(node);
     observer.observe(document.body);
-    return () => observer.disconnect();
+    return () => {
+      cancelAnimationFrame(frame);
+      observer.disconnect();
+    };
   }, []);
 
   const rows = Math.ceil(items.length / columns);
