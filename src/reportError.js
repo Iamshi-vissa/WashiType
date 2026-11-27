@@ -15,14 +15,16 @@ export function reportError(kind, error) {
     page: location.pathname,
     release: __RELEASE__
   });
-  try {
-    const blob = new Blob([payload], { type: 'application/json' });
-    if (navigator.sendBeacon?.('/api/report', blob)) return;
-  } catch {
-    /* fall through to fetch */
-  }
+  // fetch with keepalive survives the page closing, like sendBeacon, and works the same in
+  // every browser; sendBeacon is the fallback for browsers that refuse it.
   fetch('/api/report', { method: 'POST', body: payload, headers: { 'Content-Type': 'application/json' }, keepalive: true }).catch(
-    () => {}
+    () => {
+      try {
+        navigator.sendBeacon?.('/api/report', new Blob([payload], { type: 'application/json' }));
+      } catch {
+        /* nothing else to try */
+      }
+    }
   );
 }
 
