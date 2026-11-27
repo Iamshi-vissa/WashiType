@@ -29,6 +29,10 @@ const gfData = 'node_modules/google-font-metadata/data/';
 const gFonts = readJSON(gfData + 'google-fonts-v1.json');
 const gLicenses = readJSON(gfData + 'licenses.json');
 const gVariable = readJSON(gfData + 'variable.json');
+// google-font-metadata has no licence for ~150 families. The google/fonts repository keeps
+// every family in a folder named after its licence (ofl/, apache/, ufl/); use that instead.
+const licenceFolders = readJSON('data/google-licence-folders.json').families;
+const FOLDER_LICENCE = name => licenceFolders[name.toLowerCase().replace(/[^a-z0-9]/g, '')] ?? null;
 
 const LICENSE = {
   'SIL Open Font License, 1.1': 'OFL',
@@ -67,8 +71,8 @@ const google = Object.values(gFonts)
       s: font.subsets.filter(s => SCRIPTS.has(s)),
       x: font.subsets.some(s => SCRIPTS.has(s)) ? undefined : font.subsets.find(s => SAMPLE_ONLY.has(s)),
       u: font.lastModified,
-      // null when Google Fonts has no license record for the family; the app links to Google instead.
-      l: lic ? LICENSE[lic.type] ?? lic.type : null,
+      // Still null for a handful of new families; the app then links to Google Fonts instead.
+      l: lic ? LICENSE[lic.type] ?? lic.type : FOLDER_LICENCE(font.family),
       a: axes
         ? Object.entries(axes)
             .filter(([name]) => name !== 'ital')
