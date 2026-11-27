@@ -512,7 +512,9 @@ const PaperCrumple = ({
         posY.value = posY.target = clamp(posY.value, -limitY, limitY);
       }
       wake();
-      renderer.render(scene, camera);
+      // Washi Type: don't draw before the sheet is ready. Rendering early compiled a shader
+      // variant without the texture, synchronously, and then compiled again once it arrived.
+      if (ready) renderer.render(scene, camera);
     }
     function finish(instant = false) {
       if (!held) return;
@@ -774,12 +776,22 @@ const PaperCrumple = ({
         );
       });
     }
+    let compiling = false;
     function becomeReady() {
-      if (disposed || !textureReady || !pathReady) return;
-      ready = true;
-      setStatus('ready');
-      hit.disabled = options.current.disabled;
-      wake();
+      if (disposed || !textureReady || !pathReady || ready || compiling) return;
+      compiling = true;
+      // Washi Type: compile the shaders in parallel (KHR_parallel_shader_compile) before the
+      // first frame, instead of blocking the page for ~100 ms inside the first render.
+      const compiled = typeof renderer.compileAsync === 'function' ? renderer.compileAsync(scene, camera) : Promise.resolve();
+      compiled
+        .catch(() => {})
+        .then(() => {
+          if (disposed) return;
+          ready = true;
+          setStatus('ready');
+          hit.disabled = options.current.disabled;
+          wake();
+        });
     }
     requestPaperPath(pathKey, original, indices, shortSide, foldTotal, sharpness, depth, finite(seed, 7))
       .then(path => {

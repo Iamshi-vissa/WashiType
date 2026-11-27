@@ -38,15 +38,25 @@ export default function SpecimenSheet({ font, text, saved, onToggleSave, onNotif
   // Draw the paper once the family (and the note lettering) has loaded.
   useEffect(() => {
     let live = true;
+    let url = '';
     setImage('');
     const t = setTimeout(async () => {
-      await Promise.all([loadFamily(font), document.fonts.load('400 34px "Zen Antique"', 'WT').catch(() => {}),
-        document.fonts.load('500 26px "Shippori Mincho"').catch(() => {})]);
-      if (live) setImage(drawSheet(font, text));
+      await Promise.all([
+        loadFamily(font),
+        document.fonts.load('400 34px "Zen Antique"', 'WT').catch(() => {}),
+        document.fonts.load('500 26px "Shippori Mincho"').catch(() => {})
+      ]);
+      if (!live) return;
+      const next = await drawSheet(font, text).catch(() => '');
+      if (!live) return URL.revokeObjectURL(next);
+      url = next;
+      setImage(next);
     }, 250);
     return () => {
       live = false;
       clearTimeout(t);
+      // Free the previous sheet's picture once PaperCrumple has its own texture copy.
+      if (url) setTimeout(() => URL.revokeObjectURL(url), 2000);
     };
   }, [font, text]);
 

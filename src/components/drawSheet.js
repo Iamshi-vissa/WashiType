@@ -75,6 +75,7 @@ function seal(ctx, x, y, size, rand) {
   ctx.restore();
 }
 
+/** Draws the sheet and resolves to an object URL of the PNG. */
 export function drawSheet(font, text) {
   const W = SHEET_W * S;
   const H = SHEET_H * S;
@@ -93,10 +94,9 @@ export function drawSheet(font, text) {
   ctx.fill();
   ctx.save();
   ctx.clip();
-  for (let i = 0; i < 2400; i++) {
-    ctx.fillStyle = `rgba(110,90,60,${rand() * 0.05})`;
-    ctx.fillRect(rand() * W, rand() * H, 2, 2);
-  }
+  // Paper grain: one small noise tile, drawn once and repeated (was 2,400 separate fills).
+  ctx.fillStyle = ctx.createPattern(grainTile(), 'repeat');
+  ctx.fillRect(0, 0, W, H);
   // Fibres
   ctx.lineWidth = 1.2;
   for (let i = 0; i < 90; i++) {
@@ -188,5 +188,24 @@ export function drawSheet(font, text) {
   // Red seal, bottom right
   seal(ctx, right - 44, H - 92, 88, rand);
 
-  return canvas.toDataURL('image/png');
+  // toBlob encodes the PNG off the main thread (toDataURL blocked it). The caller owns the
+  // returned object URL and must revoke it.
+  return new Promise((resolve, reject) =>
+    canvas.toBlob(blob => (blob ? resolve(URL.createObjectURL(blob)) : reject(new Error('Could not draw the sheet'))), 'image/png')
+  );
+}
+
+let grain = null;
+function grainTile() {
+  if (grain) return grain;
+  grain = document.createElement('canvas');
+  grain.width = grain.height = 160;
+  const g = grain.getContext('2d');
+  let seed = 7;
+  const rand = () => (seed = (seed * 16807) % 2147483647) / 2147483647;
+  for (let i = 0; i < 140; i++) {
+    g.fillStyle = `rgba(110,90,60,${rand() * 0.05})`;
+    g.fillRect(rand() * 160, rand() * 160, 2, 2);
+  }
+  return grain;
 }
