@@ -19,6 +19,8 @@ import { reportError } from './reportError.js';
 import { SHEET_PAPER } from './paperSettings.js';
 import { useTheme } from './theme.js';
 import OnOffSwitch from './components/OnOffSwitch/OnOffSwitch.jsx';
+import CommercialNote from './components/CommercialNote.jsx';
+import { commercialMatch, normalizeName } from './commercialFonts.js';
 
 const SCRIPT_OPTIONS = [{ value: 'all', label: 'Any script' }, ...SCRIPTS.map(s => ({ value: s.id, label: s.label }))];
 const SORT_OPTIONS = SORTS.map(s => ({ value: s.id, label: s.label }));
@@ -226,6 +228,10 @@ export default function App() {
   const closeDetector = useCallback(() => setDetector(false), []);
 
   const q = useDeferredValue(query.trim().toLowerCase());
+  // A search for a commercial font (Times New Roman...) explains why it isn't here.
+  const fontsById = useMemo(() => new Map(fonts.map(f => [f.id, f])), [fonts]);
+  const catalogNames = useMemo(() => new Set(fonts.map(f => normalizeName(f.f))), [fonts]);
+  const commercial = useMemo(() => (fonts.length ? commercialMatch(q, catalogNames) : null), [q, catalogNames, fonts.length]);
   const results = useMemo(() => {
     const list = fonts.filter(
       f =>
@@ -462,7 +468,9 @@ export default function App() {
         </p>
 
 
-        {fonts.length > 0 && results.length === 0 && (
+        {commercial && <CommercialNote entry={commercial} fontsById={fontsById} onOpen={openFont} />}
+
+        {fonts.length > 0 && results.length === 0 && !commercial && (
           <div className="empty">
             <p className="hand">The desk is empty.</p>
             <p>

@@ -33,6 +33,7 @@ npm run google-files   # refreshes which TTF files each Google family has, for d
 - **Filters:** source, category, script (27 scripts, including Devanagari, Tamil, Bengali, Japanese and Arabic), variable fonts only, and four sort orders.
 - **Font sheets:** every weight (with an italic toggle), licence, source, designer, a crumplable specimen, and the embed code on a ticket you tear to copy. Every font has its own page, such as `/fonts/inter`, which works with Back and Forward, can be bookmarked and shared, and is indexed by search engines (old `/#inter` links move there).
 - **Download any font:** "Download font" on a sheet saves a .zip of the desktop font files (TTF) with the licence and install steps, to use anywhere: Word, Figma, Photoshop, Canva, games, print. Google Fonts files come straight from Google's own repository (github.com/google/fonts, pinned to one commit so links never move); fonts from independent foundries are Fontsource's TTF for each weight and style. The zip is put together in the browser. Fontshare's licence asks for downloads to come from Fontshare, so its fonts link there.
+- **Looking for a commercial font?** Search for Times New Roman, Arial, Helvetica, Calibri, Futura, Gotham and two dozen other well-known fonts that aren't free, and a note explains why it isn't here, where you probably already have it (Windows, macOS, Office), and the closest free fonts. Where one exists, it names the free font with the *same letter widths*, so a document keeps its line breaks: Tinos for Times New Roman, Arimo for Arial and Helvetica, Cousine for Courier New, Carlito for Calibri, Caladea for Cambria, Gelasio for Georgia. The list is in `src/commercialFonts.js`; a test checks every font it names is in the catalog.
 - **What font is this?** Add a picture of some lettering (drop, paste or choose one), draw a box around one line, type what it says, and the closest fonts in the catalog come back, best first, with how close each is. It all runs on your device: the picture is never uploaded. See [Finding a font from a picture](#finding-a-font-from-a-picture).
 - **Stamped fonts:** press the seal on any sheet to keep it. The Stamped drawer lists them as paper slips; drag one into the shredder (or press Delete) to remove it, with Undo. Stamps stay in this browser.
 - **Errors you can read:** a retro TV shows what went wrong instead of a blank page (see below).
@@ -113,6 +114,7 @@ src/
   assets/textures/            washi fibres, dry brush, torn edge, seal ink (SVG, inlined by Vite)
   main.jsx, notfound.jsx      entry points (error boundary, service worker)
   data.js                     categories, scripts and samples, sorts, featured fonts
+  commercialFonts.js          well-known commercial fonts and their closest free alternatives
   fontLoader.js               loads each font from its own source; embed code; source links
   download.js                 Download font: fetches the TTF files and zips them in the browser
   detect/                     What font is this?: reading pictures, the shape index, matching
@@ -126,6 +128,7 @@ src/
     drawSheet.js              paints the specimen on washi for the crumple
     StampDrawer.jsx           Stamped drawer with the shredder (lazy-loaded)
     FontDetector.jsx          What font is this? dialog (lazy-loaded)
+    CommercialNote.jsx        the note shown when a search names a commercial font
     Select.jsx                dropdowns that always open downwards
     HeroScroll.jsx, Hanko.jsx hero sheet and the red seal
     ErrorBoundary.jsx, ErrorScreen.jsx, TvError/   error handling and the TV

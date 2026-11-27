@@ -256,7 +256,10 @@ button, input, select { font: inherit; color: inherit; }
 .empty { text-align: center; padding: 50px 16px; color: var(--muted); }
 .empty .hand { font-size: 32px; margin: 0; color: var(--ink); }
 .foot { color: var(--muted); font-size: 14px; border-top: 1px solid var(--line); }
-.foot p { display: flex; flex-wrap: wrap; align-items: center; gap: 4px 10px; }
+/* A sentence with links: plain text flow (as flex, every link became its own item, leaving
+   a space before the comma and the full stop on a line of its own). */
+.foot p { line-height: 1.8; }
+.foot p > :first-child { display: inline-block; vertical-align: middle; margin-right: 8px; }
 
 /* Variable-only switch (ReactBits SquishSwitch) */
 .squish { display: inline-flex; align-items: center; gap: 10px; min-height: 44px; }
@@ -353,6 +356,24 @@ button, input, select { font: inherit; color: inherit; }
 .spec-info h2 { margin: 2px 0 16px; font-size: clamp(36px, 5vw, 56px); line-height: 1.05; font-weight: 400; overflow-wrap: anywhere; padding-right: 44px; }
 .actions { display: flex; flex-wrap: wrap; gap: 10px; margin-bottom: 10px; }
 .actions .btn:disabled { opacity: 0.85; cursor: progress; font-variant-numeric: tabular-nums; }
+/* A search for a commercial font (src/components/CommercialNote.jsx) */
+.commercial {
+  margin: 0 0 22px; padding: 16px 20px; border-radius: 10px; border: 1px solid var(--line);
+  border-left: 4px solid var(--shu); background: var(--washi), var(--paper); max-width: 860px;
+}
+.commercial p { margin: 0; line-height: 1.5; }
+.commercial-why { font-size: 17px; }
+.commercial-row { margin-top: 12px !important; display: grid; gap: 8px; color: var(--muted); font-size: 14px; }
+.commercial-row em { font-style: normal; color: var(--ink); font-weight: 600; }
+.commercial-fonts { display: flex; flex-wrap: wrap; gap: 8px; }
+.commercial-font {
+  min-height: 44px; padding: 6px 16px; border-radius: 999px; border: 1px solid var(--line);
+  background: var(--bg); color: var(--ink); font-size: 21px; cursor: pointer;
+  transition: border-color 0.15s, transform 0.15s;
+}
+.commercial-font:hover { border-color: var(--shu); transform: translateY(-1px); }
+.commercial-font:focus-visible { outline: 3px solid var(--shu); outline-offset: 2px; }
+
 /* "What font is this?" (src/components/FontDetector.jsx) */
 .from-picture { gap: 8px; }
 .from-picture svg { fill: none; stroke: currentColor; stroke-width: 1.8; }

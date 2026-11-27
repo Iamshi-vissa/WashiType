@@ -328,3 +328,36 @@ test('What font is this? explains what it needs', async ({ page }) => {
   await page.keyboard.press('Escape');
   await expect(dialog).toHaveCount(0);
 });
+
+test('every free alternative named for a commercial font is in the catalog', async () => {
+  const { readFile } = await import('node:fs/promises');
+  const { COMMERCIAL } = await import('../src/commercialFonts.js');
+  const ids = new Set(JSON.parse(await readFile(new URL('../public/fonts.json', import.meta.url), 'utf8')).map(f => f.id));
+  const missing = COMMERCIAL.flatMap(e => [...(e.same ?? []), ...(e.like ?? [])].filter(id => !ids.has(id)).map(id => `${e.name}: ${id}`));
+  expect(missing).toEqual([]);
+});
+
+test('searching for Times New Roman explains why and offers Tinos', async ({ page }) => {
+  await page.goto('/');
+  await page.locator('input[type=search]').fill('times new roman');
+  const note = page.getByRole('complementary', { name: 'About Times New Roman' });
+  await expect(note).toContainText('isn’t a free font');
+  await expect(note).toContainText('comes with Windows and macOS');
+  await expect(page.locator('.empty')).toHaveCount(0); // the note replaces "The desk is empty"
+  await note.getByRole('button', { name: 'Tinos' }).click();
+  await expect(page.locator('.spec h2')).toHaveText('Tinos');
+});
+
+test('the commercial-font note appears only for commercial names', async ({ page }) => {
+  await page.goto('/');
+  const search = page.locator('input[type=search]');
+  await search.fill('Courier Prime'); // free, and in the catalog
+  await expect(page.locator('.commercial')).toHaveCount(0);
+  await search.fill('garamond'); // commercial, but free Garamonds exist: note and results
+  await expect(page.getByRole('complementary', { name: 'About Garamond' })).toBeVisible();
+  await expect(page.locator('.sheet').first()).toBeVisible();
+  await search.fill('arial black'); // a longer name starting with one
+  await expect(page.getByRole('complementary', { name: 'About Arial' })).toContainText('Arimo');
+  await search.fill('');
+  await expect(page.locator('.commercial')).toHaveCount(0);
+});
