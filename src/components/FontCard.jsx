@@ -3,7 +3,7 @@ import { loadPreview, defaultWeight, SOURCES } from '../fontLoader.js';
 import { CATEGORY_NAME } from '../data.js';
 import { fontPath } from '../routes.js';
 import Hanko, { SaveMark } from './Hanko.jsx';
-import WarmTooltip from './reactbits/WarmTooltip.jsx';
+import { WarmTooltip } from '../deferred.jsx';
 
 // One shared observer for every card: load a font only once its sheet scrolls near view.
 const watchers = new Map();

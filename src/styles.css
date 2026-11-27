@@ -390,3 +390,8 @@ button, input, select { font: inherit; color: inherit; }
 .prerender dt { color: var(--muted); }
 .prerender dd { margin: 0; }
 .prerender ul { display: flex; flex-wrap: wrap; gap: 6px 18px; padding: 0; list-style: none; }
+
+/* Stand-ins shown for a moment while the animated pieces load (src/deferred.jsx). */
+.fold-fallback { display: inline-block; letter-spacing: -0.015em; line-height: 1.04; }
+.squish-fallback input { width: 18px; height: 18px; accent-color: var(--shu); }
+.squish-fallback span { font-size: 14px; color: var(--ink); }

@@ -1,15 +1,10 @@
 import { createPortal } from 'react-dom';
 import { lazy, Suspense, useCallback, useDeferredValue, useEffect, useMemo, useRef, useState } from 'react';
-import FoldText from './components/reactbits/FoldText.jsx';
-import SwipeToast from './components/reactbits/SwipeToast.jsx';
-import SquishSwitch from './components/reactbits/SquishSwitch.jsx';
-import RotatingText from './components/reactbits/RotatingText.jsx';
 import ClickSpark from './components/reactbits/ClickSpark.jsx';
-import CountUp from './components/reactbits/CountUp.jsx';
+import { FoldText, SwipeToast, SquishSwitch, RotatingText, CountUp, HeroScroll } from './deferred.jsx';
 import FontCard from './components/FontCard.jsx';
 import VirtualGrid from './components/VirtualGrid.jsx';
 import Select from './components/Select.jsx';
-import HeroScroll from './components/HeroScroll.jsx';
 import Hanko, { SaveMark } from './components/Hanko.jsx';
 // The specimen sheet pulls in three.js, so it loads only when a sheet is opened.
 const SpecimenSheet = lazy(() => import('./components/SpecimenSheet.jsx'));

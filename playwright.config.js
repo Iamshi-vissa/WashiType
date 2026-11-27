@@ -14,7 +14,7 @@ export default defineConfig({
       : { args: ['--use-gl=swiftshader', '--enable-webgl', '--ignore-gpu-blocklist'] }
   },
   webServer: {
-    command: 'npx vite preview --port 4173 --strictPort',
+    command: 'npx vite preview --port 4173 --strictPort --bypass-lock',
     port: 4173,
     reuseExistingServer: !process.env.CI
   }
